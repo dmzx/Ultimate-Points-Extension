@@ -1,0 +1,112 @@
+{% INCLUDE 'overall_header.html' %}
+
+<div id="tabs" class="tabs">
+	<ul>
+		<li class="tab"><a href="{{ U_POINTS }}">{{ lang('POINTS_OVERVIEW') }}</a></li>
+		<li class="tab activetab"><a href="{{ U_INFO }}">{{ lang('POINTS_INFO') }}</a></li>
+		{% if TRANSFER_ENABLE and U_USE_TRANSFER %}<li class="tab"><a href="{{ U_TRANSFER_USER }}">{{ lang('POINTS_TRANSFER') }}</a></li>{% endif %}
+		{% if LOGS_ENABLE and U_USE_LOGS %}<li class="tab"><a href="{{ U_LOGS }}">{{ lang('POINTS_LOGS') }}</a></li>{% endif %}
+		{% if LOTTERY_ENABLE and U_USE_LOTTERY %}<li class="tab"><a href="{{ U_LOTTERY }}">{{ LOTTERY_NAME }}</a></li>{% endif %}
+		{% if BANK_ENABLE and U_USE_BANK %}<li class="tab"><a href="{{ U_BANK }}">{{ BANK_NAME }}</a></li>{% endif %}
+		{% if ROBBERY_ENABLE and U_USE_ROBBERY %}<li class="tab"><a href="{{ U_ROBBERY }}">{{ lang('POINTS_ROBBERY') }}</a></li>{% endif %}
+	</ul>
+</div>
+
+<div class="panel bg3 points-info">
+	<div class="inner">
+		<div id="cp-menu">
+			<div class="cp-mini">
+				<div class="inner">
+					<dl class="mini">
+						<dd><h3>{{ lang('POINTS_DESCRIPTION') }}</h3></dd>
+						<dd>{{ POINTS_INFO_DESCRIPTION }}</dd>
+					</dl>
+				</div>
+			</div>
+		</div>
+
+		<div id="cp-main" class="ucp-main">
+			<h2><i class="icon fa fa-info" aria-hidden="true"></i> {{ lang('INFO_GENERAL_INFORMATIONS') }}</h2>
+			<div class="panel">
+				<div class="inner">
+					{% if S_USER_LOGGED_IN %}
+						<p>{{ lang('POINTS_CASH_ON_HAND') }}{{ lang('COLON') }}&nbsp;{{ USER_POINTS }} {{ POINTS_NAME }}</p>
+					{% endif %}
+					<fieldset>
+						<h3><i class="icon fa fa-info" aria-hidden="true"></i> {{ lang('POINTS_INFO') }}</h3>
+						<dl>
+							<dt>{{ INFO_ATTACH }}{{ lang('COLON') }}</dt>
+							<dd>{{ INFO_POINTS_ATTACH }}</dd>
+						</dl>
+						<dl>
+							<dt>{{ INFO_ADD_ATTACH }}{{ lang('COLON') }}</dt>
+							<dd>{{ INFO_POINTS_ADD_ATTACH }}</dd>
+						</dl>
+						<dl>
+							<dt>{{ INFO_POLL }}{{ lang('COLON') }}</dt>
+							<dd>{{ INFO_POINTS_POLL }}</dd>
+						</dl>
+						<dl>
+							<dt>{{ INFO_POLL_OPTION }}{{ lang('COLON') }}</dt>
+							<dd>{{ INFO_POINTS_POLL_OPTION }}</dd>
+						</dl>
+						<dl>
+							<dt>{{ INFO_TOPIC_WORD }}{{ lang('COLON') }}</dt>
+							<dd>{{ INFO_POINTS_TOPIC_WORD }}</dd>
+						</dl>
+						<dl>
+							<dt>{{ INFO_TOPIC_CHARACTER }}{{ lang('COLON') }}</dt>
+							<dd>{{ INFO_POINTS_TOPIC_CHARACTER }}</dd>
+						</dl>
+						<dl>
+							<dt>{{ INFO_POST_WORD }}{{ lang('COLON') }}</dt>
+							<dd>{{ INFO_POINTS_POST_WORD }}</dd>
+						</dl>
+						<dl>
+							<dt>{{ INFO_POST_CHARACTER }}{{ lang('COLON') }}</dt>
+							<dd>{{ INFO_POINTS_POST_CHARACTER }}</dd>
+						</dl>
+						<dl>
+							<dt>{{ INFO_COST_WARNING }}{{ lang('COLON') }}</dt>
+							<dd>{{ INFO_POINTS_COST_WARNING }}</dd>
+						</dl>
+						<dl>
+							<dt>{{ INFO_REG_BONUS }}{{ lang('COLON') }}</dt>
+							<dd>{{ INFO_POINTS_REG_BONUS }}</dd>
+						</dl>
+						<dl>
+							<dt>{{ INFO_BONUS_CHANCE }}{{ lang('COLON') }}</dt>
+							<dd>{{ INFO_POINTS_BONUS }}</dd>
+						</dl>
+						<dl>
+							<dt>{{ INFO_FORUM_TOPIC }}{{ lang('COLON') }}</dt>
+							<dd>{{ INFO_POINTS_FORUM_TOPIC }}</dd>
+						</dl>
+						<dl>
+							<dt>{{ INFO_FORUM_POST }}{{ lang('COLON') }}</dt>
+							<dd>{{ INFO_POINTS_FORUM_POST }}</dd>
+						</dl>
+						<dl>
+							<dt>{{ INFO_FORUM_EDIT }}{{ lang('COLON') }}</dt>
+							<dd>{{ INFO_POINTS_FORUM_EDIT }}</dd>
+						</dl>
+						<dl>
+							<dt>{{ INFO_FORUM_ATT_DOWNLOAD }}{{ lang('COLON') }}</dt>
+							<dd>{{ INFO_POINTS_FORUM_ATT_DOWNLOAD }}</dd>
+						</dl>
+						<dl>
+							<dt>{{ INFO_FORUM_COST_TOPIC }}{{ lang('COLON') }}</dt>
+							<dd>{{ INFO_POINTS_FORUM_COST_TOPIC }}</dd>
+						</dl>
+						<dl>
+							<dt>{{ INFO_FORUM_COST_POST }}{{ lang('COLON') }}</dt>
+							<dd>{{ INFO_POINTS_FORUM_COST_POST }}</dd>
+						</dl>
+					</fieldset>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% INCLUDE 'overall_footer.html' %}

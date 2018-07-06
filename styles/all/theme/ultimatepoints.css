@@ -1,0 +1,74 @@
+/*  Ultimate Points Styling
+
+--------------------------- */
+
+.icon-points { 
+  background-image: url("./images/icon_points.gif");
+}
+
+.icon-members { 
+  background-image: url("./images/icon_members.gif");
+}
+
+#cp-menu {
+    float: left;
+    width: 19%;
+    margin-top: 1em;
+    margin-bottom: 5px;
+}
+
+#cp-main {
+    float: left;
+    width: 81%;
+}
+
+#navigation {
+    width: 100%;
+    padding-top: 36px;
+}
+
+table.table1 thead.logs_head th {
+	color: #303333;
+	font-weight: bold;
+	text-decoration: underline;
+}
+
+.back-lottery {
+	font-weight: bold;
+	font-size: 1.1em;
+}
+
+.points-info {
+   text-align: center;
+}
+
+.points-main-main {
+   text-align: left;
+}
+
+.points-main-lists {
+    text-align: left;
+    display: inline-flex;
+    margin: 1%;
+    width: 20%;
+    min-width: 130px;
+}
+
+.rich-user-avatar {
+	position: relative;
+	display: inline-block;
+	width: 20px;
+	height: 20px;
+	margin-bottom: 2px;
+	vertical-align: middle;
+}
+
+.rich-user-avatar img {
+	position: absolute;
+	-moz-transition: all 1s ease;
+	-webkit-transition: all 1s ease;
+	left: 0px;
+	top: 0px;
+	max-height: 20px;
+	max-width: 20px;
+}

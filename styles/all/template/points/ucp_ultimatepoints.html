@@ -1,0 +1,184 @@
+{% INCLUDE 'ucp_header.html' %}
+
+{% if S_LOTTERY_INFO %}
+
+<h2><i class="icon fa {{ POINTS_ICON_LOTTERYICON }}" aria-hidden="true"></i> {{ LOTTERY_NAME }}</h2>
+
+<div class="panel">
+	<div class="inner">
+		<p>{{ lang('UCP_ULTIMATEPOINTS_EXPLAIN') }}</p>
+
+		<div class="notification_list">
+			{% if loops.ucp_ultimatepoints_lottery|length and S_LOTTERY_ENABLE %}
+			<ul class="topiclist">
+					<li class="header">
+						<dl>
+							<dt><div class="list-inner">{{ lang('LOTTERY_VIEW_SELF_HISTORY') }}</div></dt>
+							<dd class="extra">{{ lang('LOTTERY_WINNINGS') }}</dd>
+							<dd class="time"><span style="float:right;">{{ lang('LOTTERY_DATE') }}</span></dd>
+						</dl>
+					</li>
+				</ul>
+			<ul class="topiclist cplist responsive-show-columns">
+				{% for ucp_ultimatepoints_lottery in loops.ucp_ultimatepoints_lottery %}
+				<li class="row{% if ucp_ultimatepoints_lottery.S_ROW_COUNT is odd %} bg1{% else %} bg2{% endif %}">
+					<dl>
+						<dt>
+							<div class="list-inner">
+								<div class="notifications">
+									<p class="notifications_title">{{ lang('LOTTERY_TITLE_MAIN') }}</p>
+									<p class="notifications_time">{{ lang('LOTTERY_WON') }}{{ lang('COLON') }} {{ ucp_ultimatepoints_lottery.LOTTERY_USERNAME }}</p>
+								</div>
+							</div>
+						</dt>
+						<dd class="extra">{{ ucp_ultimatepoints_lottery.LOTTERY_AMOUNT }}</dd>
+						<dd class="time" ><span style="float:right;">{{ ucp_ultimatepoints_lottery.LOTTERY_TIME }}</span></dd>
+					</dl>
+				</li>
+				{% endfor %}
+			</ul>
+			{% else %}
+				{% if S_LOTTERY_ENABLE %}{{ lang('NO_MESSAGES') }}{% else %}{{ lang('LOTTERY_DISABLED') }}{% endif %}
+			{% endif %}
+		</div>
+	</div>
+</div>
+
+{% endif %}
+
+{% if S_BANK_INFO %}
+
+<h2><i class="icon fa {{ POINTS_ICON_BANKICON }}" aria-hidden="true"></i> {{ BANK_NAME }}</h2>
+
+<div class="panel">
+	<div class="inner">
+		<p>{{ lang('UCP_ULTIMATEPOINTS_EXPLAIN') }}</p>
+
+		<div class="notification_list">
+			{% if loops.ucp_ultimatepoints_bank|length and S_BANK_ENABLE %}
+			<ul class="topiclist">
+					<li class="header">
+						<dl>
+							<dt><div class="list-inner">{{ BANK_TO_ACCOUNT }}</div></dt>
+							<dd class="extra">{{ BANK_BALANCE }}</dd>
+							<dd class="time"><span style="float:right;">{{ BANK_ACCOUNT_OPENED }}</span></dd>
+						</dl>
+					</li>
+				</ul>
+			<ul class="topiclist cplist responsive-show-columns">
+				{% for ucp_ultimatepoints_bank in loops.ucp_ultimatepoints_bank %}
+				<li class="row{% if ucp_ultimatepoints_bank.S_ROW_COUNT is odd %} bg1{% else %} bg2{% endif %}">
+					<dl>
+						<dt>
+							<div class="list-inner">
+								<div class="notifications">
+									<p class="notifications_time">{{ ucp_ultimatepoints_bank.BANK_USERNAME }}</p>
+								</div>
+							</div>
+						</dt>
+						<dd class="extra">{{ ucp_ultimatepoints_bank.BANK_AMOUNT }}</dd>
+						<dd class="time" ><span style="float:right;">{{ ucp_ultimatepoints_bank.BANK_TIME }}</span></dd>
+					</dl>
+				</li>
+				{% endfor %}
+			</ul>
+			{% else %}
+				{% if S_BANK_ENABLE %}{{ lang('NO_MESSAGES') }}{% else %}{{ lang('BANK_DISABLED') }}{% endif %}
+			{% endif %}
+		</div>
+	</div>
+</div>
+
+{% endif %}
+
+{% if S_ROBBERY_INFO %}
+
+<h2><i class="icon fa fa-user-secret" aria-hidden="true"></i> {{ lang('POINTS_ROBBERY') }}</h2>
+
+<div class="panel">
+	<div class="inner">
+		<p>{{ lang('UCP_ULTIMATEPOINTS_EXPLAIN') }}</p>
+
+		<div class="notification_list">
+			{% if loops.ucp_ultimatepoints_robbery|length and S_ROBBERY_ENABLE %}
+			<ul class="topiclist">
+					<li class="header">
+						<dl>
+							<dt><div class="list-inner">{{ lang('ROBBERY_SET_USERNAMES') }}</div></dt>
+							<dd class="extra">{{ lang('ROBBERY_AMOUNT') }}</dd>
+							<dd class="time"><span style="float:right;">{{ lang('ROBBERY_DATE') }}</span></dd>
+						</dl>
+					</li>
+				</ul>
+			<ul class="topiclist cplist responsive-show-columns">
+				{% for ucp_ultimatepoints_robbery in loops.ucp_ultimatepoints_robbery %}
+				<li class="row{% if ucp_ultimatepoints_robbery.S_ROW_COUNT is odd %} bg1{% else %} bg2{% endif %}">
+					<dl>
+						<dt>
+							<div class="list-inner">
+								<div class="notifications">
+									<p class="notifications_time">{{ ucp_ultimatepoints_robbery.ROBBERY_USERNAME }}</p>
+								</div>
+							</div>
+						</dt>
+						<dd class="extra">{{ ucp_ultimatepoints_robbery.ROBBERY_AMOUNT }}</dd>
+						<dd class="time" ><span style="float:right;">{{ ucp_ultimatepoints_robbery.ROBBERY_TIME }}</span></dd>
+					</dl>
+				</li>
+				{% endfor %}
+			</ul>
+			{% else %}
+				{% if S_ROBBERY_ENABLE %}{{ lang('NO_MESSAGES') }}{% else %}{{ lang('ROBBERY_DISABLED') }}{% endif %}
+			{% endif %}
+		</div>
+	</div>
+</div>
+
+{% endif %}
+
+{% if S_TRANSFER_INFO %}
+
+<h2><i class="icon fa fa-plus" aria-hidden="true"></i> {{ lang('TRANSFER_RECEIVED') }}</h2>
+
+<div class="panel">
+	<div class="inner">
+		<p>{{ lang('UCP_ULTIMATEPOINTS_EXPLAIN') }}</p>
+
+		<div class="notification_list">
+			{% if loops.ucp_ultimatepoints_transfer|length and S_TRANSFER_ENABLE %}
+			<ul class="topiclist">
+					<li class="header">
+						<dl>
+							<dt><div class="list-inner">{{ lang('TRANSFER_SET_USERNAMES') }}</div></dt>
+							<dd class="extra">{{ lang('TRANSFER_AMOUNTS') }}</dd>
+							<dd class="time"><span style="float:right;">{{ lang('TRANSFER_DATE') }}</span></dd>
+						</dl>
+					</li>
+				</ul>
+			<ul class="topiclist cplist responsive-show-columns">
+				{% for ucp_ultimatepoints_transfer in loops.ucp_ultimatepoints_transfer %}
+				<li class="row{% if ucp_ultimatepoints_transfer.S_ROW_COUNT is odd %} bg1{% else %} bg2{% endif %}">
+					<dl>
+						<dt>
+							<div class="list-inner">
+								<div class="notifications">
+									<p class="notifications_time">{{ ucp_ultimatepoints_transfer.TRANSFER_USERNAME }}</p>
+								</div>
+							</div>
+						</dt>
+						<dd class="extra">{{ ucp_ultimatepoints_transfer.TRANSFER_AMOUNT }}</dd>
+						<dd class="time" ><span style="float:right;">{{ ucp_ultimatepoints_transfer.TRANSFER_TIME }}</span></dd>
+					</dl>
+				</li>
+				{% endfor %}
+			</ul>
+			{% else %}
+				{% if S_TRANSFER_ENABLE %}{{ lang('NO_MESSAGES') }}{% else %}{{ lang('TRANSFER_RECEIVED_DISABLED') }}{% endif %}
+			{% endif %}
+		</div>
+	</div>
+</div>
+
+{% endif %}
+
+{% INCLUDE 'ucp_footer.html' %}

@@ -1,0 +1,86 @@
+{% INCLUDE 'overall_header.html' %}
+
+<h2><i class="icon {{ POINTS_ICON_UPLIST }} fa-fw" aria-hidden="true"></i> {{ POINTS_LIST_TOTAL }}</h2>
+<div class="action-bar top">
+	{% if loops.pagination|length or TOTAL_ULTIMATEPOINTS_LIST %}
+	<div class="pagination">
+		{{ TOTAL_ULTIMATEPOINTS_LIST }}
+		{% if loops.pagination|length %}
+			{% INCLUDE 'pagination.html' %}
+		{% else %}
+			&bull; {{ PAGE_NUMBER }}
+		{% endif %}
+	</div>
+	{% endif %}
+</div>
+
+{% if loops.ultimatelist|length %}
+<div class="forabg">
+	<div class="inner">
+		<ul class="topiclist">
+			<li class="header">
+				<dl class="row-item">
+					<dt><div class="list-inner">{{ lang('USERNAME') }}</div></dt>
+					<dd class="lastpost">{{ POINTS_LINK }}</dd>
+				</dl>
+			</li>
+		</ul>
+		<ul class="topiclist forums">
+		{% for ultimatelist in loops.ultimatelist %}
+			<li class="row {% if ultimatelist.S_ROW_COUNT is even %}bg1{% else %}bg2{% endif %}">
+				<dl>
+					<dt style="font-size: 1.2em;line-height: 2.2em;padding: 4px 0;">
+						<div class="list-inner">
+							<div class="rich-user-avatar">{% if ultimatelist.AVATAR %}{{ ultimatelist.AVATAR }}{% else %}<img src="{{ T_THEME_PATH }}/images/no_avatar.gif" width="60px;" height="60px;" alt="" />{% endif %}</div> {{ ultimatelist.USERNAME }}
+						</div>
+					</dt>
+					<dd class="lastpost"><span style="margin-top:5px;font-size: 1.2em;">{{ ultimatelist.POINT }}</span></dd>
+				</dl>
+			</li>
+			{% endfor %}
+		</ul>
+	</div>
+</div>
+
+{% else %}
+
+<div class="forabg">
+	<div class="inner">
+		<ul class="topiclist">
+			<li class="header">
+				<dl class="row-item">
+					<dt><div class="list-inner">{{ lang('USERNAME') }}</div></dt>
+					<dd></dd>
+				</dl>
+			</li>
+		</ul>
+		<ul class="topiclist forums">
+			<li class="row">
+				<dl>
+					<dt style="font-size: 1.2em;line-height: 2.2em;padding: 4px 0; text-align:center;">
+						<div>
+							{{ lang('POINTS_LIST_NO_USER') }}
+						</div>
+					</dt>
+				</dl>
+			</li>
+		</ul>
+	</div>
+</div>
+{% endif %}
+
+<hr />
+<div class="action-bar bottom">
+	{% if loops.pagination|length or TOTAL_ULTIMATEPOINTS_LIST %}
+	<div class="pagination">
+		{{ TOTAL_ULTIMATEPOINTS_LIST }}
+		{% if loops.pagination|length %}
+			{% INCLUDE 'pagination.html' %}
+		{% else %}
+			&bull; {{ PAGE_NUMBER }}
+		{% endif %}
+	</div>
+	{% endif %}
+</div>
+
+{% INCLUDE 'overall_footer.html' %}

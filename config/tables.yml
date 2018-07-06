@@ -1,0 +1,7 @@
+parameters:
+    dmzx.ultimatepoints.table.points.bank: %core.table_prefix%points_bank
+    dmzx.ultimatepoints.table.points.config: %core.table_prefix%points_config
+    dmzx.ultimatepoints.table.points.log: %core.table_prefix%points_log
+    dmzx.ultimatepoints.table.points.lottery.history: %core.table_prefix%points_lottery_history
+    dmzx.ultimatepoints.table.points.lottery.tickets: %core.table_prefix%points_lottery_tickets
+    dmzx.ultimatepoints.table.points.values: %core.table_prefix%points_values        
