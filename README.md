@@ -1,4 +1,6 @@
-# Ultimate Points Extension
+# Ultimate Points Extension 3.2.x
+
+[![Build Status](https://travis-ci.org/dmzx/Image-Upload.svg?branch=master)](https://travis-ci.org/dmzx/Ultimate-Points-Extension-3.2.x)
 
 ## Install
 1. Download the latest release.
