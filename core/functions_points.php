@@ -795,4 +795,15 @@ class functions_points
 			$this->db->sql_query('INSERT INTO ' . $table_prefix . 'mchat'	. ' ' . $this->db->sql_build_array('INSERT', $sql_arys));
 		}
 	}
+
+	function get_name()
+	{
+		if (empty($this->name))
+		{
+			$name = $this->config['points_name'];
+			$name = !empty($name) ? $name : 'Points';
+			$this->name = $name;
+		}
+		return $this->name;
+	}
 }
