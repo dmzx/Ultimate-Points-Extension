@@ -119,6 +119,7 @@ class points_main
 		$sql = $this->db->sql_build_query('SELECT', $sql_array);
 		$result = $this->db->sql_query($sql);
 		$row = $this->db->sql_fetchrow($result);
+		$this->db->sql_freeresult($result);
 
 		// Select user's lottery tickets
 		$viewer_total_tickets = '';
@@ -144,7 +145,7 @@ class points_main
 		$user_name = get_username_string('full', $checked_user['user_id'], $checked_user['username'], $checked_user['user_colour']);
 
 		// Generate some language stuff, dependig on the fact, if user has a bank account or not
-		if (($row['user_id'] != $this->user->data['user_id']) || ($row['holding'] < 1))
+		if ((is_array($row) && $row['user_id'] != $this->user->data['user_id']) || (is_array($row) && $row['holding'] < 1))
 		{
 			$this->template->assign_vars(array(
 				'L_MAIN_ON_HAND'				=>	sprintf($this->user->lang['MAIN_ON_HAND'], $this->functions_points->number_format_points($checked_user['user_points']), $this->config['points_name']),
@@ -163,7 +164,7 @@ class points_main
 			if ($this->auth->acl_get('u_use_bank'))
 			{
 				$this->template->assign_block_vars('has_bank_account', array(
-					'L_MAIN_BANK_HAVE'	=>	sprintf($this->user->lang['MAIN_BANK_HAVE'], $this->functions_points->number_format_points($row['holding']), $this->config['points_name']),
+					'L_MAIN_BANK_HAVE'	=>	sprintf($this->user->lang['MAIN_BANK_HAVE'], $this->functions_points->number_format_points(is_array($row) && $row['holding']), $this->config['points_name']),
 				));
 			}
 		}

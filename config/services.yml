@@ -209,6 +209,7 @@ services:
             - '@request'
             - '@config'
             - '@controller.helper'
+            - '@cache'
             - '@log'
             - '%core.php_ext%'
             - '%core.root_path%'

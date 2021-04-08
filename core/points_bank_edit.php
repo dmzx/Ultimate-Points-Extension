@@ -35,6 +35,9 @@ class points_bank_edit
 	/** @var \phpbb\controller\helper */
 	protected $helper;
 
+	/** @var \phpbb\cache\service */
+	protected $cache;
+
 	/** @var \phpbb\log\log */
 	protected $log;
 
@@ -62,6 +65,7 @@ class points_bank_edit
 	* @param \phpbb\request\request		 				$request
 	* @param \phpbb\config\config						$config
 	* @param \phpbb\controller\helper		 			$helper
+	* @param \phpbb\cache\service		 				$cache
 	* @param \phpbb\log\log					 			$log
 	* @param string										$php_ext
 	* @param string										$root_path
@@ -77,6 +81,7 @@ class points_bank_edit
 		\phpbb\request\request $request,
 		\phpbb\config\config $config,
 		\phpbb\controller\helper $helper,
+		\phpbb\cache\service $cache,
 		\phpbb\log\log $log,
 		$php_ext,
 		$root_path,
@@ -91,6 +96,7 @@ class points_bank_edit
 		$this->request 				= $request;
 		$this->config 				= $config;
 		$this->helper 				= $helper;
+		$this->cache 				= $cache;
 		$this->log 					= $log;
 		$this->php_ext 				= $php_ext;
 		$this->root_path 			= $root_path;
@@ -188,9 +194,12 @@ class points_bank_edit
 					'post_id'	=> $post_id,
 				));
 
+				$points_values = $this->cache->get('points_values');
+
 				$this->template->assign_vars(array(
 					'USER_NAME'			=> get_username_string('full', $u_id, $row['username'], $row['user_colour']),
 					'BANK_POINTS'		=> sprintf($this->functions_points->number_format_points($row['holding'])),
+					'BANK_BALANCE'		=> sprintf($this->user->lang['BANK_BALANCE'], $points_values['bank_name']),
 					'POINTS_NAME'		=> $this->config['points_name'],
 					'CURRENT_VALUE'		=> $row['holding'],
 					'L_POINTS_MODIFY'	=> sprintf($this->user->lang['EDIT_BANK_MODIFY'], $this->config['points_name']),

@@ -350,10 +350,10 @@ class listener implements EventSubscriberInterface
 			'USER_BANK_ACC'			=> ($holding) ? true : false,
 			'USER_BANK_POINTS'		=> $this->functions_points->number_format_points($holding),
 			'L_USER_NO_BANK_ACC'	=> sprintf($this->user->lang['BANK_NO_ACCOUNT'], $points_values['bank_name']),
-			'L_MOD_USER_POINTS'		=> ($this->auth->acl_get('a_') || $this->auth->acl_get('m_chg_points')) ? sprintf($this->user->lang['POINTS_MODIFY']) : '',
-			'U_POINTS_MODIFY'		=> ($this->auth->acl_get('a_') || $this->auth->acl_get('m_chg_points')) ? $this->helper->route('dmzx_ultimatepoints_controller', array('mode' => 'points_edit', 'user_id' => $user_id, 'adm_points' => '1')) : '',
-			'L_MOD_USER_BANK'		=> ($this->auth->acl_get('a_') || $this->auth->acl_get('m_chg_bank')) ? sprintf($this->user->lang['POINTS_MODIFY']) : '',
-			'U_BANK_MODIFY'			=> ($this->auth->acl_get('a_') || $this->auth->acl_get('m_chg_points')) ? $this->helper->route('dmzx_ultimatepoints_controller', array('mode' => 'bank_edit', 'user_id' => $user_id, 'adm_points' => '1')) : '',
+			'L_MOD_USER_POINTS'		=> ($this->auth->acl_get('a_') && $this->auth->acl_get('m_chg_points')) ? sprintf($this->user->lang['POINTS_MODIFY']) : '',
+			'U_POINTS_MODIFY'		=> ($this->auth->acl_get('a_') && $this->auth->acl_get('m_chg_points')) ? $this->helper->route('dmzx_ultimatepoints_controller', array('mode' => 'points_edit', 'user_id' => $user_id, 'adm_points' => '1')) : '',
+			'L_MOD_USER_BANK'		=> ($this->auth->acl_get('a_') && $this->auth->acl_get('m_chg_bank')) ? sprintf($this->user->lang['POINTS_MODIFY']) : '',
+			'U_BANK_MODIFY'			=> ($this->auth->acl_get('a_') && $this->auth->acl_get('m_chg_points')) ? $this->helper->route('dmzx_ultimatepoints_controller', array('mode' => 'bank_edit', 'user_id' => $user_id, 'adm_points' => '1')) : '',
 			'L_DONATE'				=> ($this->auth->acl_get('u_use_points')) ? sprintf($this->user->lang['POINTS_DONATE']) : '',
 			'U_POINTS_DONATE'		=> ($this->auth->acl_get('u_use_points')) ? $this->helper->route('dmzx_ultimatepoints_controller', array('mode' => 'transfer', 'i' => $user_id, 'adm_points' => '1')) : '',
 			'P_NAME'				=> $this->config['points_name'],
@@ -435,7 +435,7 @@ class listener implements EventSubscriberInterface
 				WHERE user_id = '$poster_id'";
 			$result = $this->db->sql_query($sql);
 			$bank_row = $this->db->sql_fetchrow($result);
-			$holding[$poster_id] = ($bank_row['holding']) ? $bank_row['holding'] : '0';
+			$holding[$poster_id] = (!empty($bank_row['holding'])) ? !empty($bank_row['holding']) : '0';
 			$bank_row = '';
 		}
 
@@ -492,10 +492,10 @@ class listener implements EventSubscriberInterface
 			'USER_ID'				=> $poster_id,
 			'BANK_GOLD'				=> $this->functions_points->number_format_points($row['bank_points']),
 			'BANK_ACCOUNT'			=> $row['bank_account'],
-			'L_MOD_USER_POINTS'		=> ($this->auth->acl_get('a_') || $this->auth->acl_get('m_chg_points')) ? sprintf($this->user->lang['POINTS_MODIFY']) : '',
-			'U_POINTS_MODIFY'		=> ($this->auth->acl_get('a_') || $this->auth->acl_get('m_chg_points')) ? $this->helper->route('dmzx_ultimatepoints_controller', array('mode' => 'points_edit', 'user_id' => $poster_id, 'adm_points' => '1', 'post_id' => $row['post_id'])) : '',
-			'L_BANK_USER_POINTS'	=> ($this->auth->acl_get('a_') || $this->auth->acl_get('m_chg_bank')) ? sprintf($this->user->lang['POINTS_MODIFY']) : '',
-			'U_BANK_MODIFY'			=> ($this->auth->acl_get('a_') || $this->auth->acl_get('m_chg_bank')) ? $this->helper->route('dmzx_ultimatepoints_controller', array('mode' => 'bank_edit', 'user_id' => $poster_id, 'adm_points' => '1', 'post_id' => $row['post_id'])) : '',
+			'L_MOD_USER_POINTS'		=> ($this->auth->acl_get('a_') && $this->auth->acl_get('m_chg_points')) ? sprintf($this->user->lang['POINTS_MODIFY']) : '',
+			'U_POINTS_MODIFY'		=> ($this->auth->acl_get('a_') && $this->auth->acl_get('m_chg_points')) ? $this->helper->route('dmzx_ultimatepoints_controller', array('mode' => 'points_edit', 'user_id' => $poster_id, 'adm_points' => '1', 'post_id' => $row['post_id'])) : '',
+			'L_BANK_USER_POINTS'	=> ($this->auth->acl_get('a_') && $this->auth->acl_get('m_chg_bank')) ? sprintf($this->user->lang['POINTS_MODIFY']) : '',
+			'U_BANK_MODIFY'			=> ($this->auth->acl_get('a_') && $this->auth->acl_get('m_chg_bank')) ? $this->helper->route('dmzx_ultimatepoints_controller', array('mode' => 'bank_edit', 'user_id' => $poster_id, 'adm_points' => '1', 'post_id' => $row['post_id'])) : '',
 			'L_DONATE'				=> ($this->auth->acl_get('u_use_points') && $points_config['transfer_enable']) ? sprintf($this->user->lang['POINTS_DONATE']) : '',
 			'U_POINTS_DONATE'		=> ($this->auth->acl_get('u_use_points')) ? $this->helper->route('dmzx_ultimatepoints_controller', array('mode' => 'transfer', 'i' => $poster_id, 'adm_points' => '1', 'post_id' => $row['post_id'])) : '',
 			'S_IS_OWN_POST'			=> ($poster_id == $this->user->data['user_id']) ? true : false,

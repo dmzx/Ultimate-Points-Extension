@@ -208,9 +208,12 @@ class points_bank
 			$bankholdings 	= ($b_row['total_holding']) ? $b_row['total_holding'] : 0;
 			$bankusers 		= $b_row['total_users'];
 
-			$withdrawtotal 	= ($row['fees'] == 'on') ? $row['holding'] - (round($row['holding'] / 100 * $points_values['bank_fees'])) : $row['holding'];
+$fees = (is_array($row) && $row['fees']);
+$holding = (is_array($row) && $row['holding']);
 
-			if ($row['fees'] == 'on' && $this->user->lang['BANK_WITHDRAW_RATE'])
+			$withdrawtotal 	= ($fees == 'on') ? $holding	- (round($holding / 100 * $points_values['bank_fees'])) : $holding;
+
+			if ($fees == 'on' && $this->user->lang['BANK_WITHDRAW_RATE'])
 			{
 				$this->template->assign_block_vars('switch_withdraw_fees', array());
 			}
@@ -227,7 +230,7 @@ class points_bank
 
 			$banklocation = ' -> <a href="' . $this->helper->route('dmzx_ultimatepoints_controller') . '" class="nav">' . $points_values['bank_name'] . '</a>';
 
-			$title = $points_values['bank_name'] . '; ' . ((!is_numeric($row['holding'])) ? $this->user->lang['BANK_ACCOUNT_OPENING'] : $this->user->lang['BANK_DEPOSIT_WITHDRAW'] . ' ' . $this->config['points_name']);
+			$title = $points_values['bank_name'] . '; ' . ((!is_numeric($holding)) ? $this->user->lang['BANK_ACCOUNT_OPENING'] : $this->user->lang['BANK_DEPOSIT_WITHDRAW'] . ' ' . $this->config['points_name']);
 
 			page_header($points_values['bank_name']);
 
@@ -248,7 +251,7 @@ class points_bank
 				'BANK_MAX_HOLD' 		=> sprintf($this->functions_points->number_format_points($points_values['bank_interestcut'])),
 				'BANK_TITLE' 			=> $title,
 				'POINTS_NAME'			=> $this->config['points_name'],
-				'USER_BALANCE' 			=> sprintf($this->functions_points->number_format_points($row['holding'])),
+				'USER_BALANCE' 			=> sprintf($this->functions_points->number_format_points($holding)),
 				'USER_GOLD' 			=> $this->user->data['user_points'],
 				'USER_WITHDRAW' 		=> sprintf(number_format($withdrawtotal, 2, '.', '')),
 
@@ -268,8 +271,8 @@ class points_bank
 			$this->template->set_filenames(array(
 				'body' => 'points/points_bank.html'
 			));
-
-			if (is_numeric($row['holding']))
+$holding = (is_array($row) && $row['holding']);
+			if (is_numeric($holding))
 			{
 				trigger_error(' ' . $this->user->lang['YES_ACCOUNT'] . '!<br /><br />' . sprintf($this->user->lang['BANK_BACK_TO_BANK'], '<a href="' . $this->helper->route('dmzx_ultimatepoints_controller', array('mode' => 'bank')) . '">', '</a>') . sprintf('<br />' . $this->user->lang['BANK_BACK_TO_INDEX'], '<a href="' . append_sid("{$this->root_path}index.{$this->php_ext}") . '">', '</a>'));
 			}
