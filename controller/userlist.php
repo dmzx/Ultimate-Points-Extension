@@ -9,30 +9,39 @@
 
 namespace dmzx\ultimatepoints\controller;
 
+use dmzx\ultimatepoints\core\functions_points;
+use phpbb\config\config;
+use phpbb\controller\helper;
+use phpbb\db\driver\driver_interface;
+use phpbb\pagination;
+use phpbb\request\request;
+use phpbb\template\template;
+use phpbb\user;
+
 class userlist
 {
-	/** @var \dmzx\ultimatepoints\core\functions_points */
+	/** @var functions_points */
 	protected $functions_points;
 
-	/** @var \phpbb\template\template */
+	/** @var template */
 	protected $template;
 
-	/** @var \phpbb\user */
+	/** @var user */
 	protected $user;
 
-	/** @var \phpbb\db\driver\driver_interface */
+	/** @var driver_interface */
 	protected $db;
 
-	/** @var \phpbb\request\request */
+	/** @var request */
 	protected $request;
 
-	/** @var \phpbb\config\config */
+	/** @var config */
 	protected $config;
 
-	/** @var \phpbb\pagination */
+	/** @var pagination */
 	protected $pagination;
 
-	/** @var \phpbb\controller\helper */
+	/** @var helper */
 	protected $helper;
 
 	/**
@@ -47,27 +56,27 @@ class userlist
 	/**
 	* Constructor
 	*
-	* @var \dmzx\ultimatepoints\core\functions_points	$functions_points
-	* @param \phpbb\template\template		 			$template
-	* @param \phpbb\user								$user
-	* @param \phpbb\db\driver\driver_interface			$db
-	* @param \phpbb\request\request		 				$request
-	* @param \phpbb\config\config						$config
-	* @param \phpbb\pagination							$pagination
-	* @param \phpbb\controller\helper		 			$helper
-	* @param string 									$points_config_table
-	* @param string 									$points_values_table
+	* @var functions_points	    $functions_points
+	* @param template		 	$template
+	* @param user				$user
+	* @param driver_interface	$db
+	* @param request		 	$request
+	* @param config				$config
+	* @param pagination			$pagination
+	* @param helper		 		$helper
+	* @param string 			$points_config_table
+	* @param string 			$points_values_table
 	*
 	*/
 	public function __construct(
-		\dmzx\ultimatepoints\core\functions_points $functions_points,
-		\phpbb\template\template $template,
-		\phpbb\user $user,
-		\phpbb\db\driver\driver_interface $db,
-		\phpbb\request\request $request,
-		\phpbb\config\config $config,
-		\phpbb\pagination $pagination,
-		\phpbb\controller\helper $helper,
+		functions_points $functions_points,
+		template $template,
+		user $user,
+		driver_interface $db,
+		request $request,
+		config $config,
+		pagination $pagination,
+		helper $helper,
 		$points_config_table,
 		$points_values_table
 	)

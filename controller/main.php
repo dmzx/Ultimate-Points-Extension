@@ -9,63 +9,83 @@
 
 namespace dmzx\ultimatepoints\controller;
 
+use dmzx\ultimatepoints\core\functions_points;
+use dmzx\ultimatepoints\core\points_bank;
+use dmzx\ultimatepoints\core\points_bank_edit;
+use dmzx\ultimatepoints\core\points_info;
+use dmzx\ultimatepoints\core\points_logs;
+use dmzx\ultimatepoints\core\points_lottery;
+use dmzx\ultimatepoints\core\points_main;
+use dmzx\ultimatepoints\core\points_points_edit;
+use dmzx\ultimatepoints\core\points_robbery;
+use dmzx\ultimatepoints\core\points_robbery_user;
+use dmzx\ultimatepoints\core\points_transfer;
+use dmzx\ultimatepoints\core\points_transfer_user;
+use phpbb\auth\auth;
+use phpbb\config\config;
+use phpbb\controller\helper;
+use phpbb\db\driver\driver_interface;
+use phpbb\request\request;
+use phpbb\template\template;
+use phpbb\user;
+
 class main
 {
-	/** @var \dmzx\ultimatepoints\core\functions_points */
+	/** @var functions_points */
 	protected $functions_points;
 
-	/** @var \dmzx\ultimatepoints\core\points_main */
+	/** @var points_main */
 	protected $points_main;
 
-	/** @var \dmzx\ultimatepoints\core\points_info */
+	/** @var points_info */
 	protected $points_info;
 
-	/** @var \dmzx\ultimatepoints\core\points_transfer_user */
+	/** @var points_transfer_user */
 	protected $points_transfer_user;
 
-	/** @var \dmzx\ultimatepoints\core\points_bank */
+	/** @var points_bank */
 	protected $points_bank;
 
-	/** @var \dmzx\ultimatepoints\core\points_logs */
+	/** @var points_logs */
 	protected $points_logs;
 
-	/** @var \dmzx\ultimatepoints\core\points_bank_edit */
+	/** @var points_bank_edit */
 	protected $points_bank_edit;
 
-	/** @var \dmzx\ultimatepoints\core\points_lottery */
+	/** @var points_lottery */
 	protected $points_lottery;
 
-	/** @var \dmzx\ultimatepoints\core\points_points_edit */
+	/** @var points_points_edit */
 	protected $points_points_edit;
 
-	/** @var \dmzx\ultimatepoints\core\points_robbery */
+	/** @var points_robbery */
 	protected $points_robbery;
 
-	/** @var \dmzx\ultimatepoints\core\points_robbery_user */
+	/** @var points_robbery_user */
 	protected $points_robbery_user;
 
-	/** @var \dmzx\ultimatepoints\core\points_transfer */
+	/** @var points_transfer */
 	protected $points_transfer;
 
-	/** @var \phpbb\template\template */
+	/** @var template */
 	protected $template;
 
-	/** @var \phpbb\user */
+	/** @var user */
 	protected $user;
 
-	/** @var \phpbb\auth\auth */
+	/** @var auth */
 	protected $auth;
 
-	/** @var \phpbb\db\driver\driver_interface */
+	/** @var driver_interface */
 	protected $db;
 
-	/** @var \phpbb\request\request */
+	/** @var request */
 	protected $request;
 
-	/** @var \phpbb\config\config */
+	/** @var config */
 	protected $config;
 
-	/** @var \phpbb\controller\helper */
+	/** @var helper */
 	protected $helper;
 
 	/** @var string phpBB root path */
@@ -86,51 +106,51 @@ class main
 	/**
 	* Constructor
 	*
-	* @var \dmzx\ultimatepoints\core\functions_points		$functions_points
-	* @var \dmzx\ultimatepoints\core\points_main			$points_main
-	* @var \dmzx\ultimatepoints\core\points_info			$points_info
-	* @var \dmzx\ultimatepoints\core\points_transfer_user	$points_transfer_user
-	* @var \dmzx\ultimatepoints\core\points_bank			$points_bank
-	* @var \dmzx\ultimatepoints\core\points_logs			$points_logs
-	* @var \dmzx\ultimatepoints\core\points_bank_edit		$points_bank_edit
-	* @var \dmzx\ultimatepoints\core\points_lottery			$points_lottery
-	* @var \dmzx\ultimatepoints\core\points_points_edit		$points_points_edit
-	* @var \dmzx\ultimatepoints\core\points_robbery			$points_robbery
-	* @var \dmzx\ultimatepoints\core\points_robbery_user	$points_robbery_user
-	* @var \dmzx\ultimatepoints\core\points_transfer		$points_transfer
-	* @param \phpbb\template\template		 				$template
-	* @param \phpbb\user									$user
-	* @param \phpbb\auth\auth								$auth
-	* @param \phpbb\db\driver\driver_interface				$db
-	* @param \phpbb\request\request		 					$request
-	* @param \phpbb\config\config							$config
-	* @param \phpbb\controller\helper		 				$helper
-	* @param string 										$root_path
-	* @param string 										$php_ext
-	* @param string 										$points_config_table
-	* @param string 										$points_values_table
+	* @var functions_points		$functions_points
+	* @var points_main			$points_main
+	* @var points_info			$points_info
+	* @var points_transfer_user	$points_transfer_user
+	* @var points_bank			$points_bank
+	* @var points_logs			$points_logs
+	* @var points_bank_edit		$points_bank_edit
+	* @var points_lottery		$points_lottery
+	* @var points_points_edit	$points_points_edit
+	* @var points_robbery		$points_robbery
+	* @var points_robbery_user	$points_robbery_user
+	* @var points_transfer		$points_transfer
+	* @param template		 	$template
+	* @param user				$user
+	* @param auth				$auth
+	* @param driver_interface	$db
+	* @param request		 	$request
+	* @param config				$config
+	* @param helper		 		$helper
+	* @param string 			$root_path
+	* @param string 			$php_ext
+	* @param string 			$points_config_table
+	* @param string 			$points_values_table
 	*
 	*/
 	public function __construct(
-		\dmzx\ultimatepoints\core\functions_points $functions_points,
-		\dmzx\ultimatepoints\core\points_main $points_main,
-		\dmzx\ultimatepoints\core\points_info $points_info,
-		\dmzx\ultimatepoints\core\points_transfer_user $points_transfer_user,
-		\dmzx\ultimatepoints\core\points_bank $points_bank,
-		\dmzx\ultimatepoints\core\points_logs $points_logs,
-		\dmzx\ultimatepoints\core\points_bank_edit $points_bank_edit,
-		\dmzx\ultimatepoints\core\points_lottery $points_lottery,
-		\dmzx\ultimatepoints\core\points_points_edit $points_points_edit,
-		\dmzx\ultimatepoints\core\points_robbery $points_robbery,
-		\dmzx\ultimatepoints\core\points_robbery_user $points_robbery_user,
-		\dmzx\ultimatepoints\core\points_transfer $points_transfer,
-		\phpbb\template\template $template,
-		\phpbb\user $user,
-		\phpbb\auth\auth $auth,
-		\phpbb\db\driver\driver_interface $db,
-		\phpbb\request\request $request,
-		\phpbb\config\config $config,
-		\phpbb\controller\helper $helper,
+		functions_points $functions_points,
+		points_main $points_main,
+		points_info $points_info,
+		points_transfer_user $points_transfer_user,
+		points_bank $points_bank,
+		points_logs $points_logs,
+		points_bank_edit $points_bank_edit,
+		points_lottery $points_lottery,
+		points_points_edit $points_points_edit,
+		points_robbery $points_robbery,
+		points_robbery_user $points_robbery_user,
+		points_transfer $points_transfer,
+		template $template,
+		user $user,
+		auth $auth,
+		driver_interface $db,
+		request $request,
+		config $config,
+		helper $helper,
 		$root_path,
 		$php_ext,
 		$points_config_table,

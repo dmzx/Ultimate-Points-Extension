@@ -9,36 +9,46 @@
 
 namespace dmzx\ultimatepoints\core;
 
+use phpbb\auth\auth;
+use phpbb\cache\service;
+use phpbb\config\config;
+use phpbb\controller\helper;
+use phpbb\db\driver\driver_interface;
+use phpbb\log\log;
+use phpbb\request\request;
+use phpbb\template\template;
+use phpbb\user;
+
 class points_bank_edit
 {
-	/** @var \dmzx\ultimatepoints\core\functions_points */
+	/** @var functions_points */
 	protected $functions_points;
 
-	/** @var \phpbb\auth\auth */
+	/** @var auth */
 	protected $auth;
 
-	/** @var \phpbb\template\template */
+	/** @var template */
 	protected $template;
 
-	/** @var \phpbb\user */
+	/** @var user */
 	protected $user;
 
-	/** @var \phpbb\db\driver\driver_interface */
+	/** @var driver_interface */
 	protected $db;
 
-	/** @var \phpbb\request\request */
+	/** @var request */
 	protected $request;
 
-	/** @var \phpbb\config\config */
+	/** @var config */
 	protected $config;
 
-	/** @var \phpbb\controller\helper */
+	/** @var helper */
 	protected $helper;
 
-	/** @var \phpbb\cache\service */
+	/** @var service */
 	protected $cache;
 
-	/** @var \phpbb\log\log */
+	/** @var log */
 	protected $log;
 
 	/** @var string */
@@ -57,33 +67,33 @@ class points_bank_edit
 	/**
 	* Constructor
 	*
-	* @var \dmzx\ultimatepoints\core\functions_points	$functions_points
-	* @param \phpbb\auth\auth							$auth
-	* @param \phpbb\template\template		 			$template
-	* @param \phpbb\user								$user
-	* @param \phpbb\db\driver\driver_interface			$db
-	* @param \phpbb\request\request		 				$request
-	* @param \phpbb\config\config						$config
-	* @param \phpbb\controller\helper		 			$helper
-	* @param \phpbb\cache\service		 				$cache
-	* @param \phpbb\log\log					 			$log
-	* @param string										$php_ext
-	* @param string										$root_path
-	* @param string 									$points_bank_table
+	* @param functions_points			$functions_points
+	* @param auth 						$auth
+	* @param template		 			$template
+	* @param user						$user
+	* @param driver_interface			$db
+	* @param request		 			$request
+	* @param config						$config
+	* @param helper		 				$helper
+	* @param service		 			$cache
+	* @param log					 	$log
+	* @param string						$php_ext
+	* @param string						$root_path
+	* @param string 					$points_bank_table
 	*
 	*/
 	public function __construct(
-		\dmzx\ultimatepoints\core\functions_points $functions_points,
-		\phpbb\auth\auth $auth,
-		\phpbb\template\template $template,
-		\phpbb\user $user,
-		\phpbb\db\driver\driver_interface $db,
-		\phpbb\request\request $request,
-		\phpbb\config\config $config,
-		\phpbb\controller\helper $helper,
-		\phpbb\cache\service $cache,
-		\phpbb\log\log $log,
-		$php_ext,
+		functions_points $functions_points,
+		auth             $auth,
+		template         $template,
+		user             $user,
+		driver_interface $db,
+		request          $request,
+		config           $config,
+		helper           $helper,
+		service          $cache,
+		log              $log,
+        $php_ext,
 		$root_path,
 		$points_bank_table
 	)

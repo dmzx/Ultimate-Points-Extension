@@ -9,7 +9,10 @@
 
 namespace dmzx\ultimatepoints;
 
-class ext extends \phpbb\extension\base
+use phpbb\extension\base;
+use phpbb\notification\manager;
+
+class ext extends base
 {
 	/**
 	* Enable extension if phpBB version requirement is met
@@ -39,7 +42,7 @@ class ext extends \phpbb\extension\base
 		switch ($old_state)
 		{
 			case '': // Empty means nothing has run yet
-				/* @var $phpbb_notifications \phpbb\notification\manager */
+				/* @var $phpbb_notifications manager */
 				$phpbb_notifications = $this->container->get('notification_manager');
 				foreach (self::$notification_types as $type)
 				{
@@ -65,7 +68,7 @@ class ext extends \phpbb\extension\base
 		switch ($old_state)
 		{
 			case '': // Empty means nothing has run yet
-				/* @var $phpbb_notifications \phpbb\notification\manager */
+				/* @var $phpbb_notifications manager */
 				$phpbb_notifications = $this->container->get('notification_manager');
 				foreach (self::$notification_types as $type)
 				{
@@ -91,7 +94,7 @@ class ext extends \phpbb\extension\base
 		switch ($old_state)
 		{
 			case '': // Empty means nothing has run yet
-				/* @var $phpbb_notifications \phpbb\notification\manager */
+				/* @var $phpbb_notifications manager */
 				$phpbb_notifications = $this->container->get('notification_manager');
 				foreach (self::$notification_types as $type)
 				{

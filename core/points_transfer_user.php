@@ -9,32 +9,40 @@
 
 namespace dmzx\ultimatepoints\core;
 
+use parse_message;
+use phpbb\auth\auth;
+use phpbb\config\config;
+use phpbb\controller\helper;
+use phpbb\db\driver\driver_interface;
+use phpbb\request\request;
+use phpbb\template\template;
+use phpbb\user;
 use Symfony\Component\DependencyInjection\Container;
 
 class points_transfer_user
 {
-	/** @var \dmzx\ultimatepoints\core\functions_points */
+	/** @var functions_points */
 	protected $functions_points;
 
-	/** @var \phpbb\auth\auth */
+	/** @var auth */
 	protected $auth;
 
-	/** @var \phpbb\template\template */
+	/** @var template */
 	protected $template;
 
-	/** @var \phpbb\user */
+	/** @var user */
 	protected $user;
 
-	/** @var \phpbb\db\driver\driver_interface */
+	/** @var driver_interface */
 	protected $db;
 
-	/** @var \phpbb\request\request */
+	/** @var request */
 	protected $request;
 
-	/** @var \phpbb\config\config */
+	/** @var config */
 	protected $config;
 
-	/** @var \phpbb\controller\helper */
+	/** @var helper */
 	protected $helper;
 
 	/** @var Container */
@@ -60,12 +68,12 @@ class points_transfer_user
 	/**
 	* Constructor
 	*
-	* @param \phpbb\template\template		 	$template
-	* @param \phpbb\user						$user
-	* @param \phpbb\db\driver\driver_interface	$db
-	* @param \phpbb\request\request		 		$request
-	* @param \phpbb\config\config				$config
-	* @param \phpbb\controller\helper		 	$helper
+	* @param template		 	$template
+	* @param user						$user
+	* @param driver_interface	$db
+	* @param request		 		$request
+	* @param config				$config
+	* @param helper		 	$helper
 	* @param Container							$phpbb_container
 	* @param string								$php_ext
 	* @param string								$root_path
@@ -75,20 +83,20 @@ class points_transfer_user
 	*
 	*/
 	public function __construct(
-		\dmzx\ultimatepoints\core\functions_points $functions_points,
-		\phpbb\auth\auth $auth,
-		\phpbb\template\template $template,
-		\phpbb\user $user,
-		\phpbb\db\driver\driver_interface $db,
-		\phpbb\request\request $request,
-		\phpbb\config\config $config,
-		\phpbb\controller\helper $helper,
-		Container $phpbb_container,
-		$php_ext,
-		$root_path,
-		$points_config_table,
-		$points_log_table,
-		$points_values_table
+        functions_points $functions_points,
+        auth             $auth,
+        template         $template,
+        user             $user,
+        driver_interface $db,
+        request          $request,
+        config           $config,
+        helper           $helper,
+        Container        $phpbb_container,
+        $php_ext,
+        $root_path,
+        $points_config_table,
+        $points_log_table,
+        $points_values_table
 	)
 	{
 		$this->functions_points					= $functions_points;
@@ -253,7 +261,7 @@ class points_transfer_user
 
 				include_once($this->root_path . 'includes/message_parser.' . $this->php_ext);
 
-				$message_parser = new \parse_message();
+				$message_parser = new parse_message();
 				$message_parser->message = $pm_text;
 				$message_parser->parse(true, true, true, false, false, true, true);
 

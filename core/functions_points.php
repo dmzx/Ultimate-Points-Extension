@@ -9,35 +9,45 @@
 
 namespace dmzx\ultimatepoints\core;
 
+use parse_message;
+use phpbb\cache\service;
+use phpbb\config\config;
+use phpbb\controller\helper;
+use phpbb\db\driver\driver_interface;
+use phpbb\extension\manager;
+use phpbb\log\log;
+use phpbb\request\request;
+use phpbb\template\template;
+use phpbb\user;
 use Symfony\Component\DependencyInjection\Container;
 
 class functions_points
 {
-	/** @var \phpbb\template\template */
+	/** @var template */
 	protected $template;
 
-	/** @var \phpbb\user */
+	/** @var user */
 	protected $user;
 
-	/** @var \phpbb\db\driver\driver_interface */
+	/** @var driver_interface */
 	protected $db;
 
-	/** @var \phpbb\controller\helper */
+	/** @var helper */
 	protected $helper;
 
 	/** @var \phpbb\notification\manager */
 	protected $notification_manager;
 
-	/** @var \phpbb\log\log */
+	/** @var log */
 	protected $log;
 
-	/** @var \phpbb\cache\service */
+	/** @var service */
 	protected $cache;
 
-	/** @var \phpbb\request\request */
+	/** @var request */
 	protected $request;
 
-	/** @var \phpbb\config\config */
+	/** @var config */
 	protected $config;
 
 	/** @var manager */
@@ -70,37 +80,37 @@ class functions_points
 	/**
 	* Constructor
 	*
-	* @param \phpbb\template\template		 	$template
-	* @param \phpbb\user						$user
-	* @param \phpbb\db\driver\driver_interface	$db
-	* @param \phpbb\controller\helper		 	$helper
+	* @param template		 	$template
+	* @param user				$user
+	* @param driver_interface	$db
+	* @param helper		 		$helper
 	* @param \phpbb\notification\manager		$notification_manager
-	* @param \phpbb\log\log					 	$log
-	* @param \phpbb\cache\service		 		$cache
-	* @param \phpbb\request\request		 		$request
-	* @param \phpbb\config\config				$config
-	* @param \phpbb\extension\manager 			$extension_manager
-	* @param Container							$phpbb_container
-	* @param string								$php_ext
-	* @param string								$root_path
-	* @param string 							$points_bank_table
-	* @param string 							$points_config_table
-	* @param string 							$points_lottery_history_table
-	* @param string 							$points_lottery_tickets_table
-	* @param string 							$points_values_table
+	* @param log				$log
+	* @param service		 	$cache
+	* @param request		 	$request
+	* @param config				$config
+	* @param manager 			$extension_manager
+	* @param Container			$phpbb_container
+	* @param string				$php_ext
+	* @param string				$root_path
+	* @param string 			$points_bank_table
+	* @param string 			$points_config_table
+	* @param string 			$points_lottery_history_table
+	* @param string 			$points_lottery_tickets_table
+	* @param string 			$points_values_table
 	*
 	*/
 	public function __construct(
-		\phpbb\template\template $template,
-		\phpbb\user $user,
-		\phpbb\db\driver\driver_interface $db,
-		\phpbb\controller\helper $helper,
+		template $template,
+		user $user,
+		driver_interface $db,
+		helper $helper,
 		\phpbb\notification\manager $notification_manager,
-		\phpbb\log\log $log,
-		\phpbb\cache\service $cache,
-		\phpbb\request\request $request,
-		\phpbb\config\config $config,
-		\phpbb\extension\manager $extension_manager,
+		log $log,
+		service $cache,
+		request $request,
+		config $config,
+		manager $extension_manager,
 		Container $phpbb_container,
 		$php_ext,
 		$root_path,
@@ -481,7 +491,7 @@ class functions_points
 
 					include_once($this->root_path . 'includes/message_parser.' . $this->php_ext);
 
-					$message_parser = new \parse_message();
+					$message_parser = new parse_message();
 					$message_parser->message = $pm_text;
 					$message_parser->parse(true, true, true, false, false, true, true);
 

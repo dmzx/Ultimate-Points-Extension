@@ -9,33 +9,42 @@
 
 namespace dmzx\ultimatepoints\core;
 
+use phpbb\auth\auth;
+use phpbb\config\config;
+use phpbb\controller\helper;
+use phpbb\db\driver\driver_interface;
+use phpbb\log\log;
+use phpbb\request\request;
+use phpbb\template\template;
+use phpbb\user;
+
 class points_points_edit
 {
-	/** @var \dmzx\ultimatepoints\core\functions_points */
+	/** @var functions_points */
 	protected $functions_points;
 
-	/** @var \phpbb\auth\auth */
+	/** @var auth */
 	protected $auth;
 
-	/** @var \phpbb\template\template */
+	/** @var template */
 	protected $template;
 
-	/** @var \phpbb\user */
+	/** @var user */
 	protected $user;
 
-	/** @var \phpbb\db\driver\driver_interface */
+	/** @var driver_interface */
 	protected $db;
 
-	/** @var \phpbb\config\config */
+	/** @var config */
 	protected $config;
 
-	/** @var \phpbb\controller\helper */
+	/** @var helper */
 	protected $helper;
 
-	/** @var \phpbb\log\log */
+	/** @var log */
 	protected $log;
 
-	/** @var \phpbb\request\request */
+	/** @var request */
 	protected $request;
 
 	/** @var string php_ext */
@@ -47,31 +56,31 @@ class points_points_edit
 	/**
 	* Constructor
 	*
-	* @var \dmzx\ultimatepoints\core\functions_points	$functions_points
-	* @param \phpbb\auth\auth							$auth
-	* @param \phpbb\template\template		 			$template
-	* @param \phpbb\user								$user
-	* @param \phpbb\db\driver\driver_interface			$db
-	* @param \phpbb\config\config						$config
-	* @param \phpbb\controller\helper		 			$helper
-	* @param \phpbb\log\log					 			$log
-	* @param \phpbb\request\request						$request
+	* @param auth $auth
+	* @param template		 			$template
+	* @param user								$user
+	* @param driver_interface			$db
+	* @param config						$config
+	* @param helper		 			$helper
+	* @param log					 			$log
+	* @param request						$request
 	* @param string 									$php_ext
 	* @param string										$root_path
 	*
+	*@var functions_points	$functions_points
 	*/
 	public function __construct(
-		\dmzx\ultimatepoints\core\functions_points $functions_points,
-		\phpbb\auth\auth $auth,
-		\phpbb\template\template $template,
-		\phpbb\user $user,
-		\phpbb\db\driver\driver_interface $db,
-		\phpbb\config\config $config,
-		\phpbb\controller\helper $helper,
-		\phpbb\log\log $log,
-		\phpbb\request\request $request,
-		$php_ext,
-		$root_path
+		functions_points $functions_points,
+		auth             $auth,
+		template         $template,
+		user             $user,
+		driver_interface $db,
+		config           $config,
+		helper           $helper,
+		log              $log,
+		request          $request,
+        $php_ext,
+        $root_path
 	)
 	{
 		$this->functions_points		= $functions_points;

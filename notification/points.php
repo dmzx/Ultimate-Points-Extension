@@ -11,6 +11,7 @@ namespace dmzx\ultimatepoints\notification;
 
 use phpbb\notification\type\base;
 use phpbb\controller\helper;
+use phpbb\user_loader;
 
 class points extends base
 {
@@ -18,7 +19,7 @@ class points extends base
 
 	protected $helper;
 
-	public function set_user_loader(\phpbb\user_loader $user_loader)
+	public function set_user_loader(user_loader $user_loader)
 	{
 		$this->user_loader = $user_loader;
 	}

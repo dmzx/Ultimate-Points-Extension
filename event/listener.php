@@ -9,6 +9,16 @@
 
 namespace dmzx\ultimatepoints\event;
 
+use dmzx\ultimatepoints\core\functions_points;
+use phpbb\auth\auth;
+use phpbb\cache\service;
+use phpbb\config\config;
+use phpbb\controller\helper;
+use phpbb\db\driver\driver_interface;
+use phpbb\files\factory;
+use phpbb\request\request;
+use phpbb\template\template;
+use phpbb\user;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -16,31 +26,31 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 */
 class listener implements EventSubscriberInterface
 {
-	/** @var \dmzx\ultimatepoints\core\functions_points*/
+	/** @var functions_points*/
 	protected $functions_points;
 
-	/** @var \phpbb\user */
+	/** @var user */
 	protected $user;
 
-	/** @var \phpbb\template\template */
+	/** @var template */
 	protected $template;
 
-	/** @var \phpbb\db\driver\driver_interface */
+	/** @var driver_interface */
 	protected $db;
 
-	/** @var \phpbb\config\config */
+	/** @var config */
 	protected $config;
 
-	/** @var \phpbb\auth\auth */
+	/** @var auth */
 	protected $auth;
 
-	/** @var \phpbb\controller\helper */
+	/** @var helper */
 	protected $helper;
 
-	/** @var \phpbb\cache\service */
+	/** @var service */
 	protected $cache;
 
-	/** @var \phpbb\request\request */
+	/** @var request */
 	protected $request;
 
 	/** @var string */
@@ -60,45 +70,45 @@ class listener implements EventSubscriberInterface
 
 	protected $points_values_table;
 
-	/** @var \phpbb\files\factory */
+	/** @var factory */
 	protected $files_factory;
 
 	/**
 	* Constructor
 	*
-	* @var \dmzx\ultimatepoints\core\functions_points	$functions_points
-	* @param \phpbb\user								$user
-	* @param \phpbb\template\template					$template
-	* @param \phpbb\db\driver\driver_interface			$db
-	* @param \phpbb\config\config						$config
-	* @param \phpbb\auth\auth							$auth
-	* @param \phpbb\controller\helper					$helper
-	* @param \phpbb\cache\service		 				$cache
-	* @param \phpbb\request\request		 				$request
-	* @param string										$root_path
-	* @param string										$php_ext
-	* @param string 									$points_bank_table
-	* @param string 									$points_config_table
-	* @param string 									$points_values_table
-	* @param \phpbb\files\factory						$files_factory
+	* @var functions_points	    $functions_points
+	* @param user				$user
+	* @param template			$template
+	* @param driver_interface	$db
+	* @param config				$config
+	* @param auth				$auth
+	* @param helper				$helper
+	* @param service		    $cache
+	* @param request		 	$request
+	* @param string				$root_path
+	* @param string				$php_ext
+	* @param string 			$points_bank_table
+	* @param string 			$points_config_table
+	* @param string 			$points_values_table
+	* @param factory			$files_factory
 	*
 	*/
 	public function __construct(
-		\dmzx\ultimatepoints\core\functions_points $functions_points,
-		\phpbb\user $user,
-		\phpbb\template\template $template,
-		\phpbb\db\driver\driver_interface $db,
-		\phpbb\config\config $config,
-		\phpbb\auth\auth $auth,
-		\phpbb\controller\helper $helper,
-		\phpbb\cache\service $cache,
-		\phpbb\request\request $request,
+		functions_points $functions_points,
+		user $user,
+		template $template,
+		driver_interface $db,
+		config $config,
+		auth $auth,
+		helper $helper,
+		service $cache,
+		request $request,
 		$root_path,
 		$php_ext,
 		$points_bank_table,
 		$points_config_table,
 		$points_values_table,
-		\phpbb\files\factory $files_factory = null
+		factory $files_factory = null
 	)
 	{
 		$this->functions_points 	= $functions_points;

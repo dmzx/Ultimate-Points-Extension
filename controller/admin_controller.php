@@ -9,32 +9,41 @@
 
 namespace dmzx\ultimatepoints\controller;
 
+use dmzx\ultimatepoints\core\functions_points;
+use parse_message;
+use phpbb\auth\auth;
+use phpbb\config\config;
+use phpbb\db\driver\driver_interface;
+use phpbb\log\log;
+use phpbb\request\request;
+use phpbb\template\template;
+use phpbb\user;
 use Symfony\Component\DependencyInjection\Container;
 
 class admin_controller
 {
-	/** @var \dmzx\ultimatepoints\core\functions_points */
+	/** @var functions_points */
 	protected $functions_points;
 
-	/** @var \phpbb\template\template */
+	/** @var template */
 	protected $template;
 
-	/** @var \phpbb\user */
+	/** @var user */
 	protected $user;
 
-	/** @var \phpbb\auth\auth */
+	/** @var auth */
 	protected $auth;
 
-	/** @var \phpbb\db\driver\driver_interface */
+	/** @var driver_interface */
 	protected $db;
 
-	/** @var \phpbb\request\request */
+	/** @var request */
 	protected $request;
 
-	/** @var \phpbb\config\config */
+	/** @var config */
 	protected $config;
 
-	/** @var \phpbb\log\log */
+	/** @var log */
 	protected $log;
 
 	/** @var Container */
@@ -63,32 +72,32 @@ class admin_controller
 	/**
 	* Constructor
 	*
-	* @var \dmzx\ultimatepoints\core\functions_points	$functions_points
-	* @param \phpbb\template\template		 			$template
-	* @param \phpbb\user								$user
-	* @param \phpbb\auth\auth							$auth
-	* @param \phpbb\db\driver\driver_interface			$db
-	* @param \phpbb\request\request		 				$request
-	* @param \phpbb\config\config						$config
-	* @param \phpbb\log\log					 			$log
-	* @param Container									$phpbb_container
-	* @param string 									$root_path
-	* @param string 									$php_ext
-	* @param string 									$points_config_table
-	* @param string 									$points_values_table
-	* @param string 									$points_log_table
-	* @param string 									$points_lottery_history_table
+	* @var functions_points	    $functions_points
+	* @param template		 	$template
+	* @param user				$user
+	* @param auth				$auth
+	* @param driver_interface	$db
+	* @param request		 	$request
+	* @param config				$config
+	* @param log				$log
+	* @param Container			$phpbb_container
+	* @param string 			$root_path
+	* @param string 			$php_ext
+	* @param string 			$points_config_table
+	* @param string 			$points_values_table
+	* @param string 			$points_log_table
+	* @param string 			$points_lottery_history_table
 	*
 	*/
 	public function __construct(
-		\dmzx\ultimatepoints\core\functions_points $functions_points,
-		\phpbb\template\template $template,
-		\phpbb\user $user,
-		\phpbb\auth\auth $auth,
-		\phpbb\db\driver\driver_interface $db,
-		\phpbb\request\request $request,
-		\phpbb\config\config $config,
-		\phpbb\log\log $log,
+		functions_points $functions_points,
+		template $template,
+		user $user,
+		auth $auth,
+		driver_interface $db,
+		request $request,
+		config $config,
+		log $log,
 		Container $phpbb_container,
 		$root_path,
 		$php_ext,
@@ -416,7 +425,7 @@ class admin_controller
 						require_once($this->root_path . 'includes/functions_privmsgs.' . $this->php_ext);
 						include_once($this->root_path . 'includes/message_parser.' . $this->php_ext);
 
-						$message_parser = new \parse_message();
+						$message_parser = new parse_message();
 						$message_parser->message = $pm_text;
 						$message_parser->parse(true, true, true, false, false, true, true);
 

@@ -134,7 +134,7 @@ function bbfontstyle(bbopen, bbclose)
 	}
 
 	textarea.focus();
-	return;
+
 }
 
 /**
@@ -279,13 +279,13 @@ function addquote(post_id, username, l_wrote)
 		}
 	}
 
-	return;
+
 }
 
 function split_lines(text)
 {
 	var lines = text.split('\n');
-	var splitLines = new Array();
+	var splitLines = [];
 	var j = 0;
 	for(i = 0; i < lines.length; i++)
 	{
@@ -343,7 +343,7 @@ function mozWrap(txtarea, open, close)
 	txtarea.focus();
 	txtarea.scrollTop = scrollTop;
 
-	return;
+
 }
 
 /**

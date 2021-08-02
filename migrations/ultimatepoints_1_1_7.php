@@ -9,7 +9,9 @@
 
 namespace dmzx\ultimatepoints\migrations;
 
-class ultimatepoints_1_1_7 extends \phpbb\db\migration\migration
+use phpbb\db\migration\migration;
+
+class ultimatepoints_1_1_7 extends migration
 {
 	static public function depends_on()
 	{
