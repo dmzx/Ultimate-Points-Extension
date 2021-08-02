@@ -172,8 +172,8 @@ class points_logs
 			'FROM' => [
 				$this->points_log_table => 'l',
 			],
-			'WHERE' => 'point_send = ' . (int)$this->user->data['user_id'] . '
-				OR point_recv = ' . (int)$this->user->data['user_id'],
+			'WHERE' => 'point_send = ' . (int) $this->user->data['user_id'] . '
+				OR point_recv = ' . (int) $this->user->data['user_id'],
 		];
 		$sql = $this->db->sql_build_query('SELECT', $sql_array);
 		$result = $this->db->sql_query($sql);
@@ -185,8 +185,8 @@ class points_logs
 			'FROM' => [
 				$this->points_log_table => 'l',
 			],
-			'WHERE' => 'point_send = ' . (int)$this->user->data['user_id'] . '
-				OR point_recv = ' . (int)$this->user->data['user_id'],
+			'WHERE' => 'point_send = ' . (int) $this->user->data['user_id'] . '
+				OR point_recv = ' . (int) $this->user->data['user_id'],
 			'ORDER_BY' => $sql_sort_order,
 		];
 		$sql = $this->db->sql_build_query('SELECT', $sql_array);
@@ -204,7 +204,7 @@ class points_logs
 						'FROM' => [
 							USERS_TABLE => 'u',
 						],
-						'WHERE' => 'user_id = ' . (int)$transfer_user,
+						'WHERE' => 'user_id = ' . (int) $transfer_user,
 					];
 					$sql = $this->db->sql_build_query('SELECT', $sql_array);
 					$result1 = $this->db->sql_query($sql);
@@ -238,7 +238,7 @@ class points_logs
 						'FROM' => [
 							USERS_TABLE => 'u',
 						],
-						'WHERE' => 'user_id = ' . (int)$transfer_user,
+						'WHERE' => 'user_id = ' . (int) $transfer_user,
 					];
 					$sql = $this->db->sql_build_query('SELECT', $sql_array);
 					$result1 = $this->db->sql_query($sql);
@@ -250,7 +250,8 @@ class points_logs
 						$who = get_username_string('full', $checked_user['user_id'], $checked_user['username'], $checked_user['user_colour']) . "<br />(" . $this->functions_points->number_format_points($row['point_sendold']) . "->" . $this->functions_points->number_format_points($row['point_sendold'] + $row['point_amount']) . ")";
 						$to = get_username_string('full', $opponent['user_id'], $opponent['username'], $opponent['user_colour']) . "<br />(" . $this->functions_points->number_format_points($row['point_recvold']) . "->" . $this->functions_points->number_format_points($row['point_recvold'] - $row['point_amount']) . ")";
 						$rows = 3;
-					} else
+					}
+					else
 					{
 						$to = get_username_string('full', $checked_user['user_id'], $checked_user['username'], $checked_user['user_colour']) . "<br />(" . $this->functions_points->number_format_points($row['point_recvold']) . "->" . $this->functions_points->number_format_points($row['point_recvold'] - $row['point_amount']) . ")";
 						$who = get_username_string('full', $opponent['user_id'], $opponent['username'], $opponent['user_colour']) . "<br />(" . $this->functions_points->number_format_points($row['point_sendold']) . "->" . $this->functions_points->number_format_points($row['point_sendold'] + $row['point_amount']) . ")";

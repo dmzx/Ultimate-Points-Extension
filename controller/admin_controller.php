@@ -327,7 +327,7 @@ class admin_controller
 				'FROM' => [
 					GROUPS_TABLE => 'g',
 				],
-				'WHERE' => 'group_id = ' . (int)$group_id,
+				'WHERE' => 'group_id = ' . (int) $group_id,
 			];
 			$sql = $this->db->sql_build_query('SELECT', $sql_array);
 			$result = $this->db->sql_query($sql);
@@ -348,7 +348,7 @@ class admin_controller
 					USER_GROUP_TABLE => 'g',
 				],
 				'WHERE' => 'user_pending <> ' . true . '
-					AND group_id = ' . (int)$group_id,
+					AND group_id = ' . (int) $group_id,
 			];
 			$sql = $this->db->sql_build_query('SELECT', $sql_array);
 			$result = $this->db->sql_query($sql);
@@ -406,7 +406,7 @@ class admin_controller
 								USER_GROUP_TABLE => 'g',
 							],
 							'WHERE' => 'user_pending <> ' . true . '
-								AND group_id = ' . (int)$group_id,
+								AND group_id = ' . (int) $group_id,
 						];
 						$sql = $this->db->sql_build_query('SELECT', $sql_array);
 						$result = $this->db->sql_query($sql);
@@ -592,7 +592,7 @@ class admin_controller
 				'FROM' => [
 					USERS_TABLE => 'u',
 				],
-				'WHERE' => 'user_id = ' . (int)$lottery_pm_from,
+				'WHERE' => 'user_id = ' . (int) $lottery_pm_from,
 			];
 			$sql = $this->db->sql_build_query('SELECT', $sql_array);
 			$result = $this->db->sql_query($sql);

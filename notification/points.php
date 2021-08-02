@@ -46,7 +46,7 @@ class points extends base
 
 	public static function get_item_id($data)
 	{
-		return (int)$data['points_notify_id'];
+		return (int) $data['points_notify_id'];
 	}
 
 	public static function get_item_parent_id($data)

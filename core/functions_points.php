@@ -242,7 +242,7 @@ class functions_points
 			'FROM' => [
 				USERS_TABLE => 'u',
 			],
-			'WHERE' => 'user_id = ' . (int)$user_id,
+			'WHERE' => 'user_id = ' . (int) $user_id,
 		];
 		$sql = $this->db->sql_build_query('SELECT', $sql_array);
 		$result = $this->db->sql_query($sql);
@@ -256,7 +256,7 @@ class functions_points
 
 		$sql = 'UPDATE ' . USERS_TABLE . '
 			SET ' . $this->db->sql_build_array('UPDATE', $data) . '
-			WHERE user_id = ' . (int)$user_id;
+			WHERE user_id = ' . (int) $user_id;
 		$this->db->sql_query($sql);
 
 		return;
@@ -273,7 +273,7 @@ class functions_points
 			'FROM' => [
 				USERS_TABLE => 'u',
 			],
-			'WHERE' => 'user_id = ' . (int)$user_id,
+			'WHERE' => 'user_id = ' . (int) $user_id,
 		];
 		$sql = $this->db->sql_build_query('SELECT', $sql_array);
 		$result = $this->db->sql_query($sql);
@@ -287,7 +287,7 @@ class functions_points
 
 		$sql = 'UPDATE ' . USERS_TABLE . '
 			SET ' . $this->db->sql_build_array('UPDATE', $data) . '
-			WHERE user_id = ' . (int)$user_id;
+			WHERE user_id = ' . (int) $user_id;
 		$this->db->sql_query($sql);
 
 		return;
@@ -305,7 +305,7 @@ class functions_points
 
 		$sql = 'UPDATE ' . USERS_TABLE . '
 			SET ' . $this->db->sql_build_array('UPDATE', $data) . '
-			WHERE user_id = ' . (int)$user_id;
+			WHERE user_id = ' . (int) $user_id;
 		$this->db->sql_query($sql);
 
 		return;
@@ -323,7 +323,7 @@ class functions_points
 
 		$sql = 'UPDATE ' . $this->points_bank_table . '
 			SET ' . $this->db->sql_build_array('UPDATE', $data) . '
-			WHERE user_id = ' . (int)$user_id;
+			WHERE user_id = ' . (int) $user_id;
 		$this->db->sql_query($sql);
 
 		return;
@@ -387,7 +387,7 @@ class functions_points
 		];
 		$sql = $this->db->sql_build_query('SELECT', $sql_array);
 		$result = $this->db->sql_query($sql);
-		$total_tickets = (int)$this->db->sql_fetchfield('num_tickets');
+		$total_tickets = (int) $this->db->sql_fetchfield('num_tickets');
 		$this->db->sql_freeresult($result);
 
 		// Select a random user from tickets table
@@ -418,7 +418,7 @@ class functions_points
 		];
 		$sql = $this->db->sql_build_query('SELECT', $sql_array);
 		$result = $this->db->sql_query_limit($sql, 1);
-		$random_user_by_tickets = (int)$this->db->sql_fetchfield('user_id');
+		$random_user_by_tickets = (int) $this->db->sql_fetchfield('user_id');
 		$this->db->sql_freeresult($result);
 
 		if ($total_tickets > 0)
@@ -515,7 +515,7 @@ class functions_points
 
 				// Add new winner to lottery history
 				$sql = 'INSERT INTO ' . $this->points_lottery_history_table . ' ' . $this->db->sql_build_array('INSERT', [
-						'user_id' => (int)$winner['user_id'],
+						'user_id' => (int) $winner['user_id'],
 						'user_name' => $winner['username'],
 						'time' => $current_time,
 						'amount' => $points_values['lottery_jackpot'],
@@ -535,11 +535,12 @@ class functions_points
 				$this->set_points_values('lottery_winners_total', $points_values['lottery_winners_total'] + 1);
 
 				// Add jackpot to winner
-				$this->add_points((int)$winner['user_id'], $points_values['lottery_jackpot']);
+				$this->add_points((int) $winner['user_id'], $points_values['lottery_jackpot']);
 
 				// Reset jackpot
 				$this->set_points_values('lottery_jackpot', $points_values['lottery_base_amount']);
-			} else
+			}
+			else
 			{
 				$this->set_points_values('lottery_jackpot', $points_values['lottery_jackpot'] + $points_values['lottery_base_amount']);
 
@@ -682,7 +683,7 @@ class functions_points
 
 		$sql = 'UPDATE ' . POSTS_TABLE . '
 			SET ' . $this->db->sql_build_array('UPDATE', $sql_ary) . '
-			WHERE post_id = ' . (int)$post_id;
+			WHERE post_id = ' . (int) $post_id;
 		$this->db->sql_query($sql);
 	}
 
@@ -717,7 +718,7 @@ class functions_points
 
 		if ($bonus && $bonus_value)
 		{
-			$this->add_points((int)$user_id, $bonus_value);
+			$this->add_points((int) $user_id, $bonus_value);
 
 			// Send out notification
 
@@ -726,10 +727,10 @@ class functions_points
 
 			// Store the notification data we will use in an array
 			$data = [
-				'points_notify_id' => (int)$this->config['points_notification_id'],
+				'points_notify_id' => (int) $this->config['points_notification_id'],
 				'points_notify_msg' => sprintf($this->user->lang['NOTIFICATION_RANDOM_BONUS'], $bonus_value, $this->config['points_name']),
-				'sender' => (int)$this->user->data['user_id'],
-				'receiver' => (int)$user_id,
+				'sender' => (int) $this->user->data['user_id'],
+				'receiver' => (int) $user_id,
 				'mode' => 'logs', // The mode where the notification sends the user to
 			];
 			$this->notification_manager->add_notifications('dmzx.ultimatepoints.notification.type.points', $data);
@@ -786,7 +787,7 @@ class functions_points
 			$user_name_mchat = $usercolour ? '[url= ' . $board_url . 'memberlist.' . $this->php_ext . '?mode=viewprofile&u=' . $this->user->data['user_id'] . '][b][color=' . $usercolour . ']' . $this->user->data['username'] . '[/color][/b][/url]' : '[b]' . $this->user->data['username'] . '[/b]';
 
 			$sql_arys = [
-				'user_id' => (int)$user_id,
+				'user_id' => (int) $user_id,
 				'user_ip' => $this->user->ip,
 				'message' => sprintf($message, $user_name_mchat, $amount, $name),
 				'bbcode_bitfield' => '',

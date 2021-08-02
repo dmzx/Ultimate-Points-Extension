@@ -171,11 +171,11 @@ class points_robbery_user
 				'FROM' => [
 					USERS_TABLE => 'u',
 				],
-				'WHERE' => 'user_id = ' . (int)$u_id,
+				'WHERE' => 'user_id = ' . (int) $u_id,
 			];
 			$sql = $this->db->sql_build_query('SELECT', $sql_array);
 			$result = $this->db->sql_query($sql);
-			$user_id = (int)$this->db->sql_fetchfield('user_id');
+			$user_id = (int) $this->db->sql_fetchfield('user_id');
 			$this->db->sql_freeresult($result);
 
 			if (!check_form_key('robbery_attack_user'))
@@ -188,14 +188,14 @@ class points_robbery_user
 
 			if ($attacked_amount <= 0)
 			{
-				$message = $this->user->lang['ROBBERY_TOO_SMALL_AMOUNT'] . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'robbery_user', 'user_id' => (int)$user_id]) . '">&laquo; ' . $this->user->lang['BACK_TO_PREV'] . '</a>';
+				$message = $this->user->lang['ROBBERY_TOO_SMALL_AMOUNT'] . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'robbery_user', 'user_id' => $user_id]) . '">&laquo; ' . $this->user->lang['BACK_TO_PREV'] . '</a>';
 				trigger_error($message);
 			}
 
 			// Check, if user tries to rob himself
 			if ($this->user->data['user_id'] == (int)$u_id)
 			{
-				$message = $this->user->lang['ROBBERY_SELF'] . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'robbery_user', 'user_id' => (int)$user_id]) . '">&laquo; ' . $this->user->lang['BACK_TO_PREV'] . '</a>';
+				$message = $this->user->lang['ROBBERY_SELF'] . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'robbery_user', 'user_id' => $user_id]) . '">&laquo; ' . $this->user->lang['BACK_TO_PREV'] . '</a>';
 				trigger_error($message);
 			}
 
@@ -204,7 +204,7 @@ class points_robbery_user
 			{
 				if ($this->user->data['user_points'] < ($attacked_amount / 100 * $points_values['robbery_loose']))
 				{
-					$message = $this->user->lang['ROBBERY_TO_MUCH'] . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'robbery_user', 'user_id' => (int)$user_id]) . '">&laquo; ' . $this->user->lang['BACK_TO_PREV'] . '</a>';
+					$message = $this->user->lang['ROBBERY_TO_MUCH'] . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'robbery_user', 'user_id' => $user_id]) . '">&laquo; ' . $this->user->lang['BACK_TO_PREV'] . '</a>';
 					trigger_error($message);
 				}
 			}
@@ -212,7 +212,7 @@ class points_robbery_user
 			// If no matching user id is found
 			if (!$user_id)
 			{
-				$message = $this->user->lang['POINTS_NO_USER'] . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'robbery_user', 'user_id' => (int)$user_id]) . '">&laquo; ' . $this->user->lang['BACK_TO_PREV'] . '</a>';
+				$message = $this->user->lang['POINTS_NO_USER'] . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'robbery_user', 'user_id' => $user_id]) . '">&laquo; ' . $this->user->lang['BACK_TO_PREV'] . '</a>';
 				trigger_error($message);
 			}
 
@@ -222,7 +222,7 @@ class points_robbery_user
 				'FROM' => [
 					USERS_TABLE => 'u',
 				],
-				'WHERE' => 'user_id = ' . (int)$user_id,
+				'WHERE' => 'user_id = ' . $user_id,
 			];
 			$sql = $this->db->sql_build_query('SELECT', $sql_array);
 			$result = $this->db->sql_query($sql);
@@ -231,7 +231,7 @@ class points_robbery_user
 
 			if ($attacked_amount > $pointsa)
 			{
-				$message = $this->user->lang['ROBBERY_TO_MUCH_FROM_USER'] . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'robbery_user', 'user_id' => (int)$user_id]) . '">&laquo; ' . $this->user->lang['BACK_TO_PREV'] . '</a>';
+				$message = $this->user->lang['ROBBERY_TO_MUCH_FROM_USER'] . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'robbery_user', 'user_id' => $user_id]) . '">&laquo; ' . $this->user->lang['BACK_TO_PREV'] . '</a>';
 				trigger_error($message);
 			}
 
@@ -240,7 +240,7 @@ class points_robbery_user
 			{
 				if ($attacked_amount > ($pointsa / 100 * $points_values['robbery_max_rob']))
 				{
-					$message = sprintf($this->user->lang['ROBBERY_MAX_ROB'], $points_values['robbery_max_rob']) . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'robbery_user', 'user_id' => (int)$user_id]) . '">&laquo; ' . $this->user->lang['BACK_TO_PREV'] . '</a>';
+					$message = sprintf($this->user->lang['ROBBERY_MAX_ROB'], $points_values['robbery_max_rob']) . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'robbery_user', 'user_id' => $user_id]) . '">&laquo; ' . $this->user->lang['BACK_TO_PREV'] . '</a>';
 					trigger_error($message);
 				}
 			}
@@ -260,7 +260,7 @@ class points_robbery_user
 
 				// Add robbery to the log
 				$sql = 'INSERT INTO ' . $this->points_log_table . ' ' . $this->db->sql_build_array('INSERT', [
-						'point_send' => (int)$this->user->data['user_id'],
+						'point_send' => (int) $this->user->data['user_id'],
 						'point_recv' => $user_id,
 						'point_amount' => $attacked_amount,
 						'point_sendold' => $this->user->data['user_points'],
@@ -278,10 +278,10 @@ class points_robbery_user
 
 					// Store the notification data we will use in an array
 					$data = [
-						'points_notify_id' => (int)$this->config['points_notification_id'],
+						'points_notify_id' => (int) $this->config['points_notification_id'],
 						'points_notify_msg' => sprintf($this->user->lang['NOTIFICATION_ROBBERY_SUCCES'], $attacked_amount, $this->config['points_name']),
-						'sender' => (int)$this->user->data['user_id'],
-						'receiver' => (int)$user_id,
+						'sender' => (int) $this->user->data['user_id'],
+						'receiver' => $user_id,
 						'mode' => 'robbery',
 					];
 
@@ -315,10 +315,10 @@ class points_robbery_user
 
 						// Store the notification data we will use in an array
 						$data = [
-							'points_notify_id' => (int)$this->config['points_notification_id'],
+							'points_notify_id' => (int) $this->config['points_notification_id'],
 							'points_notify_msg' => $this->user->lang['NOTIFICATION_ROBBERY_FAILED'],
-							'sender' => (int)$this->user->data['user_id'],
-							'receiver' => (int)$user_id,
+							'sender' => (int) $this->user->data['user_id'],
+							'receiver' => $user_id,
 							'mode' => 'robbery',
 						];
 
@@ -335,7 +335,7 @@ class points_robbery_user
 						$this->notification_manager->add_notifications('dmzx.ultimatepoints.notification.type.points', $data);
 					}
 
-					$message = $this->user->lang['ROBBERY_BAD'] . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'robbery_user', 'user_id' => (int)$user_id]) . '">&laquo; ' . $this->user->lang['BACK_TO_PREV'] . '</a>';
+					$message = $this->user->lang['ROBBERY_BAD'] . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'robbery_user', 'user_id' => $user_id]) . '">&laquo; ' . $this->user->lang['BACK_TO_PREV'] . '</a>';
 					trigger_error($message);
 				}
 			}
@@ -353,7 +353,7 @@ class points_robbery_user
 			'FROM' => [
 				USERS_TABLE => 'u',
 			],
-			'WHERE' => 'user_id = ' . (int)$u_id,
+			'WHERE' => 'user_id = ' . (int) $u_id,
 		];
 		$sql = $this->db->sql_build_query('SELECT', $sql_array);
 		$result = $this->db->sql_query($sql);

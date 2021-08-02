@@ -189,7 +189,7 @@ class points_lottery
 				'FROM' => [
 					$this->points_lottery_tickets_table => 't',
 				],
-				'WHERE' => 'user_id = ' . (int)$this->user->data['user_id'],
+				'WHERE' => 'user_id = ' . (int) $this->user->data['user_id'],
 			];
 			$sql = $this->db->sql_build_query('SELECT', $sql_array);
 			$result = $this->db->sql_query($sql);
@@ -233,7 +233,7 @@ class points_lottery
 					'FROM' => [
 						USERS_TABLE => 'u',
 					],
-					'WHERE' => 'user_id = ' . (int)$this->user->data['user_id'],
+					'WHERE' => 'user_id = ' . (int) $this->user->data['user_id'],
 				];
 				$sql = $this->db->sql_build_query('SELECT', $sql_array);
 				$result = $this->db->sql_query($sql);
@@ -307,11 +307,11 @@ class points_lottery
 					'FROM' => [
 						$this->points_lottery_history_table => 'h',
 					],
-					'WHERE' => 'user_id = ' . (int)$this->user->data['user_id'],
+					'WHERE' => 'user_id = ' . (int) $this->user->data['user_id'],
 				];
 				$sql = $this->db->sql_build_query('SELECT', $sql_array);
 				$result = $this->db->sql_query($sql);
-				$total_wins = (int)$this->db->sql_fetchfield('viewer_history');
+				$total_wins = (int) $this->db->sql_fetchfield('viewer_history');
 				$this->db->sql_freeresult($result);
 
 				if ($total_wins == 0)
@@ -364,11 +364,11 @@ class points_lottery
 					'FROM' => [
 						$this->points_lottery_history_table => 'h',
 					],
-					'WHERE' => 'user_id = ' . (int)$this->user->data['user_id'],
+					'WHERE' => 'user_id = ' . (int) $this->user->data['user_id'],
 				];
 				$sql = $this->db->sql_build_query('SELECT', $sql_array);
 				$result = $this->db->sql_query($sql);
-				$total_entries = (int)$this->db->sql_fetchfield('total_entries');
+				$total_entries = (int) $this->db->sql_fetchfield('total_entries');
 				$this->db->sql_freeresult($result);
 
 				$sql_array = [
@@ -382,7 +382,7 @@ class points_lottery
 							'ON' => 'h.user_id = u.user_id'
 						],
 					],
-					'WHERE' => 'h.user_id = ' . (int)$this->user->data['user_id'],
+					'WHERE' => 'h.user_id = ' . (int) $this->user->data['user_id'],
 					'ORDER_BY' => 'time DESC',
 				];
 			}
@@ -457,11 +457,11 @@ class points_lottery
 					'FROM' => [
 						$this->points_lottery_tickets_table => 'h',
 					],
-					'WHERE' => 'user_id = ' . (int)$this->user->data['user_id'],
+					'WHERE' => 'user_id = ' . (int) $this->user->data['user_id'],
 				];
 				$sql = $this->db->sql_build_query('SELECT', $sql_array);
 				$result = $this->db->sql_query($sql);
-				$viewer_total_tickets = (int)$this->db->sql_fetchfield('num_tickets');
+				$viewer_total_tickets = (int) $this->db->sql_fetchfield('num_tickets');
 				$this->db->sql_freeresult($result);
 			}
 
@@ -471,7 +471,7 @@ class points_lottery
 				'FROM' => [
 					USERS_TABLE => 'u',
 				],
-				'WHERE' => 'user_id = ' . (int)$points_values['lottery_prev_winner_id'],
+				'WHERE' => 'user_id = ' . (int) $points_values['lottery_prev_winner_id'],
 			];
 			$sql = $this->db->sql_build_query('SELECT', $sql_array);
 			$result = $this->db->sql_query($sql);

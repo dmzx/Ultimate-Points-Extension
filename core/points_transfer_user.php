@@ -188,11 +188,11 @@ class points_transfer_user
 				'FROM' => [
 					USERS_TABLE => 'u',
 				],
-				'WHERE' => 'user_id = ' . (int)$transfer_user['user_id'],
+				'WHERE' => 'user_id = ' . (int) $transfer_user['user_id'],
 			];
 			$sql = $this->db->sql_build_query('SELECT', $sql_array);
 			$result = $this->db->sql_query($sql);
-			$transfer_user_old_points = (int)$this->db->sql_fetchfield('user_points');
+			$transfer_user_old_points = (int) $this->db->sql_fetchfield('user_points');
 			$this->db->sql_freeresult($result);
 
 			// Check, if the sender has enough cash
@@ -230,8 +230,8 @@ class points_transfer_user
 			$text = $message;
 
 			$sql = 'INSERT INTO ' . $this->points_log_table . ' ' . $this->db->sql_build_array('INSERT', [
-					'point_send' => (int)$this->user->data['user_id'],
-					'point_recv' => (int)$transfer_user['user_id'],
+					'point_send' => (int) $this->user->data['user_id'],
+					'point_recv' => (int) $transfer_user['user_id'],
 					'point_amount' => $am,
 					'point_sendold' => $this->user->data['user_points'],
 					'point_recvold' => $transfer_user_old_points,
@@ -289,7 +289,7 @@ class points_transfer_user
 				'FROM' => [
 					USERS_TABLE => 'u',
 				],
-				'WHERE' => 'user_id = ' . (int)$transfer_user['user_id'],
+				'WHERE' => 'user_id = ' . (int) $transfer_user['user_id'],
 			];
 			$sql = $this->db->sql_build_query('SELECT', $sql_array);
 

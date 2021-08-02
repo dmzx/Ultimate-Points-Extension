@@ -135,7 +135,7 @@ class userlist
 			FROM ' . USERS_TABLE . '
 			WHERE user_points > 0';
 		$result = $this->db->sql_query($sql);
-		$ultimatepoints_total = (int)$this->db->sql_fetchfield('ultimatepoints_total');
+		$ultimatepoints_total = (int) $this->db->sql_fetchfield('ultimatepoints_total');
 
 		//Start pagination
 		$pagination_url = $this->helper->route('dmzx_ultimatepoints_list_controller');

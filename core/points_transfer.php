@@ -203,8 +203,8 @@ class points_transfer
 			$text = $message;
 
 			$sql = 'INSERT INTO ' . $this->points_log_table . ' ' . $this->db->sql_build_array('INSERT', [
-					'point_send' => (int)$this->user->data['user_id'],
-					'point_recv' => (int)$checked_user['user_id'],
+					'point_send' => (int) $this->user->data['user_id'],
+					'point_recv' => (int) $checked_user['user_id'],
 					'point_amount' => $am,
 					'point_sendold' => $this->user->data['user_points'],
 					'point_recvold' => $checked_user['user_points'],
@@ -232,7 +232,7 @@ class points_transfer
 					'FROM' => [
 						USERS_TABLE => 'u',
 					],
-					'WHERE' => 'user_id = ' . (int)$checked_user['user_id'],
+					'WHERE' => 'user_id = ' . (int) $checked_user['user_id'],
 				];
 				$sql = $this->db->sql_build_query('SELECT', $sql_array);
 				$result = $this->db->sql_query($sql);

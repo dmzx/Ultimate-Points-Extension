@@ -10,7 +10,6 @@
 namespace dmzx\ultimatepoints;
 
 use phpbb\extension\base;
-use phpbb\notification\manager;
 
 class ext extends base
 {

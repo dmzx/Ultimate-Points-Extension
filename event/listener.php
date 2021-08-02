@@ -95,20 +95,20 @@ class listener implements EventSubscriberInterface
 	 */
 	public function __construct(
 		functions_points $functions_points,
-		user			 $user,
-		template		 $template,
+		user $user,
+		template $template,
 		driver_interface $db,
-		config			$config,
-		auth			 $auth,
-		helper			$helper,
-		service			$cache,
-		request			$request,
-						 $root_path,
-						 $php_ext,
-						 $points_bank_table,
-						 $points_config_table,
-						 $points_values_table,
-		factory			$files_factory = null
+		config $config,
+		auth $auth,
+		helper $helper,
+		service $cache,
+		request $request,
+        $root_path,
+        $php_ext,
+        $points_bank_table,
+        $points_config_table,
+        $points_values_table,
+		factory $files_factory = null
 	)
 	{
 		$this->functions_points = $functions_points;
@@ -305,7 +305,7 @@ class listener implements EventSubscriberInterface
 				'FROM' => [
 					USERS_TABLE => 'u',
 				],
-				'WHERE' => 'user_id = ' . (int)$points_values['lottery_prev_winner_id'],
+				'WHERE' => 'user_id = ' . (int) $points_values['lottery_prev_winner_id'],
 			];
 			$sql = $this->db->sql_build_query('SELECT', $sql_array);
 			$result = $this->db->sql_query($sql);
@@ -348,7 +348,7 @@ class listener implements EventSubscriberInterface
 		// Grab user's bank holdings
 		$sql = 'SELECT holding
 			FROM ' . $this->points_bank_table . '
-			WHERE user_id = ' . $user_id;
+			WHERE user_id = ' . (int) $user_id;
 		$result = $this->db->sql_query($sql);
 		$holding = $this->db->sql_fetchfield('holding');
 
@@ -397,17 +397,17 @@ class listener implements EventSubscriberInterface
 	public function parse_attachments_modify_template_data($event)
 	{
 		$block_array = $event['block_array'];
-		$forum_id = (int)$event['forum_id'];
-		$display_cat = (int)$event['display_cat'];
+		$forum_id = $event['forum_id'];
+		$display_cat = (int) $event['display_cat'];
 
 		$sql = 'SELECT forum_cost
 			FROM ' . FORUMS_TABLE . '
-			WHERE forum_id = ' . (int)$forum_id;
+			WHERE forum_id = ' . (int) $forum_id;
 		$result = $this->db->sql_query($sql);
 		$forum_cost = $this->db->sql_fetchfield('forum_cost');
 		$this->db->sql_freeresult($result);
 
-		if ($forum_cost > 0 && $this->auth->acl_get('f_pay_attachment', (int)$forum_id) && $display_cat != 1)
+		if ($forum_cost > 0 && $this->auth->acl_get('f_pay_attachment', (int) $forum_id) && $display_cat != 1)
 		{
 			$this->template->assign_vars([
 				'L_DOWNLOAD_COST' => $this->user->lang['POINTS_DOWNLOAD_COST'],
@@ -441,7 +441,7 @@ class listener implements EventSubscriberInterface
 		{
 			$sql = "SELECT holding
 				FROM " . $this->points_bank_table . "
-				WHERE user_id = '$poster_id'";
+				WHERE user_id = ' (int) $poster_id'";
 			$result = $this->db->sql_query($sql);
 			$bank_row = $this->db->sql_fetchrow($result);
 			$holding[$poster_id] = (!empty($bank_row['holding'])) ? !empty($bank_row['holding']) : '0';
@@ -468,7 +468,8 @@ class listener implements EventSubscriberInterface
 				$has_account = false;
 			}
 			$holding[$poster_id] = ($row['pb_holding']) ? $row['pb_holding'] : '0';
-		} else
+		}
+		else
 		{
 			$holding[$poster_id] = '0';
 		}
@@ -488,8 +489,8 @@ class listener implements EventSubscriberInterface
 		$row = $event['row'];
 		$user_poster_data = $event['user_poster_data'];
 		$post_row = $event['post_row'];
-		$post_id = (int)$row['post_id'];
-		$poster_id = (int)$event['poster_id'];
+		$post_id = (int) $row['post_id'];
+		$poster_id = (int) $event['poster_id'];
 		$points_config = $this->cache->get('points_config');
 		$points_values = $this->cache->get('points_values');
 
@@ -563,7 +564,7 @@ class listener implements EventSubscriberInterface
 	// Check if people have to pay points for downloading attachments
 	public function download_file_send_to_browser_before($event)
 	{
-		$topic_id = (int)$event['attachment']['topic_id'];
+		$topic_id = (int) $event['attachment']['topic_id'];
 		$display_cat = $event['display_cat'];
 		$points_values = $this->cache->get('points_values');
 
@@ -710,7 +711,7 @@ class listener implements EventSubscriberInterface
 		if ($this->config['points_enable'])
 		{
 			// Substract user's points
-			$this->functions_points->substract_points((int)$event['user_row']['user_id'], $points_values['points_per_warn']);
+			$this->functions_points->substract_points((int) $event['user_row']['user_id'], $points_values['points_per_warn']);
 
 			// Notify the moderator about the additional point deduction
 			$message = $event['message'];
@@ -749,10 +750,10 @@ class listener implements EventSubscriberInterface
 			$data = $event['data'];
 			$mode = $event['mode'];
 			$poll = $event['poll'];
-			$post_id = (int)$data['post_id'];
-			$topic_id = (int)$data['topic_id'];
-			$forum_id = (int)$data['forum_id'];
-			$user_id = (int)$this->user->data['user_id'];
+			$post_id = $data['post_id'];
+			$topic_id = (int) $data['topic_id'];
+			$forum_id = $data['forum_id'];
+			$user_id = $this->user->data['user_id'];
 
 			// Send the user_id away to check for a bonus increment
 			$this->functions_points->random_bonus_increment($user_id);
@@ -785,18 +786,19 @@ class listener implements EventSubscriberInterface
 			// We grab forum specific points increment
 			$sql = 'SELECT forum_peredit, forum_perpost, forum_pertopic, forum_cost_topic, forum_cost_post
 				FROM ' . FORUMS_TABLE . '
-				WHERE forum_id = ' . (int)$forum_id;
+				WHERE forum_id = ' . (int) $forum_id;
 			$result = $this->db->sql_query($sql);
 			$forum = $this->db->sql_fetchrow($result);
 			$this->db->sql_freeresult($result);
 
 			// First we check if we have to pay for new topics/post
-			if ($mode == 'post' && $forum['forum_cost_topic'] > 0 && $this->auth->acl_get('f_pay_topic', (int)$forum_id))
+			if ($mode == 'post' && $forum['forum_cost_topic'] > 0 && $this->auth->acl_get('f_pay_topic', (int) $forum_id))
 			{
-				$this->functions_points->substract_points((int)$user_id, $forum['forum_cost_topic']);
-			} else if (($mode == 'reply' || $mode == 'quote') && $forum['forum_cost_post'] > 0 && $this->auth->acl_get('f_pay_post', (int)$forum_id))
+				$this->functions_points->substract_points((int) $user_id, $forum['forum_cost_topic']);
+			}
+			else if (($mode == 'reply' || $mode == 'quote') && $forum['forum_cost_post'] > 0 && $this->auth->acl_get('f_pay_post', (int) $forum_id))
 			{
-				$this->functions_points->substract_points((int)$user_id, $forum['forum_cost_post']);
+				$this->functions_points->substract_points((int) $user_id, $forum['forum_cost_post']);
 			}
 
 			// We grab some specific message data
@@ -863,7 +865,8 @@ class listener implements EventSubscriberInterface
 				{
 					$this->functions_points->add_points($user_id, $difference); // Add to the user
 					$this->functions_points->add_points_to_table($post_id, $total_points, 'topic', $total_attachments, $total_poll_options); // Update to the post table
-				} else
+				}
+				else
 				{
 					return; // "AM I NOT MERCIFUL??" - Caesar Commodus (Gladiator [2000])
 				}
@@ -878,7 +881,7 @@ class listener implements EventSubscriberInterface
 				// We grab previously received points amount
 				$sql = 'SELECT points_post_received
 					FROM ' . POSTS_TABLE . '
-					WHERE post_id = ' . (int)$post_id;
+					WHERE post_id = ' . (int) $post_id;
 				$result = $this->db->sql_query($sql);
 				$prev_points = $this->db->sql_fetchfield('points_post_received');
 				$this->db->sql_freeresult($result);
@@ -891,16 +894,19 @@ class listener implements EventSubscriberInterface
 				{
 					$this->functions_points->add_points($user_id, $difference); // Add to the user
 					$this->functions_points->add_points_to_table($post_id, $total_points, 'post', $total_attachments, 0); // Update to the post table
-				} else
+				}
+				else
 				{
 					return; // "AM I NOT MERCIFUL??" - Caesar Commodus (Gladiator [2000])
 				}
-			} else
+			}
+			else
 			{
 				// We do nothing..
 				return; // The only thing necessary for the triumph of evil, is for good men to do nothing. - Edmund Burke
 			}
-		} else
+		}
+		else
 		{
 			return;
 		}
@@ -915,7 +921,7 @@ class listener implements EventSubscriberInterface
 			// Grab the costs of making a topic or post in this forum
 			$sql = 'SELECT forum_cost_topic, forum_cost_post
 				FROM ' . FORUMS_TABLE . '
-				WHERE forum_id = ' . (int)$event['forum_id'];
+				WHERE forum_id = ' . (int) $event['forum_id'];
 			$result = $this->db->sql_query($sql);
 			$forum = $this->db->sql_fetchrow($result);
 			$this->db->sql_freeresult($result);
@@ -923,7 +929,7 @@ class listener implements EventSubscriberInterface
 			// Grab the user's points
 			$sql = 'SELECT user_points
 				FROM ' . USERS_TABLE . '
-				WHERE user_id = ' . (int)$this->user->data['user_id'];
+				WHERE user_id = ' . (int) $this->user->data['user_id'];
 			$result = $this->db->sql_query($sql);
 			$user_points = $this->db->sql_fetchfield('user_points');
 			$this->db->sql_freeresult($result);
@@ -933,7 +939,8 @@ class listener implements EventSubscriberInterface
 				$message = sprintf($this->user->lang['POINTS_INSUFFICIENT_TOPIC'], $forum['forum_cost_topic'], $this->config['points_name']);
 				$message .= '<br /><br />' . $this->user->lang('RETURN_FORUM', '<a href="' . append_sid("{$this->root_path}viewforum.{$this->php_ext}", 'f=' . (int)$event['forum_id']) . '">', '</a>');
 				trigger_error($message);
-			} else if (($mode == 'reply' || $mode == 'quote') && $forum['forum_cost_post'] > 0 && $user_points < $forum['forum_cost_post'] && $this->auth->acl_get('f_pay_post', (int)$event['forum_id']))
+			}
+			else if (($mode == 'reply' || $mode == 'quote') && $forum['forum_cost_post'] > 0 && $user_points < $forum['forum_cost_post'] && $this->auth->acl_get('f_pay_post', (int)$event['forum_id']))
 			{
 				$message = sprintf($this->user->lang['POINTS_INSUFFICIENT_POST'], $forum['forum_cost_post'], $this->config['points_name']);
 				$message .= '<br /><br />' . $this->user->lang('RETURN_FORUM', '<a href="' . append_sid("{$this->root_path}viewforum.{$this->php_ext}", 'f=' . (int)$event['forum_id']) . '">', '</a>');

@@ -176,7 +176,7 @@ class points_bank
 			'FROM' => [
 				$this->points_bank_table => 'u',
 			],
-			'WHERE' => 'user_id = ' . (int)$this->user->data['user_id'],
+			'WHERE' => 'user_id = ' . (int) $this->user->data['user_id'],
 		];
 		$sql = $this->db->sql_build_query('SELECT', $sql_array);
 		$result = $this->db->sql_query($sql);
@@ -283,10 +283,11 @@ class points_bank
 			if (is_numeric($holding))
 			{
 				trigger_error(' ' . $this->user->lang['YES_ACCOUNT'] . '!<br /><br />' . sprintf($this->user->lang['BANK_BACK_TO_BANK'], '<a href="' . $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'bank']) . '">', '</a>') . sprintf('<br />' . $this->user->lang['BANK_BACK_TO_INDEX'], '<a href="' . append_sid("{$this->root_path}index.{$this->php_ext}") . '">', '</a>'));
-			} else
+			}
+			else
 			{
 				$sql = 'INSERT INTO ' . $this->points_bank_table . ' ' . $this->db->sql_build_array('INSERT', [
-						'user_id' => (int)$this->user->data['user_id'],
+						'user_id' => (int) $this->user->data['user_id'],
 						'opentime' => time(),
 						'fees' => 'on',
 					]);
@@ -330,7 +331,7 @@ class points_bank
 				'FROM' => [
 					$this->points_bank_table => 'b',
 				],
-				'WHERE' => 'user_id = ' . (int)$this->user->data['user_id'],
+				'WHERE' => 'user_id = ' . (int) $this->user->data['user_id'],
 			];
 			$sql = $this->db->sql_build_query('SELECT', $sql_array);
 			$result = $this->db->sql_query($sql);
@@ -347,7 +348,7 @@ class points_bank
 
 			$sql = 'UPDATE ' . $this->points_bank_table . '
 				SET ' . $this->db->sql_build_array('UPDATE', $data) . '
-				WHERE user_id = ' . (int)$this->user->data['user_id'];
+				WHERE user_id = ' . (int) $this->user->data['user_id'];
 			$this->db->sql_query($sql);
 
 			trigger_error(' ' . $this->user->lang['BANK_HAVE_DEPOSIT'] . ' ' . sprintf($this->functions_points->number_format_points($deposit)) . ' ' . $this->config['points_name'] . ' ' . sprintf($this->user->lang['BANK_TO_ACCOUNT'], $points_values['bank_name']) . '<br />' . $this->user->lang['BANK_NEW_BALANCE'] . ' ' . sprintf($this->functions_points->number_format_points(($row['holding'] + $deposit))) . '.<br />' . $this->user->lang['BANK_LEAVE_WITH'] . ' ' . (sprintf($this->functions_points->number_format_points($this->user->data['user_points'] - $deposit))) . ' ' . $this->config['points_name'] . ' ' . $this->user->lang['BANK_ON_HAND'] . '.<br /><br />' . sprintf($this->user->lang['BANK_BACK_TO_BANK'], '<a href="' . $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'bank']) . '">', '</a>') . sprintf('<br />' . $this->user->lang['BANK_BACK_TO_INDEX'], '<a href="' . append_sid("{$this->root_path}index.{$this->php_ext}") . '">', '</a>'));
@@ -370,7 +371,8 @@ class points_bank
 			{
 				$message = sprintf($this->user->lang['BANK_WITHDRAW_SMALL_AMOUNT'], $points_values['bank_min_withdraw'], $this->config['points_name']) . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'bank']) . '">&laquo; ' . $this->user->lang['BACK_TO_PREV'] . '</a>';
 				trigger_error($message);
-			} else if ($withdraw < 1)
+			}
+			else if ($withdraw < 1)
 			{
 				$message = $this->user->lang['BANK_ERROR_WITHDRAW'] . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'bank']) . '">&laquo; ' . $this->user->lang['BACK_TO_PREV'] . '</a>';
 				trigger_error($message);
@@ -384,11 +386,13 @@ class points_bank
 				if ($withdraw == $withdrawtotal_check)
 				{
 					$withdrawtotal = $withdraw + $fees;
-				} else
+				}
+				else
 				{
 					$withdrawtotal = (round((($withdraw / 100) * $points_values['bank_fees']))) + $withdraw;
 				}
-			} else
+			}
+			else
 			{
 				$withdrawtotal = 0;
 			}
@@ -408,7 +412,7 @@ class points_bank
 				'FROM' => [
 					$this->points_bank_table => 'b',
 				],
-				'WHERE' => 'user_id = ' . (int)$this->user->data['user_id'],
+				'WHERE' => 'user_id = ' . (int) $this->user->data['user_id'],
 			];
 			$sql = $this->db->sql_build_query('SELECT', $sql_array);
 			$result = $this->db->sql_query($sql);
@@ -425,11 +429,12 @@ class points_bank
 
 			$sql = 'UPDATE ' . $this->points_bank_table . '
 				SET ' . $this->db->sql_build_array('UPDATE', $data) . '
-				WHERE user_id = ' . (int)$this->user->data['user_id'];
+				WHERE user_id = ' . (int) $this->user->data['user_id'];
 			$this->db->sql_query($sql);
 
 			trigger_error(' ' . $this->user->lang['BANK_HAVE_WITHDRAW'] . ' ' . sprintf($this->functions_points->number_format_points($withdraw)) . ' ' . $this->config['points_name'] . ' ' . sprintf($this->user->lang['BANK_FROM_ACCOUNT'], $points_values['bank_name']) . '. <br />' . $this->user->lang['BANK_NEW_BALANCE'] . ' ' . sprintf($this->functions_points->number_format_points(($row['holding'] - $withdrawtotal))) . ' ' . $this->config['points_name'] . '.<br />' . $this->user->lang['BANK_NOW_HAVE'] . ' ' . (sprintf($this->functions_points->number_format_points($this->user->data['user_points'] + $withdraw))) . ' ' . $this->config['points_name'] . ' ' . $this->user->lang['BANK_ON_HAND'] . '.<br /><br />' . sprintf($this->user->lang['BANK_BACK_TO_BANK'], '<a href="' . $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'bank']) . '">', '</a>') . sprintf('<br />' . $this->user->lang['BANK_BACK_TO_INDEX'], '<a href="' . append_sid("{$this->root_path}index.{$this->php_ext}") . '">', '</a>'));
-		} else
+		}
+		else
 		{
 			redirect($this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'bank']));
 		}

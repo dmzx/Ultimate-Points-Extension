@@ -121,7 +121,7 @@ class points_main
 			'FROM' => [
 				$this->points_bank_table => 'b',
 			],
-			'WHERE' => 'user_id = ' . (int)$this->user->data['user_id'],
+			'WHERE' => 'user_id = ' . (int) $this->user->data['user_id'],
 		];
 		$sql = $this->db->sql_build_query('SELECT', $sql_array);
 		$result = $this->db->sql_query($sql);
@@ -138,11 +138,11 @@ class points_main
 				'FROM' => [
 					$this->points_lottery_tickets_table => 't',
 				],
-				'WHERE' => 'user_id = ' . (int)$this->user->data['user_id'],
+				'WHERE' => 'user_id = ' . (int) $this->user->data['user_id'],
 			];
 			$sql = $this->db->sql_build_query('SELECT', $sql_array);
 			$result = $this->db->sql_query($sql);
-			$viewer_total_tickets = (int)$this->db->sql_fetchfield('num_tickets');
+			$viewer_total_tickets = (int) $this->db->sql_fetchfield('num_tickets');
 			$this->db->sql_freeresult($result);
 		}
 

@@ -217,7 +217,7 @@ class main
 			'FROM' => [
 				USERS_TABLE => 'u',
 			],
-			'WHERE' => 'u.user_id = ' . (int)$check_user,
+			'WHERE' => 'u.user_id = ' . (int) $check_user,
 		];
 		$sql = $this->db->sql_build_query('SELECT', $sql_array);
 		$result = $this->db->sql_query($sql);

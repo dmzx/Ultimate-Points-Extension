@@ -209,7 +209,7 @@ class points_robbery
 			];
 			$sql = $this->db->sql_build_query('SELECT', $sql_array);
 			$result = $this->db->sql_query($sql);
-			$user_id = (int)$this->db->sql_fetchfield('user_id');
+			$user_id = (int) $this->db->sql_fetchfield('user_id');
 			$this->db->sql_freeresult($result);
 
 			// If no matching user id is found
@@ -225,7 +225,7 @@ class points_robbery
 				'FROM' => [
 					USERS_TABLE => 'u',
 				],
-				'WHERE' => 'user_id = ' . (int)$user_id,
+				'WHERE' => 'user_id = ' . $user_id,
 			];
 			$sql = $this->db->sql_build_query('SELECT', $sql_array);
 			$result = $this->db->sql_query($sql);
@@ -263,7 +263,7 @@ class points_robbery
 
 				// Add robbery to the log
 				$sql = 'INSERT INTO ' . $this->points_log_table . ' ' . $this->db->sql_build_array('INSERT', [
-						'point_send' => (int)$this->user->data['user_id'],
+						'point_send' => (int) $this->user->data['user_id'],
 						'point_recv' => $user_id,
 						'point_amount' => $attacked_amount,
 						'point_sendold' => $this->user->data['user_points'],
@@ -281,10 +281,10 @@ class points_robbery
 
 					// Store the notification data we will use in an array
 					$data = [
-						'points_notify_id' => (int)$this->config['points_notification_id'],
+						'points_notify_id' => (int) $this->config['points_notification_id'],
 						'points_notify_msg' => sprintf($this->user->lang['NOTIFICATION_ROBBERY_SUCCES'], $attacked_amount, $this->config['points_name']),
-						'sender' => (int)$this->user->data['user_id'],
-						'receiver' => (int)$user_id,
+						'sender' => (int) $this->user->data['user_id'],
+						'receiver' => $user_id,
 						'mode' => 'robbery',
 					];
 
@@ -318,10 +318,10 @@ class points_robbery
 
 						// Store the notification data we will use in an array
 						$data = [
-							'points_notify_id' => (int)$this->config['points_notification_id'],
+							'points_notify_id' => (int) $this->config['points_notification_id'],
 							'points_notify_msg' => $this->user->lang['NOTIFICATION_ROBBERY_FAILED'],
-							'sender' => (int)$this->user->data['user_id'],
-							'receiver' => (int)$user_id,
+							'sender' => (int) $this->user->data['user_id'],
+							'receiver' => $user_id,
 							'mode' => 'robbery',
 						];
 

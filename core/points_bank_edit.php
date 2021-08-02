@@ -160,7 +160,7 @@ class points_bank_edit
 					'FROM' => [
 						USERS_TABLE => 'u',
 					],
-					'WHERE' => 'user_id = ' . (int)$u_id,
+					'WHERE' => 'user_id = ' . (int) $u_id,
 				];
 				$sql = $this->db->sql_build_query('SELECT', $sql_array);
 				$result = $this->db->sql_query($sql);
@@ -186,7 +186,7 @@ class points_bank_edit
 						],
 					],
 
-					'WHERE' => 'u.user_id = ' . (int)$u_id,
+					'WHERE' => 'u.user_id = ' . (int) $u_id,
 				];
 				$sql = $this->db->sql_build_query('SELECT', $sql_array);
 				$result = $this->db->sql_query($sql);
