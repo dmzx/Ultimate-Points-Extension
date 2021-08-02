@@ -103,11 +103,11 @@ class listener implements EventSubscriberInterface
 		helper $helper,
 		service $cache,
 		request $request,
-        $root_path,
-        $php_ext,
-        $points_bank_table,
-        $points_config_table,
-        $points_values_table,
+		$root_path,
+		$php_ext,
+		$points_bank_table,
+		$points_config_table,
+		$points_values_table,
 		factory $files_factory = null
 	)
 	{
