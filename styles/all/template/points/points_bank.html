@@ -4,11 +4,21 @@
 	<ul>
 		<li class="tab"><a href="{{ U_POINTS }}">{{ lang('POINTS_OVERVIEW') }}</a></li>
 		<li class="tab"><a href="{{ U_INFO }}">{{ lang('POINTS_INFO') }}</a></li>
-		{% if TRANSFER_ENABLE and U_USE_TRANSFER %}<li class="tab"><a href="{{ U_TRANSFER_USER }}">{{ lang('POINTS_TRANSFER') }}</a></li>{% endif %}
-		{% if LOGS_ENABLE and U_USE_LOGS %}<li class="tab"><a href="{{ U_LOGS }}">{{ lang('POINTS_LOGS') }}</a></li>{% endif %}
-		{% if LOTTERY_ENABLE and U_USE_LOTTERY %}<li class="tab"><a href="{{ U_LOTTERY }}">{{ LOTTERY_NAME }}</a></li>{% endif %}
-		{% if BANK_ENABLE and U_USE_BANK %}<li class="tab activetab"><a href="{{ U_BANK }}">{{ BANK_NAME }}</a></li>{% endif %}
-		{% if ROBBERY_ENABLE and U_USE_ROBBERY %}<li class="tab"><a href="{{ U_ROBBERY }}">{{ lang('POINTS_ROBBERY') }}</a></li>{% endif %}
+		{% if TRANSFER_ENABLE and U_USE_TRANSFER %}
+		<li class="tab"><a href="{{ U_TRANSFER_USER }}">{{ lang('POINTS_TRANSFER') }}</a></li>
+		{% endif %}
+		{% if LOGS_ENABLE and U_USE_LOGS %}
+		<li class="tab"><a href="{{ U_LOGS }}">{{ lang('POINTS_LOGS') }}</a></li>
+		{% endif %}
+		{% if LOTTERY_ENABLE and U_USE_LOTTERY %}
+		<li class="tab"><a href="{{ U_LOTTERY }}">{{ LOTTERY_NAME }}</a></li>
+		{% endif %}
+		{% if BANK_ENABLE and U_USE_BANK %}
+		<li class="tab activetab"><a href="{{ U_BANK }}">{{ BANK_NAME }}</a></li>
+		{% endif %}
+		{% if ROBBERY_ENABLE and U_USE_ROBBERY %}
+		<li class="tab"><a href="{{ U_ROBBERY }}">{{ lang('POINTS_ROBBERY') }}</a></li>
+		{% endif %}
 	</ul>
 </div>
 
@@ -22,17 +32,17 @@
 							<h3>{{ lang('BANK_RICHEST_USER') }}</h3>
 						</dd>
 						{% if S_DISPLAY_INDEX %}
-							<dt>
-								{% for bank in loops.bank %}
-									<span style="float:left; padding-left:5px; padding-top:2px;">{{ bank.USERNAME }}</span>
-									<span style="float:right;padding-right:10px; padding-top:2px;">{{ bank.POINT }}</span>
-									<br style="clear:both" />
-								{% else %}
-									{{ BANK_NOBODY_IN_BANK }}
-								{% endfor %}
-							</dt>
+						<dt>
+							{% for bank in loops.bank %}
+							<span style="float:left; padding-left:5px; padding-top:2px;">{{ bank.USERNAME }}</span>
+							<span style="float:right;padding-right:10px; padding-top:2px;">{{ bank.POINT }}</span>
+							<br style="clear:both"/>
+							{% else %}
+							{{ BANK_NOBODY_IN_BANK }}
+							{% endfor %}
+						</dt>
 						{% else %}
-							<dt>{{ lang('POINTS_MOST_RICH_USERS_DISABLED') }}</dt>
+						<dt>{{ lang('POINTS_MOST_RICH_USERS_DISABLED') }}</dt>
 						{% endif %}
 					</dl>
 				</div>
@@ -53,34 +63,44 @@
 				<div class="inner">
 					<fieldset>
 						{% if S_USER_LOGGED_IN %}
-							{% for has_account in loops.has_account %}
-								<h3>{{ lang('BANK_ACTIONS') }}</h3>
-								<form id="bank_deposit" method="post" action="{{ U_DEPOSIT }}">
-									<dl>
-										<dt><label><input type="submit" tabindex="2" name="deposit" value="{{ lang('BANK_BUTTON_DEPOSIT') }}" class="button1" /></label></dt>
-										<dd><input type="text" tabindex="1" maxlength="10" class="inputbox autowidth" title="{{ lang('POINTS_NUMBER_FORMAT_EXPLAIN') }}" name="deposit" size="20" value="{{ USER_GOLD }}" /> {{ POINTS_NAME }}{{ S_FORM_TOKEN }}</dd>
-									</dl>
-								</form>
-								<form id="bank_withdraw" method="post" action="{{ U_WITHDRAW }}">
-									<dl>
-										<dt><label><input type="submit" tabindex="4" name="withdraw" value="{{ lang('BANK_BUTTON_WITHDRAW') }}" class="button1" /></label></dt>
-										<dd><input type="text" tabindex="3" maxlength="10" class="inputbox autowidth" title="{{ lang('POINTS_NUMBER_FORMAT_EXPLAIN') }}" name="withdraw" size="20" value="{{ USER_WITHDRAW }}" /> {{ POINTS_NAME }}{{ S_FORM_TOKEN }}</dd>
-									</dl>
-								</form>
-							{% endfor %}
-							{% for no_account in loops.no_account %}
-								<p>{{ no_account.USER_NO_ACCOUNT }}</p>
-								<p><strong>{{ no_account.OPEN_ACCOUNT }}</strong></p>
-							{% endfor %}
+						{% for has_account in loops.has_account %}
+						<h3>{{ lang('BANK_ACTIONS') }}</h3>
+						<form id="bank_deposit" method="post" action="{{ U_DEPOSIT }}">
+							<dl>
+								<dt><label><input type="submit" tabindex="2" name="deposit"
+													value="{{ lang('BANK_BUTTON_DEPOSIT') }}" class="button1"/></label>
+								</dt>
+								<dd><input type="text" tabindex="1" maxlength="10" class="inputbox autowidth"
+											title="{{ lang('POINTS_NUMBER_FORMAT_EXPLAIN') }}" name="deposit" size="20"
+											value="{{ USER_GOLD }}"/> {{ POINTS_NAME }}{{ S_FORM_TOKEN }}
+								</dd>
+							</dl>
+						</form>
+						<form id="bank_withdraw" method="post" action="{{ U_WITHDRAW }}">
+							<dl>
+								<dt><label><input type="submit" tabindex="4" name="withdraw"
+													value="{{ lang('BANK_BUTTON_WITHDRAW') }}" class="button1"/></label>
+								</dt>
+								<dd><input type="text" tabindex="3" maxlength="10" class="inputbox autowidth"
+											title="{{ lang('POINTS_NUMBER_FORMAT_EXPLAIN') }}" name="withdraw" size="20"
+											value="{{ USER_WITHDRAW }}"/> {{ POINTS_NAME }}{{ S_FORM_TOKEN }}
+								</dd>
+							</dl>
+						</form>
+						{% endfor %}
+						{% for no_account in loops.no_account %}
+						<p>{{ no_account.USER_NO_ACCOUNT }}</p>
+						<p><strong>{{ no_account.OPEN_ACCOUNT }}</strong></p>
+						{% endfor %}
 						{% else %}
-							<p>{{ lang('POINTS_BOT_GUEST') }}</p>
+						<p>{{ lang('POINTS_BOT_GUEST') }}</p>
 						{% endif %}
 						<h3><i class="icon fa fa-info" aria-hidden="true"></i> {{ BANK_INFO }}</h3>
 						{% for has_account in loops.has_account %}
-							<dl>
-								<dt>{{ BANK_BALANCE }}{{ lang('COLON') }}</dt>
-								<dd>{{ USER_BALANCE }} {{ POINTS_NAME }}</dd>
-							</dl>
+						<dl>
+							<dt>{{ BANK_BALANCE }}{{ lang('COLON') }}</dt>
+							<dd>{{ USER_BALANCE }} {{ POINTS_NAME }}</dd>
+						</dl>
 						{% endfor %}
 						<dl>
 							<dt>{{ lang('BANK_INTEREST_RATE') }}{{ lang('COLON') }}</dt>
@@ -95,26 +115,26 @@
 							<dd>{{ BANK_MAX_HOLD }} {{ POINTS_NAME }}</dd>
 						</dl>
 						{% for switch_withdraw_fees in loops.switch_withdraw_fees %}
-							<dl>
-								<dt>{{ lang('BANK_WITHDRAW_RATE') }}{{ lang('COLON') }}</dt>
-								<dd>{{ BANK_FEES }}%</dd>
-							</dl>
+						<dl>
+							<dt>{{ lang('BANK_WITHDRAW_RATE') }}{{ lang('COLON') }}</dt>
+							<dd>{{ BANK_FEES }}%</dd>
+						</dl>
 						{% endfor %}
 						<dl>
 							<dt>{{ lang('BANK_COST') }}{{ lang('COLON') }}</dt>
 							<dd>{{ BANK_COST }} {{ POINTS_NAME }}</dd>
 						</dl>
 						{% for switch_min_depo in loops.switch_min_depo %}
-							<dl>
-								<dt>{{ lang('BANK_MIN_DEPO') }}{{ lang('COLON') }}</dt>
-								<dd>{{ BANK_MIN_DEPO }} {{ POINTS_NAME }}</dd>
-							</dl>
+						<dl>
+							<dt>{{ lang('BANK_MIN_DEPO') }}{{ lang('COLON') }}</dt>
+							<dd>{{ BANK_MIN_DEPO }} {{ POINTS_NAME }}</dd>
+						</dl>
 						{% endfor %}
 						{% for switch_min_with in loops.switch_min_with %}
-							<dl>
-								<dt>{{ lang('BANK_MIN_WITH') }}{{ lang('COLON') }}</dt>
-								<dd>{{ BANK_MIN_WITH }} {{ POINTS_NAME }}</dd>
-							</dl>
+						<dl>
+							<dt>{{ lang('BANK_MIN_WITH') }}{{ lang('COLON') }}</dt>
+							<dd>{{ BANK_MIN_WITH }} {{ POINTS_NAME }}</dd>
+						</dl>
 						{% endfor %}
 						<dl>
 							<dt>{{ lang('BANK_TOTAL_ACCOUNTS') }}{{ lang('COLON') }}</dt>

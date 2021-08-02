@@ -1,3 +1,6 @@
 {% if ULTIMATEPOINTS_FOOTER_VIEW and S_USER_LOGGED_IN %}
-	<div>{{ ULTIMATEPOINTS_DISPLAY_NAME }} <span title="{{ lang('ULTIMATEPOINTS_VERSION') }}{{ lang('COLON') }} {{ ULTIMATEPOINTS_VERSION }}">&copy;</span> {{ lang('POST_BY_AUTHOR') }} {{ ULTIMATEPOINTS_AUTHOR_HOMEPAGES }}</div>
+<div>{{ ULTIMATEPOINTS_DISPLAY_NAME }} <span
+		title="{{ lang('ULTIMATEPOINTS_VERSION') }}{{ lang('COLON') }} {{ ULTIMATEPOINTS_VERSION }}">&copy;</span> {{
+	lang('POST_BY_AUTHOR') }} {{ ULTIMATEPOINTS_AUTHOR_HOMEPAGES }}
+</div>
 {% endif %}

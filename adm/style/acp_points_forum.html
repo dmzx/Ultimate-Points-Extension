@@ -7,13 +7,14 @@
 {% if S_FORUMPOINTS %}
 
 {% if S_ERROR %}
-	<div class="errorbox">
-		<h3>{{ lang('WARNING') }}</h3>
-		<p>{{ ERROR_MSG }}</p>
-	</div>
+<div class="errorbox">
+	<h3>{{ lang('WARNING') }}</h3>
+	<p>{{ ERROR_MSG }}</p>
+</div>
 {% endif %}
 
-<h1><i class="icon {{ POINTS_ICON_MAINICON }} fa-fw" aria-hidden="true"></i> {{ lang('ACP_POINTS') }} - {{ lang('ACP_POINTS_FORUM_TITLE') }}</h1>
+<h1><i class="icon {{ POINTS_ICON_MAINICON }} fa-fw" aria-hidden="true"></i> {{ lang('ACP_POINTS') }} - {{
+	lang('ACP_POINTS_FORUM_TITLE') }}</h1>
 <p>{{ lang('ACP_POINTS_FORUM_EXPLAIN') }}</p>
 
 <div class="successbox">{{ lang('ACP_POINTS_VALUES_HINT') }}</div>
@@ -22,34 +23,53 @@
 	<fieldset>
 		<legend><i class="icon fa-cog fa-lg" aria-hidden="true"></i> {{ lang('FORUM_OPTIONS') }}</legend>
 		<dl>
-			<dt><label for="forum_topic">{{ lang('FORUM_PERTOPIC') }}{{ lang('COLON') }}</label><br /><span>{{ lang('FORUM_PERTOPIC_EXPLAIN') }}</span></dt>
-			<dd><input type="text" id="forum_topic" name="forum_topic" value="{{ FORUM_TOPIC }}" maxlength="8" size="10" /> {{ FORUM_POINTS_NAME }}</dd>
+			<dt><label for="forum_topic">{{ lang('FORUM_PERTOPIC') }}{{ lang('COLON') }}</label><br/><span>{{ lang('FORUM_PERTOPIC_EXPLAIN') }}</span>
+			</dt>
+			<dd><input type="text" id="forum_topic" name="forum_topic" value="{{ FORUM_TOPIC }}" maxlength="8"
+						size="10"/> {{ FORUM_POINTS_NAME }}
+			</dd>
 		</dl>
 		<dl>
-			<dt><label for="forum_post">{{ lang('FORUM_PERPOST') }}{{ lang('COLON') }}</label><br /><span>{{ lang('FORUM_PERPOST_EXPLAIN') }}</span></dt>
-			<dd><input type="text" id="forum_post" name="forum_post" value="{{ FORUM_POST }}" maxlength="8" size="10" /> {{ FORUM_POINTS_NAME }}</dd>
+			<dt><label for="forum_post">{{ lang('FORUM_PERPOST') }}{{ lang('COLON') }}</label><br/><span>{{ lang('FORUM_PERPOST_EXPLAIN') }}</span>
+			</dt>
+			<dd><input type="text" id="forum_post" name="forum_post" value="{{ FORUM_POST }}" maxlength="8" size="10"/>
+				{{ FORUM_POINTS_NAME }}
+			</dd>
 		</dl>
 		<dl>
-			<dt><label for="forum_edit">{{ lang('FORUM_PEREDIT') }}{{ lang('COLON') }}</label><br /><span>{{ lang('FORUM_PEREDIT_EXPLAIN') }}</span></dt>
-			<dd><input type="text" id="forum_edit" name="forum_edit" value="{{ FORUM_EDIT }}" maxlength="8" size="10" /> {{ FORUM_POINTS_NAME }}</dd>
+			<dt><label for="forum_edit">{{ lang('FORUM_PEREDIT') }}{{ lang('COLON') }}</label><br/><span>{{ lang('FORUM_PEREDIT_EXPLAIN') }}</span>
+			</dt>
+			<dd><input type="text" id="forum_edit" name="forum_edit" value="{{ FORUM_EDIT }}" maxlength="8" size="10"/>
+				{{ FORUM_POINTS_NAME }}
+			</dd>
 		</dl>
 		<dl>
-			<dt><label for="forum_cost">{{ lang('FORUM_COST') }}{{ lang('COLON') }}</label><br /><span>{{ lang('FORUM_COST_EXPLAIN') }}</span></dt>
-			<dd><input type="text" id="forum_cost" name="forum_cost" value="{{ FORUM_COST }}" maxlength="8" size="10" /> {{ FORUM_POINTS_NAME }}</dd>
+			<dt><label for="forum_cost">{{ lang('FORUM_COST') }}{{ lang('COLON') }}</label><br/><span>{{ lang('FORUM_COST_EXPLAIN') }}</span>
+			</dt>
+			<dd><input type="text" id="forum_cost" name="forum_cost" value="{{ FORUM_COST }}" maxlength="8" size="10"/>
+				{{ FORUM_POINTS_NAME }}
+			</dd>
 		</dl>
 		<dl>
-			<dt><label for="forum_cost_topic">{{ lang('FORUM_COST_TOPIC') }}{{ lang('COLON') }}</label><br /><span>{{ lang('FORUM_COST_TOPIC_EXPLAIN') }}</span></dt>
-			<dd><input type="text" id="forum_cost_topic" name="forum_cost_topic" value="{{ FORUM_COST_TOPIC }}" maxlength="8" size="10" /> {{ FORUM_POINTS_NAME }}</dd>
+			<dt><label for="forum_cost_topic">{{ lang('FORUM_COST_TOPIC') }}{{ lang('COLON') }}</label><br/><span>{{ lang('FORUM_COST_TOPIC_EXPLAIN') }}</span>
+			</dt>
+			<dd><input type="text" id="forum_cost_topic" name="forum_cost_topic" value="{{ FORUM_COST_TOPIC }}"
+						maxlength="8" size="10"/> {{ FORUM_POINTS_NAME }}
+			</dd>
 		</dl>
 		<dl>
-			<dt><label for="forum_cost_post">{{ lang('FORUM_COST_POST') }}{{ lang('COLON') }}</label><br /><span>{{ lang('FORUM_COST_POST_EXPLAIN') }}</span></dt>
-			<dd><input type="text" id="forum_cost_post" name="forum_cost_post" value="{{ FORUM_COST_POST }}" maxlength="8" size="10" /> {{ FORUM_POINTS_NAME }}</dd>
+			<dt><label for="forum_cost_post">{{ lang('FORUM_COST_POST') }}{{ lang('COLON') }}</label><br/><span>{{ lang('FORUM_COST_POST_EXPLAIN') }}</span>
+			</dt>
+			<dd><input type="text" id="forum_cost_post" name="forum_cost_post" value="{{ FORUM_COST_POST }}"
+						maxlength="8" size="10"/> {{ FORUM_POINTS_NAME }}
+			</dd>
 		</dl>
 	</fieldset>
 
 	<fieldset class="submit-buttons">
 		<legend>{{ lang('SUBMIT') }}</legend>
-		<input class="ultimatepoints-button ultimatepoints-submit" type="submit" id="action_point_values" name="action_point_values" value="{{ lang('SUBMIT') }}" />
+		<input class="ultimatepoints-button ultimatepoints-submit" type="submit" id="action_point_values"
+				name="action_point_values" value="{{ lang('SUBMIT') }}"/>
 	</fieldset>
 </form>
 

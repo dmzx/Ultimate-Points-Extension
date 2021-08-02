@@ -1,16 +1,22 @@
 {% if USE_POINTS and U_USE_POINTS %}
 <dd>
-	<strong>{{ lang('POINTS_CASH_ON_HAND') }}{{ lang('COLON') }}</strong> {% if postrow.POSTER_LOCK %}{{ lang('POINTS_LOCKED') }}{% else %}{{ postrow.POSTER_POINTS }} {% if USE_IMAGES_POINTS %}<i class="icon fa {{ POINTS_ICON_MAINICON }}" aria-hidden="true"></i>{% else %}{{ P_NAME }}{% endif %}
+	<strong>{{ lang('POINTS_CASH_ON_HAND') }}{{ lang('COLON') }}</strong> {% if postrow.POSTER_LOCK %}{{
+	lang('POINTS_LOCKED') }}{% else %}{{ postrow.POSTER_POINTS }} {% if USE_IMAGES_POINTS %}<i
+		class="icon fa {{ POINTS_ICON_MAINICON }}" aria-hidden="true"></i>{% else %}{{ P_NAME }}{% endif %}
 	{% if not postrow.S_IS_OWN_POST and S_USER_LOGGED_IN %}
-	<br />{% if postrow.U_USE_TRANSFER %}<a href="{{ postrow.U_POINTS_DONATE }}">{{ postrow.L_DONATE }}</a>{% endif %}{% if postrow.U_USE_ROBBERY %}<a href="{{ postrow.U_ROBBERY }}">{{ postrow.L_ROBBERY }}</a>{% endif %}
+	<br/>{% if postrow.U_USE_TRANSFER %}<a href="{{ postrow.U_POINTS_DONATE }}">{{ postrow.L_DONATE }}</a>{% endif %}{%
+	if postrow.U_USE_ROBBERY %}<a href="{{ postrow.U_ROBBERY }}">{{ postrow.L_ROBBERY }}</a>{% endif %}
 	{% else %}
-	<br />
+	<br/>
 	{% endif %}<a href="{{ postrow.U_POINTS_MODIFY }}">{{ postrow.L_MOD_USER_POINTS }}</a>{% endif %}
 </dd>
 {% if USE_BANK and postrow.BANK_ACCOUNT %}
 <dd>
-	<strong>{{ BANK_BALANCE }}{{ lang('COLON') }}</strong>{% if postrow.POSTER_BANK_LOCK %} <b>{{ lang('POINTS_LOCKED') }}</b>{% else %} {{ postrow.BANK_GOLD }} {% if USE_IMAGES_POINTS %}<i class="icon fa {{ POINTS_ICON_BANKICON }}" aria-hidden="true"></i>{% else %}{{ P_NAME }}{% endif %}
-	<br />
+	<strong>{{ BANK_BALANCE }}{{ lang('COLON') }}</strong>{% if postrow.POSTER_BANK_LOCK %} <b>{{ lang('POINTS_LOCKED')
+	}}</b>{% else %} {{ postrow.BANK_GOLD }} {% if USE_IMAGES_POINTS %}<i class="icon fa {{ POINTS_ICON_BANKICON }}"
+																			aria-hidden="true"></i>{% else %}{{ P_NAME
+	}}{% endif %}
+	<br/>
 	<a href="{{ postrow.U_BANK_MODIFY }}">{{ postrow.L_MOD_USER_POINTS }}</a>{% endif %}
 </dd>
 {% endif %}

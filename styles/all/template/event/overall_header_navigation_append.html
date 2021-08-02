@@ -1,2 +1,8 @@
-{% if S_POINTS_ENABLE and S_USE_POINTS %}<li data-last-responsive="true"><a href="{{ U_POINTS }}" title="{{ POINTS_LINK }}" role="menuitem"><i class="icon fa {{ POINTS_ICON_MAINICON }}" aria-hidden="true"></i><span>{{ POINTS_LINK }}</span> [ {{ USER_POINTS }} ] </a></li>{% endif %}
-{% if S_POINTS_ENABLE and S_UPLIST_ENABLE and S_USE_POINTS %}<li data-last-responsive="true"><a href="{{ U_POINTS_LIST }}" title="{{ POINTS_LIST_TOTAL }}" role="menuitem"><i class="icon fa {{ POINTS_ICON_UPLIST }}" aria-hidden="true"></i><span>{{ POINTS_LIST_TOTAL }}</span></a></li>{% endif %}
+{% if S_POINTS_ENABLE and S_USE_POINTS %}
+<li data-last-responsive="true"><a href="{{ U_POINTS }}" title="{{ POINTS_LINK }}" role="menuitem"><i
+		class="icon fa {{ POINTS_ICON_MAINICON }}" aria-hidden="true"></i><span>{{ POINTS_LINK }}</span> [ {{
+	USER_POINTS }} ] </a></li>{% endif %}
+{% if S_POINTS_ENABLE and S_UPLIST_ENABLE and S_USE_POINTS %}
+<li data-last-responsive="true"><a href="{{ U_POINTS_LIST }}" title="{{ POINTS_LIST_TOTAL }}" role="menuitem"><i
+		class="icon fa {{ POINTS_ICON_UPLIST }}" aria-hidden="true"></i><span>{{ POINTS_LIST_TOTAL }}</span></a>
+</li>{% endif %}

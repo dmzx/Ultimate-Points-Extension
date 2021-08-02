@@ -7,14 +7,15 @@
 
 {% if S_LOTTERY %}
 
-<h1><i class="icon {{ POINTS_ICON_MAINICON }} fa-fw" aria-hidden="true"></i> {{ lang('ACP_POINTS') }} - {{ lang('ACP_POINTS_LOTTERY_TITLE') }}</h1>
+<h1><i class="icon {{ POINTS_ICON_MAINICON }} fa-fw" aria-hidden="true"></i> {{ lang('ACP_POINTS') }} - {{
+	lang('ACP_POINTS_LOTTERY_TITLE') }}</h1>
 <p>{{ lang('ACP_POINTS_LOTTERY_EXPLAIN') }}</p>
 
 {% if S_ERROR %}
-	<div class="errorbox">
-		<h3>{{ lang('WARNING') }}</h3>
-		<p>{{ ERROR_MSG }}</p>
-	</div>
+<div class="errorbox">
+	<h3>{{ lang('WARNING') }}</h3>
+	<p>{{ ERROR_MSG }}</p>
+</div>
 {% endif %}
 
 <div class="successbox">{{ lang('ACP_POINTS_VALUES_HINT') }}</div>
@@ -23,57 +24,92 @@
 	<fieldset>
 		<legend><i class="icon fa-cog fa-lg" aria-hidden="true"></i> {{ lang('LOTTERY_OPTIONS') }}</legend>
 		<dl>
-			<dt><label>{{ lang('LOTTERY_ENABLE') }}{{ lang('COLON') }}</label><br /><span>{{ lang('LOTTERY_ENABLE_EXPLAIN') }}</span></dt>
-			<dd><label><input type="radio" class="radio" name="lottery_enable" value="1"{% if LOTTERY_ENABLE %} id="lottery_enable" checked="checked" {% endif %} /> {{ lang('YES') }}</label>
-				<label><input type="radio" class="radio" name="lottery_enable" value="0"{% if not LOTTERY_ENABLE %} id="lottery_enable" checked="checked" {% endif %} /> {{ lang('NO') }}</label></dd>
+			<dt><label>{{ lang('LOTTERY_ENABLE') }}{{ lang('COLON') }}</label><br/><span>{{ lang('LOTTERY_ENABLE_EXPLAIN') }}</span>
+			</dt>
+			<dd><label><input type="radio" class="radio" name="lottery_enable" value="1" {% if LOTTERY_ENABLE %}
+								id="lottery_enable" checked="checked" {% endif %}/> {{ lang('YES') }}</label>
+				<label><input type="radio" class="radio" name="lottery_enable" value="0" {% if not LOTTERY_ENABLE %}
+								id="lottery_enable" checked="checked" {% endif %}/> {{ lang('NO') }}</label></dd>
 		</dl>
 		<dl>
-			<dt><label for="lottery_name">{{ lang('LOTTERY_NAME') }}{{ lang('COLON') }}</label><br /><span>{{ lang('LOTTERY_NAME_EXPLAIN') }}</span></dt>
-			<dd><input type="text" id="lottery_name" name="lottery_name" value="{{ LOTTERY_NAME }}" maxlength="30" size="30" /></dd>
+			<dt><label for="lottery_name">{{ lang('LOTTERY_NAME') }}{{ lang('COLON') }}</label><br/><span>{{ lang('LOTTERY_NAME_EXPLAIN') }}</span>
+			</dt>
+			<dd><input type="text" id="lottery_name" name="lottery_name" value="{{ LOTTERY_NAME }}" maxlength="30"
+						size="30"/></dd>
 		</dl>
 		{% macro option(name, value1) %}
 		{% set lang = lang(name|upper) eq name|upper ? lang('ACP_POINTS_' ~ name|upper) : lang(name|upper) %}
-		{% set lang_explain = lang(name|upper) eq name|upper ? lang('ACP_POINTS_' ~ name|upper ~ '_EXPLAIN') : lang(name|upper) %}
+		{% set lang_explain = lang(name|upper) eq name|upper ? lang('ACP_POINTS_' ~ name|upper ~ '_EXPLAIN') :
+		lang(name|upper) %}
 		<dl>
-			<dt><label>{{ lang }}{{ lang('COLON') }}</label><br />{{ lang_explain }}</dt>
-			<dd><input type="text" name="points_icon_{{ name }}" class="points-icon" value="{{ value1 }}" placeholder="{{ lang('POINTS_ICON_PLACEHOLDER') }}" required> <i class="icon {{ value1 }} fa-fw" aria-hidden="true"></i> {{ value1 }}</dd>
+			<dt><label>{{ lang }}{{ lang('COLON') }}</label><br/>{{ lang_explain }}</dt>
+			<dd><input type="text" name="points_icon_{{ name }}" class="points-icon" value="{{ value1 }}"
+						placeholder="{{ lang('POINTS_ICON_PLACEHOLDER') }}" required> <i class="icon {{ value1 }} fa-fw"
+																						aria-hidden="true"></i> {{
+				value1 }}
+			</dd>
 		</dl>
 		{% endmacro %}
 		{% import _self as points %}
 		{{ points.option('lotteryicon', POINTS_ICON_LOTTERYICON) }}
 		<dl>
-			<dt><label>{{ lang('LOTTERY_MULTI_TICKETS') }}{{ lang('COLON') }}</label><br /><span>{{ lang('LOTTERY_MULTI_TICKETS_EXPLAIN') }}</span></dt>
-			<dd><label><input type="radio" class="radio" name="lottery_multi_ticket_enable" value="1"{% if LOTTERY_MULTI_TICKET_ENABLE %} id="lottery_multi_ticket_enable" checked="checked" {% endif %} /> {{ lang('YES') }}</label>
-				<label><input type="radio" class="radio" name="lottery_multi_ticket_enable" value="0"{% if not LOTTERY_MULTI_TICKET_ENABLE %} id="lottery_multi_ticket_enable" checked="checked" {% endif %} /> {{ lang('NO') }}</label></dd>
+			<dt><label>{{ lang('LOTTERY_MULTI_TICKETS') }}{{ lang('COLON') }}</label><br/><span>{{ lang('LOTTERY_MULTI_TICKETS_EXPLAIN') }}</span>
+			</dt>
+			<dd><label><input type="radio" class="radio" name="lottery_multi_ticket_enable" value="1" {% if
+								LOTTERY_MULTI_TICKET_ENABLE %} id="lottery_multi_ticket_enable" checked="checked" {% endif
+								%}/> {{ lang('YES') }}</label>
+				<label><input type="radio" class="radio" name="lottery_multi_ticket_enable" value="0" {% if not
+								LOTTERY_MULTI_TICKET_ENABLE %} id="lottery_multi_ticket_enable" checked="checked" {% endif
+								%}/> {{ lang('NO') }}</label></dd>
 		</dl>
 		<dl>
-			<dt><label>{{ lang('LOTTERY_DISPLAY_STATS') }}{{ lang('COLON') }}</label><br /><span>{{ lang('LOTTERY_DISPLAY_STATS_EXPLAIN') }}</span></dt>
-			<dd><label><input type="radio" class="radio" name="display_lottery_stats" value="1"{% if DISPLAY_LOTTERY_STATS %} id="display_lottery_stats" checked="checked" {% endif %} /> {{ lang('YES') }}</label>
-				<label><input type="radio" class="radio" name="display_lottery_stats" value="0"{% if not DISPLAY_LOTTERY_STATS %} id="display_lottery_stats" checked="checked" {% endif %} /> {{ lang('NO') }}</label></dd>
+			<dt><label>{{ lang('LOTTERY_DISPLAY_STATS') }}{{ lang('COLON') }}</label><br/><span>{{ lang('LOTTERY_DISPLAY_STATS_EXPLAIN') }}</span>
+			</dt>
+			<dd><label><input type="radio" class="radio" name="display_lottery_stats" value="1" {% if
+								DISPLAY_LOTTERY_STATS %} id="display_lottery_stats" checked="checked" {% endif %}/> {{
+				lang('YES') }}</label>
+				<label><input type="radio" class="radio" name="display_lottery_stats" value="0" {% if not
+								DISPLAY_LOTTERY_STATS %} id="display_lottery_stats" checked="checked" {% endif %}/> {{
+					lang('NO') }}</label></dd>
 		</dl>
 		<dl>
 			<dt><label for="lottery_ticket_cost">{{ lang('LOTTERY_TICKET_COST') }}{{ lang('COLON') }}</label></dt>
-			<dd><input type="text" id="lottery_ticket_cost" name="lottery_ticket_cost" value="{{ LOTTERY_TICKET_COST }}" maxlength="8" size="10" /> {{ LOTTERY_CASH_NAME }}</dd>
+			<dd><input type="text" id="lottery_ticket_cost" name="lottery_ticket_cost" value="{{ LOTTERY_TICKET_COST }}"
+						maxlength="8" size="10"/> {{ LOTTERY_CASH_NAME }}
+			</dd>
 		</dl>
 		<dl>
-			<dt><label for="lottery_base_amount">{{ lang('LOTTERY_BASE_AMOUNT') }}{{ lang('COLON') }}</label><br /><span>{{ lang('LOTTERY_BASE_AMOUNT_EXPLAIN') }}</span></dt>
-			<dd><input type="text" id="lottery_base_amount" name="lottery_base_amount" value="{{ LOTTERY_BASE_AMOUNT }}" maxlength="8" size="10" /> {{ LOTTERY_CASH_NAME }}</dd>
+			<dt><label for="lottery_base_amount">{{ lang('LOTTERY_BASE_AMOUNT') }}{{ lang('COLON') }}</label><br/><span>{{ lang('LOTTERY_BASE_AMOUNT_EXPLAIN') }}</span>
+			</dt>
+			<dd><input type="text" id="lottery_base_amount" name="lottery_base_amount" value="{{ LOTTERY_BASE_AMOUNT }}"
+						maxlength="8" size="10"/> {{ LOTTERY_CASH_NAME }}
+			</dd>
 		</dl>
 		<dl>
-			<dt><label for="lottery_chance">{{ lang('LOTTERY_CHANCE') }}{{ lang('COLON') }}</label><br /><span>{{ lang('LOTTERY_CHANCE_EXPLAIN') }}</span></dt>
-			<dd><input type="text" id="lottery_chance" name="lottery_chance" value="{{ LOTTERY_CHANCE }}" maxlength="8" size="10" /> %</dd>
+			<dt><label for="lottery_chance">{{ lang('LOTTERY_CHANCE') }}{{ lang('COLON') }}</label><br/><span>{{ lang('LOTTERY_CHANCE_EXPLAIN') }}</span>
+			</dt>
+			<dd><input type="text" id="lottery_chance" name="lottery_chance" value="{{ LOTTERY_CHANCE }}" maxlength="8"
+						size="10"/> %
+			</dd>
 		</dl>
 		<dl>
-			<dt><label for="lottery_max_tickets">{{ lang('LOTTERY_MAX_TICKETS') }}{{ lang('COLON') }}</label><br /><span>{{ lang('LOTTERY_MAX_TICKETS_EXPLAIN') }}</span></dt>
-			<dd><input type="text" id="lottery_max_tickets" name="lottery_max_tickets" value="{{ LOTTERY_MAX_TICKETS }}" maxlength="8" size="10" /></dd>
+			<dt><label for="lottery_max_tickets">{{ lang('LOTTERY_MAX_TICKETS') }}{{ lang('COLON') }}</label><br/><span>{{ lang('LOTTERY_MAX_TICKETS_EXPLAIN') }}</span>
+			</dt>
+			<dd><input type="text" id="lottery_max_tickets" name="lottery_max_tickets" value="{{ LOTTERY_MAX_TICKETS }}"
+						maxlength="8" size="10"/></dd>
 		</dl>
 		<dl>
-			<dt><label for="lottery_draw_period">{{ lang('LOTTERY_DRAW_PERIOD') }}{{ lang('COLON') }}</label><br /><span>{{ lang('LOTTERY_DRAW_PERIOD_EXPLAIN') }}</span></dt>
-			<dd><input type="text" id="lottery_draw_period" name="lottery_draw_period" value="{{ LOTTERY_DRAW_PERIOD }}" maxlength="6" size="10" /> {{ lang('HOURS') }}</dd>
+			<dt><label for="lottery_draw_period">{{ lang('LOTTERY_DRAW_PERIOD') }}{{ lang('COLON') }}</label><br/><span>{{ lang('LOTTERY_DRAW_PERIOD_EXPLAIN') }}</span>
+			</dt>
+			<dd><input type="text" id="lottery_draw_period" name="lottery_draw_period" value="{{ LOTTERY_DRAW_PERIOD }}"
+						maxlength="6" size="10"/> {{ lang('HOURS') }}
+			</dd>
 		</dl>
 		<dl>
-			<dt><label for="lottery_pm_from">{{ lang('LOTTERY_PM_ID') }}{{ lang('COLON') }}</label><br /><span>{{ lang('LOTTERY_PM_ID_EXPLAIN') }}</span></dt>
-			<dd><input type="text" id="lottery_pm_from" name="lottery_pm_from" value="{{ LOTTERY_PM_FROM }}" maxlength="6" size="10" /></dd>
+			<dt><label for="lottery_pm_from">{{ lang('LOTTERY_PM_ID') }}{{ lang('COLON') }}</label><br/><span>{{ lang('LOTTERY_PM_ID_EXPLAIN') }}</span>
+			</dt>
+			<dd><input type="text" id="lottery_pm_from" name="lottery_pm_from" value="{{ LOTTERY_PM_FROM }}"
+						maxlength="6" size="10"/></dd>
 		</dl>
 	</fieldset>
 
@@ -81,10 +117,13 @@
 	<fieldset>
 		<legend><i class="icon fa fa-weixin fa-lg" aria-hidden="true"></i> {{ lang('LOTTERY_MCHAT_OPTIONS') }}</legend>
 		<dl>
-			<dt><label>{{ lang('LOTTERY_MCHAT_ENABLE') }}{{ lang('COLON') }}</label><br /><span>{{ lang('LOTTERY_MCHAT_ENABLE_EXPLAIN') }}</span></dt>
+			<dt><label>{{ lang('LOTTERY_MCHAT_ENABLE') }}{{ lang('COLON') }}</label><br/><span>{{ lang('LOTTERY_MCHAT_ENABLE_EXPLAIN') }}</span>
+			</dt>
 			<dd>
-				<label><input name="lottery_mchat_enable" type="radio" {% if LOTTERY_MCHAT_ENABLE %} checked="checked"{% endif %} class="radio" value="1" /> {{ lang('YES') }}</label>
-				<label><input name="lottery_mchat_enable" type="radio" {% if not LOTTERY_MCHAT_ENABLE %} checked="checked"{% endif %} class="radio" value="0" /> {{ lang('NO') }}</label>
+				<label><input name="lottery_mchat_enable" type="radio" {% if LOTTERY_MCHAT_ENABLE %} checked="checked"
+								{% endif %} class="radio" value="1"/> {{ lang('YES') }}</label>
+				<label><input name="lottery_mchat_enable" type="radio" {% if not LOTTERY_MCHAT_ENABLE %}
+								checked="checked" {% endif %} class="radio" value="0"/> {{ lang('NO') }}</label>
 			</dd>
 		</dl>
 	</fieldset>
@@ -92,8 +131,10 @@
 
 	<fieldset class="submit-buttons">
 		<legend>{{ lang('SUBMIT') }}</legend>
-		<input class="ultimatepoints-button ultimatepoints-submit" type="submit" id="submit" name="submit" value="{{ lang('SUBMIT') }}" />&nbsp;
-		<input class="ultimatepoints-button ultimatepoints-reset" type="reset" id="reset" name="reset" value="{{ lang('RESET') }}" />
+		<input class="ultimatepoints-button ultimatepoints-submit" type="submit" id="submit" name="submit"
+				value="{{ lang('SUBMIT') }}"/>&nbsp;
+		<input class="ultimatepoints-button ultimatepoints-reset" type="reset" id="reset" name="reset"
+				value="{{ lang('RESET') }}"/>
 		{{ S_FORM_TOKEN }}
 	</fieldset>
 </form>
@@ -104,8 +145,11 @@
 	<fieldset>
 		<legend>{{ lang('RESYNC_LOTTERY_HISTORY') }}</legend>
 		<dl>
-			<dt><label for="action_lottery_history">{{ lang('RESYNC_LOTTERY_HISTORY') }}</label><br /><span>{{ lang('RESYNC_LOTTERY_HISTORY_EXPLAIN') }}</span></dt>
-			<dd><input type="hidden" name="action" value="lottery_history" /><input class="ultimatepoints-button ultimatepoints-runnow" type="submit" id="action_lottery_history" name="action_lottery_history" value="{{ lang('RUN') }}" /></dd>
+			<dt><label for="action_lottery_history">{{ lang('RESYNC_LOTTERY_HISTORY') }}</label><br/><span>{{ lang('RESYNC_LOTTERY_HISTORY_EXPLAIN') }}</span>
+			</dt>
+			<dd><input type="hidden" name="action" value="lottery_history"/><input
+					class="ultimatepoints-button ultimatepoints-runnow" type="submit" id="action_lottery_history"
+					name="action_lottery_history" value="{{ lang('RUN') }}"/></dd>
 		</dl>
 	</fieldset>
 </form>

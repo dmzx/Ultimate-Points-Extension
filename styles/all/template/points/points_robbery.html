@@ -4,11 +4,21 @@
 	<ul>
 		<li class="tab"><a href="{{ U_POINTS }}">{{ lang('POINTS_OVERVIEW') }}</a></li>
 		<li class="tab"><a href="{{ U_INFO }}">{{ lang('POINTS_INFO') }}</a></li>
-		{% if TRANSFER_ENABLE and U_USE_TRANSFER %}<li class="tab"><a href="{{ U_TRANSFER_USER }}">{{ lang('POINTS_TRANSFER') }}</a></li>{% endif %}
-		{% if LOGS_ENABLE and U_USE_LOGS %}<li class="tab"><a href="{{ U_LOGS }}">{{ lang('POINTS_LOGS') }}</a></li>{% endif %}
-		{% if LOTTERY_ENABLE and U_USE_LOTTERY %}<li class="tab"><a href="{{ U_LOTTERY }}">{{ LOTTERY_NAME }}</a></li>{% endif %}
-		{% if BANK_ENABLE and U_USE_BANK %}<li class="tab"><a href="{{ U_BANK }}">{{ BANK_NAME }}</a></li>{% endif %}
-		{% if ROBBERY_ENABLE and U_USE_ROBBERY %}<li class="tab activetab"><a href="{{ U_ROBBERY }}">{{ lang('POINTS_ROBBERY') }}</a></li>{% endif %}
+		{% if TRANSFER_ENABLE and U_USE_TRANSFER %}
+		<li class="tab"><a href="{{ U_TRANSFER_USER }}">{{ lang('POINTS_TRANSFER') }}</a></li>
+		{% endif %}
+		{% if LOGS_ENABLE and U_USE_LOGS %}
+		<li class="tab"><a href="{{ U_LOGS }}">{{ lang('POINTS_LOGS') }}</a></li>
+		{% endif %}
+		{% if LOTTERY_ENABLE and U_USE_LOTTERY %}
+		<li class="tab"><a href="{{ U_LOTTERY }}">{{ LOTTERY_NAME }}</a></li>
+		{% endif %}
+		{% if BANK_ENABLE and U_USE_BANK %}
+		<li class="tab"><a href="{{ U_BANK }}">{{ BANK_NAME }}</a></li>
+		{% endif %}
+		{% if ROBBERY_ENABLE and U_USE_ROBBERY %}
+		<li class="tab activetab"><a href="{{ U_ROBBERY }}">{{ lang('POINTS_ROBBERY') }}</a></li>
+		{% endif %}
 	</ul>
 </div>
 
@@ -34,25 +44,34 @@
 				<div class="panel">
 					<div class="inner">
 						{% if S_USER_LOGGED_IN %}
-							<p>{{ lang('POINTS_CASH_ON_HAND') }}{{ lang('COLON') }}&nbsp;{{ USER_POINTS }} {{ POINTS_NAME }}</p><br />
-							<fieldset>
-								<dl>
-									<dt><label for="username">{{ lang('ROBBERY_SET_USERNAMER') }}{{ lang('COLON') }}</label></dt>
-									<dd><input type="text" tabindex="1" id="username" class="inputbox" name="username" value=""/></dd>
-									<dd><strong><a href="{{ U_FIND_USERNAME }}" onclick="find_username(this.href); return false;">{{ lang('FIND_USERNAME') }}</a></strong></dd>
-								</dl>
-								<dl>
-									<dt><label>{{ lang('ROBBERY_SET_AMOUNTR') }}{{ lang('COLON') }}</label></dt>
-									<dd><input type="text" tabindex="2" maxlength="10" class="inputbox autowidth" title="{{ lang('POINTS_NUMBER_FORMAT_EXPLAIN') }}" name="attacked_amount" value=""/> {{ POINTS_NAME }}</dd>
-								</dl>
-							</fieldset>
-							<fieldset class="submit-buttons">
-								{{ S_HIDDEN_FIELDS }}
-								<input type="submit" accesskey="s" tabindex="3" name="submit" value="{{ lang('ROBBERY_START') }}" class="button1" />
-								{{ S_FORM_TOKEN }}
-							</fieldset>
+						<p>{{ lang('POINTS_CASH_ON_HAND') }}{{ lang('COLON') }}&nbsp;{{ USER_POINTS }} {{ POINTS_NAME
+							}}</p><br/>
+						<fieldset>
+							<dl>
+								<dt><label for="username">{{ lang('ROBBERY_SET_USERNAMER') }}{{ lang('COLON') }}</label>
+								</dt>
+								<dd><input type="text" tabindex="1" id="username" class="inputbox" name="username"
+											value=""/></dd>
+								<dd><strong><a href="{{ U_FIND_USERNAME }}"
+												onclick="find_username(this.href); return false;">{{
+									lang('FIND_USERNAME') }}</a></strong></dd>
+							</dl>
+							<dl>
+								<dt><label>{{ lang('ROBBERY_SET_AMOUNTR') }}{{ lang('COLON') }}</label></dt>
+								<dd><input type="text" tabindex="2" maxlength="10" class="inputbox autowidth"
+											title="{{ lang('POINTS_NUMBER_FORMAT_EXPLAIN') }}" name="attacked_amount"
+											value=""/> {{ POINTS_NAME }}
+								</dd>
+							</dl>
+						</fieldset>
+						<fieldset class="submit-buttons">
+							{{ S_HIDDEN_FIELDS }}
+							<input type="submit" accesskey="s" tabindex="3" name="submit"
+									value="{{ lang('ROBBERY_START') }}" class="button1"/>
+							{{ S_FORM_TOKEN }}
+						</fieldset>
 						{% else %}
-							<p>{{ lang('POINTS_BOT_GUEST') }}</p>
+						<p>{{ lang('POINTS_BOT_GUEST') }}</p>
 						{% endif %}
 					</div>
 				</div>

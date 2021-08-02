@@ -1,42 +1,51 @@
 {% INCLUDE 'overall_header.html' %}
 
 {% for administer_points in loops.administer_points %}
-	<br style="clear:both" />
+<br style="clear:both"/>
 
-	<form action="{{ S_ACTION }}" method="post">
-		<div class="panel bg2">
-			<div class="inner">
-				<div class="column1">
-					<h3><i class="icon fa-cog" aria-hidden="true"></i> {{ lang('POINTS_MODIFY') }}</h3>
-					<p>{{ lang('P_POINTS_TITLE') }}</p>
-					<dl class="details">
-						<dt>{{ lang('USERNAME') }}{{ lang('COLON') }}</dt> <dd>{{ USER_NAME }}</dd>
-						<dt>{{ lang('POINTS_CASH_ON_HAND') }}{{ lang('COLON') }}</dt> <dd>{{ POINTS_OF_USER }} {{ POINTS_NAME }}</dd>
-					</dl>
-				</div>
-				<div class="column2">
-					<h3>&nbsp;</h3>
-					<p>&nbsp;</p>
-					<dl class="details">
-						<dt><select id="method" name="method"><option value="set">{{ lang('EDIT_SET_AMOUNT') }}{{ lang('COLON') }}</option><option value="add">{{ lang('EDIT_ADD_AMOUNT') }}{{ lang('COLON') }}</option><option value="substract">{{ lang('EDIT_SUB_AMOUNT') }}{{ lang('COLON') }}</option></select></dt>
-						<dd><input type="text" tabindex="1" class="inputbox autowidth" maxlength="10" name="points" title="{{ lang('POINTS_NUMBER_FORMAT_EXPLAIN') }}" size="20" value="{{ CURRENT_VALUE }}" /></dd>
-					</dl>
-				</div>
+<form action="{{ S_ACTION }}" method="post">
+	<div class="panel bg2">
+		<div class="inner">
+			<div class="column1">
+				<h3><i class="icon fa-cog" aria-hidden="true"></i> {{ lang('POINTS_MODIFY') }}</h3>
+				<p>{{ lang('P_POINTS_TITLE') }}</p>
+				<dl class="details">
+					<dt>{{ lang('USERNAME') }}{{ lang('COLON') }}</dt>
+					<dd>{{ USER_NAME }}</dd>
+					<dt>{{ lang('POINTS_CASH_ON_HAND') }}{{ lang('COLON') }}</dt>
+					<dd>{{ POINTS_OF_USER }} {{ POINTS_NAME }}</dd>
+				</dl>
+			</div>
+			<div class="column2">
+				<h3>&nbsp;</h3>
+				<p>&nbsp;</p>
+				<dl class="details">
+					<dt><select id="method" name="method">
+						<option value="set">{{ lang('EDIT_SET_AMOUNT') }}{{ lang('COLON') }}</option>
+						<option value="add">{{ lang('EDIT_ADD_AMOUNT') }}{{ lang('COLON') }}</option>
+						<option value="substract">{{ lang('EDIT_SUB_AMOUNT') }}{{ lang('COLON') }}</option>
+					</select></dt>
+					<dd><input type="text" tabindex="1" class="inputbox autowidth" maxlength="10" name="points"
+								title="{{ lang('POINTS_NUMBER_FORMAT_EXPLAIN') }}" size="20"
+								value="{{ CURRENT_VALUE }}"/></dd>
+				</dl>
 			</div>
 		</div>
+	</div>
 
-		<div class="panel bg2">
-			<div class="inner">
-				<fieldset class="submit-buttons">
-					{{ S_HIDDEN_FIELDS }}
-					<input type="submit" accesskey="s" tabindex="2" name="submit" value="{{ lang('SUBMIT') }}" class="button1" />
-					{{ S_FORM_TOKEN }}
-				</fieldset>
-			</div>
+	<div class="panel bg2">
+		<div class="inner">
+			<fieldset class="submit-buttons">
+				{{ S_HIDDEN_FIELDS }}
+				<input type="submit" accesskey="s" tabindex="2" name="submit" value="{{ lang('SUBMIT') }}"
+						class="button1"/>
+				{{ S_FORM_TOKEN }}
+			</fieldset>
 		</div>
-	</form>
+	</div>
+</form>
 
-	<br style="clear:both" />
+<br style="clear:both"/>
 {% endfor %}
 
 {% INCLUDE 'overall_footer.html' %}

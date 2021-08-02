@@ -2,12 +2,12 @@
 
 --------------------------- */
 
-.icon-points { 
-  background-image: url("./images/icon_points.gif");
+.icon-points {
+    background-image: url("./images/icon_points.gif");
 }
 
-.icon-members { 
-  background-image: url("./images/icon_members.gif");
+.icon-members {
+    background-image: url("./images/icon_members.gif");
 }
 
 #cp-menu {
@@ -28,22 +28,22 @@
 }
 
 table.table1 thead.logs_head th {
-	color: #303333;
-	font-weight: bold;
-	text-decoration: underline;
+    color: #303333;
+    font-weight: bold;
+    text-decoration: underline;
 }
 
 .back-lottery {
-	font-weight: bold;
-	font-size: 1.1em;
+    font-weight: bold;
+    font-size: 1.1em;
 }
 
 .points-info {
-   text-align: center;
+    text-align: center;
 }
 
 .points-main-main {
-   text-align: left;
+    text-align: left;
 }
 
 .points-main-lists {
@@ -55,20 +55,20 @@ table.table1 thead.logs_head th {
 }
 
 .rich-user-avatar {
-	position: relative;
-	display: inline-block;
-	width: 20px;
-	height: 20px;
-	margin-bottom: 2px;
-	vertical-align: middle;
+    position: relative;
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    margin-bottom: 2px;
+    vertical-align: middle;
 }
 
 .rich-user-avatar img {
-	position: absolute;
-	-moz-transition: all 1s ease;
-	-webkit-transition: all 1s ease;
-	left: 0px;
-	top: 0px;
-	max-height: 20px;
-	max-width: 20px;
+    position: absolute;
+    -moz-transition: all 1s ease;
+    -webkit-transition: all 1s ease;
+    left: 0px;
+    top: 0px;
+    max-height: 20px;
+    max-width: 20px;
 }

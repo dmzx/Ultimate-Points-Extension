@@ -1,11 +1,11 @@
 <?php
 /**
-*
-* @package phpBB Extension - Ultimate Points
-* @copyright (c) 2016 dmzx & posey - https://www.dmzx-web.net
-* @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
-*
-*/
+ *
+ * @package phpBB Extension - Ultimate Points
+ * @copyright (c) 2016 dmzx & posey - https://www.dmzx-web.net
+ * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
+ *
+ */
 
 namespace dmzx\ultimatepoints;
 
@@ -15,11 +15,11 @@ use phpbb\notification\manager;
 class ext extends base
 {
 	/**
-	* Enable extension if phpBB version requirement is met
-	*
-	* @return bool
-	* @access public
-	*/
+	 * Enable extension if phpBB version requirement is met
+	 *
+	 * @return bool
+	 * @access public
+	 */
 	public function is_enableable()
 	{
 		$config = $this->container->get('config');
@@ -27,7 +27,7 @@ class ext extends base
 	}
 
 	protected static $notification_types = [
-			'dmzx.ultimatepoints.notification.type.points',
+		'dmzx.ultimatepoints.notification.type.points',
 	];
 
 	/**
@@ -49,13 +49,14 @@ class ext extends base
 					$phpbb_notifications->enable_notifications($type);
 				}
 				return 'notifications';
-			break;
+				break;
 			default:
 				// Run parent enable step method
 				return parent::enable_step($old_state);
-			break;
+				break;
 		}
 	}
+
 	/**
 	 * Disable our notifications.
 	 *
@@ -75,13 +76,14 @@ class ext extends base
 					$phpbb_notifications->disable_notifications($type);
 				}
 				return 'notifications';
-			break;
+				break;
 			default:
 				// Run parent disable step method
 				return parent::disable_step($old_state);
-			break;
+				break;
 		}
 	}
+
 	/**
 	 * Purge our notifications
 	 *
@@ -101,11 +103,11 @@ class ext extends base
 					$phpbb_notifications->purge_notifications($type);
 				}
 				return 'notifications';
-			break;
+				break;
 			default:
 				// Run parent purge step method
 				return parent::purge_step($old_state);
-			break;
+				break;
 		}
 	}
 }

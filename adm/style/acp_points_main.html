@@ -6,247 +6,372 @@
 <a name="maincontent"></a>
 
 {% if S_POINTS_MAIN %}
-<h1><i class="icon {{ POINTS_ICON_MAINICON }} fa-fw" aria-hidden="true"></i> {{ lang('ACP_POINTS') }} - {{ lang('ACP_POINTS_INDEX_TITLE') }}</h1>
-	<p>{{ lang('ACP_POINTS_INDEX_EXPLAIN') }}</p>
+<h1><i class="icon {{ POINTS_ICON_MAINICON }} fa-fw" aria-hidden="true"></i> {{ lang('ACP_POINTS') }} - {{
+	lang('ACP_POINTS_INDEX_TITLE') }}</h1>
+<p>{{ lang('ACP_POINTS_INDEX_EXPLAIN') }}</p>
 
-	<p><img src="https://img.shields.io/badge/{{ lang('Version') }}-{{ ULTIMATEPOINTS_VERSION }}-green.svg?style=plastic" /></p>
+<p><img src="https://img.shields.io/badge/{{ lang('Version') }}-{{ ULTIMATEPOINTS_VERSION }}-green.svg?style=plastic"/>
+</p>
 
-	{% if not S_POINTS_ACTIVATED %}
-		<div class="errorbox">{{ lang('ACP_POINTS_DEACTIVATED') }}</div>
-	{% endif %}
+{% if not S_POINTS_ACTIVATED %}
+<div class="errorbox">{{ lang('ACP_POINTS_DEACTIVATED') }}</div>
+{% endif %}
 
-	<div class="successbox">{{ lang('ACP_POINTS_VALUES_HINT') }}</div>
+<div class="successbox">{{ lang('ACP_POINTS_VALUES_HINT') }}</div>
 
-	<form id="acp_points_main" method="post" action="{{ U_ACTION }}">
-		<fieldset>
-			<legend><i class="icon fa-cog fa-lg" aria-hidden="true"></i> {{ lang('ACP_POINTS_INDEX_TITLE') }}</legend>
-			<dl>
-				<dt><label>{{ lang('POINTS_ENABLE') }}{{ lang('COLON') }}</label><br />{{ lang('POINTS_ENABLE_EXPLAIN') }}</dt>
-				<dd><label><input type="radio" class="radio" name="points_enable" value="1"{% if POINTS_ENABLE %} id="points_enable" checked="checked" {% endif %} /> {{ lang('YES') }}</label>
-					<label><input type="radio" class="radio" name="points_enable" value="0"{% if not POINTS_ENABLE %} id="points_enable" checked="checked" {% endif %} /> {{ lang('NO') }}</label></dd>
-			</dl>
-			<dl>
-				<dt><label>{{ lang('POINTS_NAME') }}{{ lang('COLON') }}</label><br />{{ lang('POINTS_NAME_EXPLAIN') }}</dt>
-				<dd><input name="points_name" type="text" id="points_name" size="30" maxlength="30" value="{{ POINTS_NAME }}" /></dd>
-			</dl>
-			{% macro option(name, value1) %}
-			{% set lang = lang(name|upper) eq name|upper ? lang('ACP_POINTS_' ~ name|upper) : lang(name|upper) %}
-			{% set lang_explain = lang(name|upper) eq name|upper ? lang('ACP_POINTS_' ~ name|upper ~ '_EXPLAIN') : lang(name|upper) %}
-			<dl>
-				<dt><label>{{ lang }}{{ lang('COLON') }}</label><br />{{ lang_explain }}</dt>
-				<dd><input type="text" name="points_icon_{{ name }}" class="points-icon" value="{{ value1 }}" placeholder="{{ lang('POINTS_ICON_PLACEHOLDER') }}" required> <i class="icon {{ value1 }} fa-fw" aria-hidden="true"></i> {{ value1 }}</dd>
-			</dl>
-			{% endmacro %}
-			{% import _self as points %}
-			{{ points.option('mainicon', POINTS_ICON_MAINICON) }}
-			<dl>
-				<dt><label>{{ lang('POINTS_DISABLEMSG') }}{{ lang('COLON') }}</label><br />{{ lang('POINTS_DISABLEMSG_EXPLAIN') }}</dt>
-				<dd><input name="points_disablemsg" type="text" id="points_disablemsg" size="50" maxlength="50" value="{{ POINTS_DISABLEMSG }}" /></dd>
-			</dl>
-			<dl>
-				<dt><label>{{ lang('POINTS_TRANSFER') }}{{ lang('COLON') }}</label><br />{{ lang('POINTS_TRANSFER_EXPLAIN') }}</dt>
-				<dd><label><input type="radio" class="radio" name="transfer_enable" value="1"{% if TRANSFER_ENABLE %} id="transfer_enable" checked="checked" {% endif %} /> {{ lang('YES') }}</label>
-					<label><input type="radio" class="radio" name="transfer_enable" value="0"{% if not TRANSFER_ENABLE %} id="transfer_enable" checked="checked" {% endif %} /> {{ lang('NO') }}</label></dd>
-			</dl>
-			<dl>
-				<dt><label for="transfer_fee">{{ lang('POINTS_TRANSFER_FEE') }}{{ lang('COLON') }}</label><br />{{ lang('POINTS_TRANSFER_FEE_EXPLAIN') }}</dt>
-				<dd><input type="text" id="transfer_fee" name="transfer_fee" value="{{ TRANSFER_FEE }}" maxlength="5" size="5" /> %</dd>
-			</dl>
-			<dl>
-				<dt><label>{{ lang('POINTS_STATS') }}{{ lang('COLON') }}</label><br />{{ lang('POINTS_STATS_EXPLAIN') }}</dt>
-				<dd><label><input type="radio" class="radio" name="stats_enable" value="1"{% if STATS_ENABLE %} id="stats_enable" checked="checked" {% endif %} /> {{ lang('YES') }}</label>
-					<label><input type="radio" class="radio" name="stats_enable" value="0"{% if not STATS_ENABLE %} id="stats_enable" checked="checked" {% endif %} /> {{ lang('NO') }}</label></dd>
-			</dl>
-			<dl>
-				<dt><label>{{ lang('POINTS_TRANSFER_PM') }}{{ lang('COLON') }}</label><br />{{ lang('POINTS_TRANSFER_PM_EXPLAIN') }}</dt>
-				<dd><label><input type="radio" class="radio" name="transfer_pm_enable" value="1"{% if TRANSFER_PM_ENABLE %} id="transfer_pm_enable" checked="checked" {% endif %} /> {{ lang('YES') }}</label>
-					<label><input type="radio" class="radio" name="transfer_pm_enable" value="0"{% if not TRANSFER_PM_ENABLE %} id="transfer_pm_enable" checked="checked" {% endif %} /> {{ lang('NO') }}</label></dd>
-			</dl>
-			<dl>
-				<dt><label>{{ lang('POINTS_COMMENTS') }}{{ lang('COLON') }}</label><br />{{ lang('POINTS_COMMENTS_EXPLAIN') }}</dt>
-				<dd><label><input type="radio" class="radio" name="comments_enable" value="1"{% if COMMENTS_ENABLE %} id="comments_enable" checked="checked" {% endif %} /> {{ lang('YES') }}</label>
-					<label><input type="radio" class="radio" name="comments_enable" value="0"{% if not COMMENTS_ENABLE %} id="comments_enable" checked="checked" {% endif %} /> {{ lang('NO') }}</label></dd>
-			</dl>
-			<dl>
-				<dt><label>{{ lang('UPLIST_ENABLE') }}{{ lang('COLON') }}</label><br />{{ lang('UPLIST_ENABLE_EXPLAIN') }}</dt>
-				<dd><label><input type="radio" class="radio" name="uplist_enable" value="1"{% if UPLIST_ENABLE %} id="uplist_enable" checked="checked" {% endif %} /> {{ lang('YES') }}</label>
-					<label><input type="radio" class="radio" name="uplist_enable" value="0"{% if not UPLIST_ENABLE %} id="uplist_enable" checked="checked" {% endif %} /> {{ lang('NO') }}</label></dd>
-			</dl>
-			<dl>
-				<dt><label>{{ lang('POINTS_NAME_UPLIST') }}{{ lang('COLON') }}</label><br />{{ lang('POINTS_NAME_UPLIST_EXPLAIN') }}</dt>
-				<dd><input name="points_name_uplist" type="text" id="points_name_uplist" size="30" maxlength="30" value="{{ POINTS_NAME_UPLIST }}" /></dd>
-			</dl>
-			{{ points.option('uplist', POINTS_ICON_UPLIST) }}
-			<dl>
-				<dt><label>{{ lang('POINTS_LOGS') }}{{ lang('COLON') }}</label><br />{{ lang('POINTS_LOGS_EXPLAIN') }}</dt>
-				<dd><label><input type="radio" class="radio" name="logs_enable" value="1"{% if LOGS_ENABLE %} id="logs_enable" checked="checked" {% endif %} /> {{ lang('YES') }}</label>
-					<label><input type="radio" class="radio" name="logs_enable" value="0"{% if not LOGS_ENABLE %} id="logs_enable" checked="checked" {% endif %} /> {{ lang('NO') }}</label></dd>
-			</dl>
-			<dl>
-				<dt><label>{{ lang('POINTS_IMAGES_TOPIC') }}{{ lang('COLON') }}</label><br />{{ lang('POINTS_IMAGES_TOPIC_EXPLAIN') }}</dt>
-				<dd><label><input type="radio" class="radio" name="images_topic_enable" value="1"{% if IMAGES_TOPIC_ENABLE %} id="images_topic_enable" checked="checked" {% endif %} /> {{ lang('YES') }}</label>
-					<label><input type="radio" class="radio" name="images_topic_enable" value="0"{% if not IMAGES_TOPIC_ENABLE %} id="images_topic_enable" checked="checked" {% endif %} /> {{ lang('NO') }}</label></dd>
-			</dl>
-			<dl>
-				<dt><label>{{ lang('POINTS_IMAGES_MEMBERLIST') }}{{ lang('COLON') }}</label><br />{{ lang('POINTS_IMAGES_MEMBERLIST_EXPLAIN') }}</dt>
-				<dd><label><input type="radio" class="radio" name="images_memberlist_enable" value="1"{% if IMAGES_MEMBERLIST_ENABLE %} id="images_memberlist_enable" checked="checked" {% endif %} /> {{ lang('YES') }}</label>
-					<label><input type="radio" class="radio" name="images_memberlist_enable" value="0"{% if not IMAGES_MEMBERLIST_ENABLE %} id="images_memberlist_enable" checked="checked" {% endif %} /> {{ lang('NO') }}</label></dd>
-			</dl>
-		</fieldset>
-
-		<fieldset>
-			<legend><i class="icon fa-cogs fa-lg" aria-hidden="true"></i> {{ lang('POINTS_ADV_OPTIONS') }}</legend>
-			<p>{{ lang('POINTS_ADV_OPTIONS_EXPLAIN') }}</p>
-			<dl>
-				<dt><label for="points_per_attach">{{ lang('POINTS_ATTACHMENT') }}{{ lang('COLON') }}</label></dt>
-				<dd><input type="text" id="points_per_attach" name="points_per_attach" value="{{ POINTS_PER_ATTACH }}" maxlength="8" size="10" /> {{ POINTS_NAME }}</dd>
-			</dl>
-			<dl>
-				<dt><label for="points_per_attach_file">{{ lang('POINTS_ATTACHMENT_PER_FILE') }}{{ lang('COLON') }}</label></dt>
-				<dd><input type="text" id="points_per_attach_file" name="points_per_attach_file" value="{{ POINTS_PER_ATTACH_FILE }}" maxlength="8" size="10" /> {{ POINTS_NAME }}</dd>
-			</dl>
-			<dl>
-				<dt><label for="points_per_poll">{{ lang('POINTS_POLL') }}{{ lang('COLON') }}</label></dt>
-				<dd><input type="text" id="points_per_poll" name="points_per_poll" value="{{ POINTS_PER_POLL }}" maxlength="8" size="10" /> {{ POINTS_NAME }}</dd>
-			</dl>
-			<dl>
-				<dt><label for="points_per_poll_option">{{ lang('POINTS_POLL_PER_OPTION') }}{{ lang('COLON') }}</label></dt>
-				<dd><input type="text" id="points_per_poll_option" name="points_per_poll_option" value="{{ POINTS_PER_POLL_OPTION }}" maxlength="8" size="10" /> {{ POINTS_NAME }}</dd>
-			</dl>
-			<dl>
-				<dt><label for="points_per_topic_word">{{ lang('POINTS_TOPIC_PER_WORD') }}{{ lang('COLON') }}</label></dt>
-				<dd><input type="text" id="points_per_topic_word" name="points_per_topic_word" value="{{ POINTS_PER_TOPIC_WORD }}" maxlength="8" size="10" /> {{ POINTS_NAME }}</dd>
-			</dl>
-			<dl>
-				<dt><label for="points_per_topic_character">{{ lang('POINTS_TOPIC_PER_CHARACTER') }}{{ lang('COLON') }}</label></dt>
-				<dd><input type="text" id="points_per_topic_character" name="points_per_topic_character" value="{{ POINTS_PER_TOPIC_CHARACTER }}" maxlength="8" size="10" /> {{ POINTS_NAME }}</dd>
-			</dl>
-			<dl>
-				<dt><label for="points_per_post_word">{{ lang('POINTS_POST_PER_WORD') }}{{ lang('COLON') }}</label></dt>
-				<dd><input type="text" id="points_per_post_word" name="points_per_post_word" value="{{ POINTS_PER_POST_WORD }}" maxlength="8" size="10" /> {{ POINTS_NAME }}</dd>
-			</dl>
-			<dl>
-				<dt><label for="points_per_post_character">{{ lang('POINTS_POST_PER_CHARACTER') }}{{ lang('COLON') }}</label></dt>
-				<dd><input type="text" id="points_per_post_character" name="points_per_post_character" value="{{ POINTS_PER_POST_CHARACTER }}" maxlength="8" size="10" /> {{ POINTS_NAME }}</dd>
-			</dl>
-			<dl>
-				<dt><label for="points_per_warn">{{ lang('POINTS_WARN') }}{{ lang('COLON') }}</label></dt>
-				<dd><input type="text" id="points_per_warn" name="points_per_warn" value="{{ POINTS_PER_WARN }}" maxlength="8" size="10" /> {{ POINTS_NAME }}</dd>
-			</dl>
-			<dl>
-				<dt><label for="reg_points_bonus">{{ lang('REG_POINTS_BONUS') }}{{ lang('COLON') }}</label></dt>
-				<dd><input type="text" id="reg_points_bonus" name="reg_points_bonus" value="{{ REG_POINTS_BONUS }}" maxlength="8" size="10" /> {{ POINTS_NAME }}</dd>
-			</dl>
-			<dl>
-				<dt><label for="points_bonus_chance">{{ lang('POINTS_BONUS_CHANCE') }}{{ lang('COLON') }}</label><br />{{ lang('POINTS_BONUS_CHANCE_EXPLAIN') }}</dt>
-				<dd><input type="text" id="points_bonus_chance" name="points_bonus_chance" value="{{ POINTS_BONUS_CHANCE }}" maxlength="8" size="10" /> %</dd>
-			</dl>
-			<dl>
-				<dt><label for="points_bonus_min">{{ lang('POINTS_BONUS_VALUE') }}{{ lang('COLON') }}</label><br />{{ lang('POINTS_BONUS_VALUE_EXPLAIN') }}</dt>
-				<dd>{{ lang('POINTS_MINIMUM') }}{{ lang('COLON') }} <input type="text" id="points_bonus_min" name="points_bonus_min" value="{{ POINTS_BONUS_MIN }}" maxlength="8" size="10" /> {{ POINTS_NAME }}<br />
-					{{ lang('POINTS_MAXIMUM') }}{{ lang('COLON') }}	<input type="text" id="points_bonus_max" name="points_bonus_max" value="{{ POINTS_BONUS_MAX }}" maxlength="8" size="10" /> {{ POINTS_NAME }}</dd>
-			</dl>
-			<dl>
-				<dt><label for="number_show_per_page">{{ lang('POINTS_SHOW_PER_PAGE') }}{{ lang('COLON') }}</label><br />{{ lang('POINTS_SHOW_PER_PAGE_EXPLAIN') }}</dt>
-				<dd><input type="text" id="number_show_per_page" name="number_show_per_page" value="{{ NUMBER_SHOW_PER_PAGE }}" maxlength="5" size="5" /></dd>
-			</dl>
-			<dl>
-				<dt><label for="number_show_top_points">{{ lang('TOP_POINTS') }}{{ lang('COLON') }}</label><br />{{ lang('TOP_POINTS_EXPLAIN') }}</dt>
-				<dd><input type="text" id="number_show_top_points" name="number_show_top_points" value="{{ NUMBER_SHOW_TOP_POINTS }}" maxlength="5" size="5" /></dd>
-			</dl>
-		</fieldset>
-
-		{% if TRANSFER_MCHAT_VIEW %}
-		<fieldset>
-			<legend><i class="icon fa fa-weixin fa-lg" aria-hidden="true"></i> {{ lang('TRANSFER_MCHAT_OPTIONS') }}</legend>
-			<dl>
-				<dt><label>{{ lang('TRANSFER_MCHAT_ENABLE') }}{{ lang('COLON') }}</label><br /><span>{{ lang('TRANSFER_MCHAT_ENABLE_EXPLAIN') }}</span></dt>
-				<dd>
-					<label><input name="transfer_mchat_enable" type="radio" {% if TRANSFER_MCHAT_ENABLE %} checked="checked"{% endif %} class="radio" value="1" /> {{ lang('YES') }}</label>
-					<label><input name="transfer_mchat_enable" type="radio" {% if not TRANSFER_MCHAT_ENABLE %} checked="checked"{% endif %} class="radio" value="0" /> {{ lang('NO') }}</label>
-				</dd>
-			</dl>
-		</fieldset>
-		{% endif %}
-
-		<fieldset class="submit-buttons">
-			<legend>{{ lang('SUBMIT') }}</legend>
-			<input class="ultimatepoints-button ultimatepoints-submit" type="submit" id="submit" name="submit" value="{{ lang('SUBMIT') }}" />
-			{{ S_FORM_TOKEN }}
-		</fieldset>
-	</form>
-
-	<form id="postform" action="{{ U_ACTION }}" method="post" enctype="multipart/form-data">
-		<fieldset>
-			<legend><i class="icon fa-exchange fa-lg" aria-hidden="true"></i> {{ lang('POINTS_GROUP_TRANSFER') }}</legend>
-			<p>{{ lang('POINTS_GROUP_TRANSFER_EXPLAIN') }}</p>
-			<dl>
-				<dt><label>{{ lang('POINTS_GROUP_TRANSFER_USER') }}{{ lang('COLON') }}</label></dt>
-				<dd><select name="group_id" id="group_id">{{ S_GROUP_OPTIONS }}</select></dd>
-			</dl>
-			<dl>
-				<dt><label>{{ lang('POINTS_GROUP_TRANSFER_VALUE') }}{{ lang('COLON') }}</label></dt>
-				<dd><input type="text" tabindex="1" class="post" name="group_transfer_points" size="20" maxlength="18" />&nbsp;{{ POINTS_NAME }}</dd>
-			</dl>
-			<dl>
-				<dt><label>{{ lang('POINTS_GROUP_TRANSFER_PM_TITLE') }}{{ lang('COLON') }}</label></dt>
-				<dd><input type="text" tabindex="3" class="post" name="pm_subject" size="40" maxlength="255" /></dd>
-			</dl>
-			<dl>
-				<dt><label for="message">{{ lang('POINTS_GROUP_TRANSFER_PM_COMMENT') }}{{ lang('COLON') }}</label></dt>
-				<dd><textarea id="message" tabindex="4" name="pm_text" cols="60" rows="4" >{{ COMMENT }}</textarea></dd>
-				<dd>
-					<script type="text/javascript">
-					// <![CDATA[
-						var form_name = 'postform';
-						var text_name = 'message';
-						var bbtags = ['[b]','[/b]','[i]','[/i]','[u]','[/u]','[quote]','[/quote]','[code]','[/code]','[list]','[/list]','[list=]','[/list]','[img]','[/img]','[url]','[/url]','[size=]','[/size]'];
-					// ]]>
-					</script>
-					{% INCLUDEJS 'editor.js' %}
-					<script type="text/javascript" src="{{ T_TEMPLATE_PATH }}/editor.js"></script>
-					<input type="button" class="ultimatepointsbuttons" accesskey="b" name="addbbcode0" value="" onclick="bbstyle(0)" id="bold" />
-					<input type="button" class="ultimatepointsbuttons" accesskey="i" name="addbbcode2" value="" onclick="bbstyle(2)" id="italic" />
-					<input type="button" class="ultimatepointsbuttons" accesskey="u" name="addbbcode4" value="" onclick="bbstyle(4)" id="underline" />
-					<input type="button" class="ultimatepointsbuttons" accesskey="q" name="addbbcode6" value="" onclick="bbstyle(6)" id="comments" />
-					<input type="button" class="ultimatepointsbuttons" accesskey="c" name="addbbcode8" value="" onclick="bbstyle(8)" id="page_white_code" />
-					<input type="button" class="ultimatepointsbuttons" accesskey="l" name="addbbcode10" value="" onclick="bbstyle(10)" id="text_list_bullets" />
-					<input type="button" class="ultimatepointsbuttons" accesskey="o" name="addbbcode12" value="" onclick="bbstyle(12)" id="text_list_numbers" />
-					<input type="button" class="ultimatepointsbuttons" accesskey="t" name="addlitsitem" value="" onclick="bbstyle(-1)" id="bullet_black" />
-					<input type="button" class="ultimatepointsbuttons" accesskey="p" name="addbbcode14" value="" onclick="bbstyle(14)" id="images" />
-					<input type="button" class="ultimatepointsbuttons" accesskey="w" name="addbbcode16" value="" onclick="bbstyle(16)" id="world_link" />
-					<br />
-					<a href="{{ U_SMILIES }}" onclick="popup(this.href, 300, 350, '_phpbbsmilies'); return false;">{{ lang('POINTS_SMILIES') }}</a>
-				</dd>
-			</dl>
-			<dl>
-				<dt><label>{{ lang('POINTS_GROUP_TRANSFER_FUNCTION') }}{{ lang('COLON') }}</label></dt>
-				<dd><label><input type="radio" tabindex="5" class="radio" name="func" value="add" checked="checked"/> {{ lang('POINTS_GROUP_TRANSFER_ADD') }}</label><label><input type="radio" tabindex="6" class="radio" name="func" value="substract"/> {{ lang('POINTS_GROUP_TRANSFER_SUBSTRACT') }}</label><label><input type="radio" tabindex="7" class="radio" name="func" value="set"/> {{ lang('POINTS_GROUP_TRANSFER_SET') }}</label></dd>
-			</dl>
-			<p class="submit-buttons">
-				<input type="submit" tabindex="8" name="group_transfer" value="{{ lang('SUBMIT') }}" class="ultimatepoints-button ultimatepoints-submit" />&nbsp;&nbsp;<input type="reset" tabindex="8" value="{{ lang('RESET') }}" class="ultimatepoints-button ultimatepoints-reset" />
-				{{ S_FORM_TOKEN }}
-			</p>
-		</fieldset>
-	</form>
-
-	<div class="errorbox">{{ lang('RESYNC_ATTENTION') }}</div>
+<form id="acp_points_main" method="post" action="{{ U_ACTION }}">
+	<fieldset>
+		<legend><i class="icon fa-cog fa-lg" aria-hidden="true"></i> {{ lang('ACP_POINTS_INDEX_TITLE') }}</legend>
+		<dl>
+			<dt><label>{{ lang('POINTS_ENABLE') }}{{ lang('COLON') }}</label><br/>{{ lang('POINTS_ENABLE_EXPLAIN') }}
+			</dt>
+			<dd><label><input type="radio" class="radio" name="points_enable" value="1" {% if POINTS_ENABLE %}
+								id="points_enable" checked="checked" {% endif %}/> {{ lang('YES') }}</label>
+				<label><input type="radio" class="radio" name="points_enable" value="0" {% if not POINTS_ENABLE %}
+								id="points_enable" checked="checked" {% endif %}/> {{ lang('NO') }}</label></dd>
+		</dl>
+		<dl>
+			<dt><label>{{ lang('POINTS_NAME') }}{{ lang('COLON') }}</label><br/>{{ lang('POINTS_NAME_EXPLAIN') }}</dt>
+			<dd><input name="points_name" type="text" id="points_name" size="30" maxlength="30"
+						value="{{ POINTS_NAME }}"/></dd>
+		</dl>
+		{% macro option(name, value1) %}
+		{% set lang = lang(name|upper) eq name|upper ? lang('ACP_POINTS_' ~ name|upper) : lang(name|upper) %}
+		{% set lang_explain = lang(name|upper) eq name|upper ? lang('ACP_POINTS_' ~ name|upper ~ '_EXPLAIN') :
+		lang(name|upper) %}
+		<dl>
+			<dt><label>{{ lang }}{{ lang('COLON') }}</label><br/>{{ lang_explain }}</dt>
+			<dd><input type="text" name="points_icon_{{ name }}" class="points-icon" value="{{ value1 }}"
+						placeholder="{{ lang('POINTS_ICON_PLACEHOLDER') }}" required> <i class="icon {{ value1 }} fa-fw"
+																						aria-hidden="true"></i> {{
+				value1 }}
+			</dd>
+		</dl>
+		{% endmacro %}
+		{% import _self as points %}
+		{{ points.option('mainicon', POINTS_ICON_MAINICON) }}
+		<dl>
+			<dt><label>{{ lang('POINTS_DISABLEMSG') }}{{ lang('COLON') }}</label><br/>{{
+				lang('POINTS_DISABLEMSG_EXPLAIN') }}
+			</dt>
+			<dd><input name="points_disablemsg" type="text" id="points_disablemsg" size="50" maxlength="50"
+						value="{{ POINTS_DISABLEMSG }}"/></dd>
+		</dl>
+		<dl>
+			<dt><label>{{ lang('POINTS_TRANSFER') }}{{ lang('COLON') }}</label><br/>{{ lang('POINTS_TRANSFER_EXPLAIN')
+				}}
+			</dt>
+			<dd><label><input type="radio" class="radio" name="transfer_enable" value="1" {% if TRANSFER_ENABLE %}
+								id="transfer_enable" checked="checked" {% endif %}/> {{ lang('YES') }}</label>
+				<label><input type="radio" class="radio" name="transfer_enable" value="0" {% if not TRANSFER_ENABLE %}
+								id="transfer_enable" checked="checked" {% endif %}/> {{ lang('NO') }}</label></dd>
+		</dl>
+		<dl>
+			<dt><label for="transfer_fee">{{ lang('POINTS_TRANSFER_FEE') }}{{ lang('COLON') }}</label><br/>{{
+				lang('POINTS_TRANSFER_FEE_EXPLAIN') }}
+			</dt>
+			<dd><input type="text" id="transfer_fee" name="transfer_fee" value="{{ TRANSFER_FEE }}" maxlength="5"
+						size="5"/> %
+			</dd>
+		</dl>
+		<dl>
+			<dt><label>{{ lang('POINTS_STATS') }}{{ lang('COLON') }}</label><br/>{{ lang('POINTS_STATS_EXPLAIN') }}</dt>
+			<dd><label><input type="radio" class="radio" name="stats_enable" value="1" {% if STATS_ENABLE %}
+								id="stats_enable" checked="checked" {% endif %}/> {{ lang('YES') }}</label>
+				<label><input type="radio" class="radio" name="stats_enable" value="0" {% if not STATS_ENABLE %}
+								id="stats_enable" checked="checked" {% endif %}/> {{ lang('NO') }}</label></dd>
+		</dl>
+		<dl>
+			<dt><label>{{ lang('POINTS_TRANSFER_PM') }}{{ lang('COLON') }}</label><br/>{{
+				lang('POINTS_TRANSFER_PM_EXPLAIN') }}
+			</dt>
+			<dd><label><input type="radio" class="radio" name="transfer_pm_enable" value="1" {% if TRANSFER_PM_ENABLE %}
+								id="transfer_pm_enable" checked="checked" {% endif %}/> {{ lang('YES') }}</label>
+				<label><input type="radio" class="radio" name="transfer_pm_enable" value="0" {% if not
+								TRANSFER_PM_ENABLE %} id="transfer_pm_enable" checked="checked" {% endif %}/> {{
+					lang('NO') }}</label></dd>
+		</dl>
+		<dl>
+			<dt><label>{{ lang('POINTS_COMMENTS') }}{{ lang('COLON') }}</label><br/>{{ lang('POINTS_COMMENTS_EXPLAIN')
+				}}
+			</dt>
+			<dd><label><input type="radio" class="radio" name="comments_enable" value="1" {% if COMMENTS_ENABLE %}
+								id="comments_enable" checked="checked" {% endif %}/> {{ lang('YES') }}</label>
+				<label><input type="radio" class="radio" name="comments_enable" value="0" {% if not COMMENTS_ENABLE %}
+								id="comments_enable" checked="checked" {% endif %}/> {{ lang('NO') }}</label></dd>
+		</dl>
+		<dl>
+			<dt><label>{{ lang('UPLIST_ENABLE') }}{{ lang('COLON') }}</label><br/>{{ lang('UPLIST_ENABLE_EXPLAIN') }}
+			</dt>
+			<dd><label><input type="radio" class="radio" name="uplist_enable" value="1" {% if UPLIST_ENABLE %}
+								id="uplist_enable" checked="checked" {% endif %}/> {{ lang('YES') }}</label>
+				<label><input type="radio" class="radio" name="uplist_enable" value="0" {% if not UPLIST_ENABLE %}
+								id="uplist_enable" checked="checked" {% endif %}/> {{ lang('NO') }}</label></dd>
+		</dl>
+		<dl>
+			<dt><label>{{ lang('POINTS_NAME_UPLIST') }}{{ lang('COLON') }}</label><br/>{{
+				lang('POINTS_NAME_UPLIST_EXPLAIN') }}
+			</dt>
+			<dd><input name="points_name_uplist" type="text" id="points_name_uplist" size="30" maxlength="30"
+						value="{{ POINTS_NAME_UPLIST }}"/></dd>
+		</dl>
+		{{ points.option('uplist', POINTS_ICON_UPLIST) }}
+		<dl>
+			<dt><label>{{ lang('POINTS_LOGS') }}{{ lang('COLON') }}</label><br/>{{ lang('POINTS_LOGS_EXPLAIN') }}</dt>
+			<dd><label><input type="radio" class="radio" name="logs_enable" value="1" {% if LOGS_ENABLE %}
+								id="logs_enable" checked="checked" {% endif %}/> {{ lang('YES') }}</label>
+				<label><input type="radio" class="radio" name="logs_enable" value="0" {% if not LOGS_ENABLE %}
+								id="logs_enable" checked="checked" {% endif %}/> {{ lang('NO') }}</label></dd>
+		</dl>
+		<dl>
+			<dt><label>{{ lang('POINTS_IMAGES_TOPIC') }}{{ lang('COLON') }}</label><br/>{{
+				lang('POINTS_IMAGES_TOPIC_EXPLAIN') }}
+			</dt>
+			<dd><label><input type="radio" class="radio" name="images_topic_enable" value="1" {% if IMAGES_TOPIC_ENABLE
+								%} id="images_topic_enable" checked="checked" {% endif %}/> {{ lang('YES') }}</label>
+				<label><input type="radio" class="radio" name="images_topic_enable" value="0" {% if not
+								IMAGES_TOPIC_ENABLE %} id="images_topic_enable" checked="checked" {% endif %}/> {{
+					lang('NO') }}</label></dd>
+		</dl>
+		<dl>
+			<dt><label>{{ lang('POINTS_IMAGES_MEMBERLIST') }}{{ lang('COLON') }}</label><br/>{{
+				lang('POINTS_IMAGES_MEMBERLIST_EXPLAIN') }}
+			</dt>
+			<dd><label><input type="radio" class="radio" name="images_memberlist_enable" value="1" {% if
+								IMAGES_MEMBERLIST_ENABLE %} id="images_memberlist_enable" checked="checked" {% endif %}/>
+				{{ lang('YES') }}</label>
+				<label><input type="radio" class="radio" name="images_memberlist_enable" value="0" {% if not
+								IMAGES_MEMBERLIST_ENABLE %} id="images_memberlist_enable" checked="checked" {% endif %}/>
+					{{ lang('NO') }}</label></dd>
+		</dl>
+	</fieldset>
 
 	<fieldset>
-		<legend><i class="icon fa-exclamation-triangle fa-lg" aria-hidden="true"></i> {{ lang('RESYNC_DESC') }}</legend>
-		<form id="action_points_form" method="post" action="{{ U_ACTION }}">
-			<dl>
-				<dt><label for="action_points">{{ lang('RESYNC_POINTS') }}</label><br /><span>{{ lang('RESYNC_POINTS_EXPLAIN') }}</span></dt>
-				<dd><input type="hidden" name="action" value="points" /><input class="ultimatepoints-button ultimatepoints-runnow" type="submit" id="action_points" name="action_points" value="{{ lang('RUN') }}" /></dd>
-			</dl>
-		</form>
-		<form id="action_points_logs_form" method="post" action="{{ U_ACTION }}">
-			<dl>
-				<dt><label for="action_points_logs">{{ lang('RESYNC_POINTSLOGS') }}</label><br /><span>{{ lang('RESYNC_POINTSLOGS_EXPLAIN') }}</span></dt>
-				<dd><input type="hidden" name="action" value="points_logs" /><input class="ultimatepoints-button ultimatepoints-runnow" type="submit" id="action_points_logs" name="action_points_logs" value="{{ lang('RUN') }}" /></dd>
-			</dl>
-		</form>
+		<legend><i class="icon fa-cogs fa-lg" aria-hidden="true"></i> {{ lang('POINTS_ADV_OPTIONS') }}</legend>
+		<p>{{ lang('POINTS_ADV_OPTIONS_EXPLAIN') }}</p>
+		<dl>
+			<dt><label for="points_per_attach">{{ lang('POINTS_ATTACHMENT') }}{{ lang('COLON') }}</label></dt>
+			<dd><input type="text" id="points_per_attach" name="points_per_attach" value="{{ POINTS_PER_ATTACH }}"
+						maxlength="8" size="10"/> {{ POINTS_NAME }}
+			</dd>
+		</dl>
+		<dl>
+			<dt><label for="points_per_attach_file">{{ lang('POINTS_ATTACHMENT_PER_FILE') }}{{ lang('COLON') }}</label>
+			</dt>
+			<dd><input type="text" id="points_per_attach_file" name="points_per_attach_file"
+						value="{{ POINTS_PER_ATTACH_FILE }}" maxlength="8" size="10"/> {{ POINTS_NAME }}
+			</dd>
+		</dl>
+		<dl>
+			<dt><label for="points_per_poll">{{ lang('POINTS_POLL') }}{{ lang('COLON') }}</label></dt>
+			<dd><input type="text" id="points_per_poll" name="points_per_poll" value="{{ POINTS_PER_POLL }}"
+						maxlength="8" size="10"/> {{ POINTS_NAME }}
+			</dd>
+		</dl>
+		<dl>
+			<dt><label for="points_per_poll_option">{{ lang('POINTS_POLL_PER_OPTION') }}{{ lang('COLON') }}</label></dt>
+			<dd><input type="text" id="points_per_poll_option" name="points_per_poll_option"
+						value="{{ POINTS_PER_POLL_OPTION }}" maxlength="8" size="10"/> {{ POINTS_NAME }}
+			</dd>
+		</dl>
+		<dl>
+			<dt><label for="points_per_topic_word">{{ lang('POINTS_TOPIC_PER_WORD') }}{{ lang('COLON') }}</label></dt>
+			<dd><input type="text" id="points_per_topic_word" name="points_per_topic_word"
+						value="{{ POINTS_PER_TOPIC_WORD }}" maxlength="8" size="10"/> {{ POINTS_NAME }}
+			</dd>
+		</dl>
+		<dl>
+			<dt><label for="points_per_topic_character">{{ lang('POINTS_TOPIC_PER_CHARACTER') }}{{ lang('COLON')
+				}}</label></dt>
+			<dd><input type="text" id="points_per_topic_character" name="points_per_topic_character"
+						value="{{ POINTS_PER_TOPIC_CHARACTER }}" maxlength="8" size="10"/> {{ POINTS_NAME }}
+			</dd>
+		</dl>
+		<dl>
+			<dt><label for="points_per_post_word">{{ lang('POINTS_POST_PER_WORD') }}{{ lang('COLON') }}</label></dt>
+			<dd><input type="text" id="points_per_post_word" name="points_per_post_word"
+						value="{{ POINTS_PER_POST_WORD }}" maxlength="8" size="10"/> {{ POINTS_NAME }}
+			</dd>
+		</dl>
+		<dl>
+			<dt><label for="points_per_post_character">{{ lang('POINTS_POST_PER_CHARACTER') }}{{ lang('COLON')
+				}}</label></dt>
+			<dd><input type="text" id="points_per_post_character" name="points_per_post_character"
+						value="{{ POINTS_PER_POST_CHARACTER }}" maxlength="8" size="10"/> {{ POINTS_NAME }}
+			</dd>
+		</dl>
+		<dl>
+			<dt><label for="points_per_warn">{{ lang('POINTS_WARN') }}{{ lang('COLON') }}</label></dt>
+			<dd><input type="text" id="points_per_warn" name="points_per_warn" value="{{ POINTS_PER_WARN }}"
+						maxlength="8" size="10"/> {{ POINTS_NAME }}
+			</dd>
+		</dl>
+		<dl>
+			<dt><label for="reg_points_bonus">{{ lang('REG_POINTS_BONUS') }}{{ lang('COLON') }}</label></dt>
+			<dd><input type="text" id="reg_points_bonus" name="reg_points_bonus" value="{{ REG_POINTS_BONUS }}"
+						maxlength="8" size="10"/> {{ POINTS_NAME }}
+			</dd>
+		</dl>
+		<dl>
+			<dt><label for="points_bonus_chance">{{ lang('POINTS_BONUS_CHANCE') }}{{ lang('COLON') }}</label><br/>{{
+				lang('POINTS_BONUS_CHANCE_EXPLAIN') }}
+			</dt>
+			<dd><input type="text" id="points_bonus_chance" name="points_bonus_chance" value="{{ POINTS_BONUS_CHANCE }}"
+						maxlength="8" size="10"/> %
+			</dd>
+		</dl>
+		<dl>
+			<dt><label for="points_bonus_min">{{ lang('POINTS_BONUS_VALUE') }}{{ lang('COLON') }}</label><br/>{{
+				lang('POINTS_BONUS_VALUE_EXPLAIN') }}
+			</dt>
+			<dd>{{ lang('POINTS_MINIMUM') }}{{ lang('COLON') }} <input type="text" id="points_bonus_min"
+																		name="points_bonus_min"
+																		value="{{ POINTS_BONUS_MIN }}" maxlength="8"
+																		size="10"/> {{ POINTS_NAME }}<br/>
+				{{ lang('POINTS_MAXIMUM') }}{{ lang('COLON') }} <input type="text" id="points_bonus_max"
+																		name="points_bonus_max"
+																		value="{{ POINTS_BONUS_MAX }}" maxlength="8"
+																		size="10"/> {{ POINTS_NAME }}
+			</dd>
+		</dl>
+		<dl>
+			<dt><label for="number_show_per_page">{{ lang('POINTS_SHOW_PER_PAGE') }}{{ lang('COLON') }}</label><br/>{{
+				lang('POINTS_SHOW_PER_PAGE_EXPLAIN') }}
+			</dt>
+			<dd><input type="text" id="number_show_per_page" name="number_show_per_page"
+						value="{{ NUMBER_SHOW_PER_PAGE }}" maxlength="5" size="5"/></dd>
+		</dl>
+		<dl>
+			<dt><label for="number_show_top_points">{{ lang('TOP_POINTS') }}{{ lang('COLON') }}</label><br/>{{
+				lang('TOP_POINTS_EXPLAIN') }}
+			</dt>
+			<dd><input type="text" id="number_show_top_points" name="number_show_top_points"
+						value="{{ NUMBER_SHOW_TOP_POINTS }}" maxlength="5" size="5"/></dd>
+		</dl>
 	</fieldset>
+
+	{% if TRANSFER_MCHAT_VIEW %}
+	<fieldset>
+		<legend><i class="icon fa fa-weixin fa-lg" aria-hidden="true"></i> {{ lang('TRANSFER_MCHAT_OPTIONS') }}</legend>
+		<dl>
+			<dt><label>{{ lang('TRANSFER_MCHAT_ENABLE') }}{{ lang('COLON') }}</label><br/><span>{{ lang('TRANSFER_MCHAT_ENABLE_EXPLAIN') }}</span>
+			</dt>
+			<dd>
+				<label><input name="transfer_mchat_enable" type="radio" {% if TRANSFER_MCHAT_ENABLE %} checked="checked"
+								{% endif %} class="radio" value="1"/> {{ lang('YES') }}</label>
+				<label><input name="transfer_mchat_enable" type="radio" {% if not TRANSFER_MCHAT_ENABLE %}
+								checked="checked" {% endif %} class="radio" value="0"/> {{ lang('NO') }}</label>
+			</dd>
+		</dl>
+	</fieldset>
+	{% endif %}
+
+	<fieldset class="submit-buttons">
+		<legend>{{ lang('SUBMIT') }}</legend>
+		<input class="ultimatepoints-button ultimatepoints-submit" type="submit" id="submit" name="submit"
+				value="{{ lang('SUBMIT') }}"/>
+		{{ S_FORM_TOKEN }}
+	</fieldset>
+</form>
+
+<form id="postform" action="{{ U_ACTION }}" method="post" enctype="multipart/form-data">
+	<fieldset>
+		<legend><i class="icon fa-exchange fa-lg" aria-hidden="true"></i> {{ lang('POINTS_GROUP_TRANSFER') }}</legend>
+		<p>{{ lang('POINTS_GROUP_TRANSFER_EXPLAIN') }}</p>
+		<dl>
+			<dt><label>{{ lang('POINTS_GROUP_TRANSFER_USER') }}{{ lang('COLON') }}</label></dt>
+			<dd><select name="group_id" id="group_id">{{ S_GROUP_OPTIONS }}</select></dd>
+		</dl>
+		<dl>
+			<dt><label>{{ lang('POINTS_GROUP_TRANSFER_VALUE') }}{{ lang('COLON') }}</label></dt>
+			<dd><input type="text" tabindex="1" class="post" name="group_transfer_points" size="20" maxlength="18"/>&nbsp;{{
+				POINTS_NAME }}
+			</dd>
+		</dl>
+		<dl>
+			<dt><label>{{ lang('POINTS_GROUP_TRANSFER_PM_TITLE') }}{{ lang('COLON') }}</label></dt>
+			<dd><input type="text" tabindex="3" class="post" name="pm_subject" size="40" maxlength="255"/></dd>
+		</dl>
+		<dl>
+			<dt><label for="message">{{ lang('POINTS_GROUP_TRANSFER_PM_COMMENT') }}{{ lang('COLON') }}</label></dt>
+			<dd><textarea id="message" tabindex="4" name="pm_text" cols="60" rows="4">{{ COMMENT }}</textarea></dd>
+			<dd>
+				<script type="text/javascript">
+					// <![CDATA[
+					var form_name = 'postform';
+					var text_name = 'message';
+					var bbtags = ['[b]', '[/b]', '[i]', '[/i]', '[u]', '[/u]', '[quote]', '[/quote]', '[code]', '[/code]', '[list]', '[/list]', '[list=]', '[/list]', '[img]', '[/img]', '[url]', '[/url]', '[size=]', '[/size]'];
+					// ]]>
+				</script>
+				{% INCLUDEJS 'editor.js' %}
+				<script type="text/javascript" src="{{ T_TEMPLATE_PATH }}/editor.js"></script>
+				<input type="button" class="ultimatepointsbuttons" accesskey="b" name="addbbcode0" value=""
+						onclick="bbstyle(0)" id="bold"/>
+				<input type="button" class="ultimatepointsbuttons" accesskey="i" name="addbbcode2" value=""
+						onclick="bbstyle(2)" id="italic"/>
+				<input type="button" class="ultimatepointsbuttons" accesskey="u" name="addbbcode4" value=""
+						onclick="bbstyle(4)" id="underline"/>
+				<input type="button" class="ultimatepointsbuttons" accesskey="q" name="addbbcode6" value=""
+						onclick="bbstyle(6)" id="comments"/>
+				<input type="button" class="ultimatepointsbuttons" accesskey="c" name="addbbcode8" value=""
+						onclick="bbstyle(8)" id="page_white_code"/>
+				<input type="button" class="ultimatepointsbuttons" accesskey="l" name="addbbcode10" value=""
+						onclick="bbstyle(10)" id="text_list_bullets"/>
+				<input type="button" class="ultimatepointsbuttons" accesskey="o" name="addbbcode12" value=""
+						onclick="bbstyle(12)" id="text_list_numbers"/>
+				<input type="button" class="ultimatepointsbuttons" accesskey="t" name="addlitsitem" value=""
+						onclick="bbstyle(-1)" id="bullet_black"/>
+				<input type="button" class="ultimatepointsbuttons" accesskey="p" name="addbbcode14" value=""
+						onclick="bbstyle(14)" id="images"/>
+				<input type="button" class="ultimatepointsbuttons" accesskey="w" name="addbbcode16" value=""
+						onclick="bbstyle(16)" id="world_link"/>
+				<br/>
+				<a href="{{ U_SMILIES }}" onclick="popup(this.href, 300, 350, '_phpbbsmilies'); return false;">{{
+					lang('POINTS_SMILIES') }}</a>
+			</dd>
+		</dl>
+		<dl>
+			<dt><label>{{ lang('POINTS_GROUP_TRANSFER_FUNCTION') }}{{ lang('COLON') }}</label></dt>
+			<dd><label><input type="radio" tabindex="5" class="radio" name="func" value="add" checked="checked"/> {{
+				lang('POINTS_GROUP_TRANSFER_ADD') }}</label><label><input type="radio" tabindex="6" class="radio"
+																			name="func" value="substract"/> {{
+				lang('POINTS_GROUP_TRANSFER_SUBSTRACT') }}</label><label><input type="radio" tabindex="7" class="radio"
+																				name="func" value="set"/> {{
+				lang('POINTS_GROUP_TRANSFER_SET') }}</label></dd>
+		</dl>
+		<p class="submit-buttons">
+			<input type="submit" tabindex="8" name="group_transfer" value="{{ lang('SUBMIT') }}"
+					class="ultimatepoints-button ultimatepoints-submit"/>&nbsp;&nbsp;<input type="reset" tabindex="8"
+																							value="{{ lang('RESET') }}"
+																							class="ultimatepoints-button ultimatepoints-reset"/>
+			{{ S_FORM_TOKEN }}
+		</p>
+	</fieldset>
+</form>
+
+<div class="errorbox">{{ lang('RESYNC_ATTENTION') }}</div>
+
+<fieldset>
+	<legend><i class="icon fa-exclamation-triangle fa-lg" aria-hidden="true"></i> {{ lang('RESYNC_DESC') }}</legend>
+	<form id="action_points_form" method="post" action="{{ U_ACTION }}">
+		<dl>
+			<dt><label for="action_points">{{ lang('RESYNC_POINTS') }}</label><br/><span>{{ lang('RESYNC_POINTS_EXPLAIN') }}</span>
+			</dt>
+			<dd><input type="hidden" name="action" value="points"/><input
+					class="ultimatepoints-button ultimatepoints-runnow" type="submit" id="action_points"
+					name="action_points" value="{{ lang('RUN') }}"/></dd>
+		</dl>
+	</form>
+	<form id="action_points_logs_form" method="post" action="{{ U_ACTION }}">
+		<dl>
+			<dt><label for="action_points_logs">{{ lang('RESYNC_POINTSLOGS') }}</label><br/><span>{{ lang('RESYNC_POINTSLOGS_EXPLAIN') }}</span>
+			</dt>
+			<dd><input type="hidden" name="action" value="points_logs"/><input
+					class="ultimatepoints-button ultimatepoints-runnow" type="submit" id="action_points_logs"
+					name="action_points_logs" value="{{ lang('RUN') }}"/></dd>
+		</dl>
+	</form>
+</fieldset>
 
 {% endif %}
 

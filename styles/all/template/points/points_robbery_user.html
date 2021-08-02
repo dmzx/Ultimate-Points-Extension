@@ -1,6 +1,6 @@
 {% INCLUDE 'overall_header.html' %}
 
-<br style="clear:both" />
+<br style="clear:both"/>
 
 <div class="panel bg3">
 	<div class="inner">
@@ -24,21 +24,26 @@
 				<div class="panel">
 					<div class="inner">
 						{% if S_USER_LOGGED_IN %}
-							<p>{{ lang('POINTS_CASH_ON_HAND') }}{{ lang('COLON') }}&nbsp;{{ USER_POINTS }} {{ POINTS_NAME }}</p><br />
-							<fieldset>
-								<i>{{ U_ROBBERY_NAME }}</i><br /><br />
-								<dl>
-									<dt><label>{{ lang('ROBBERY_SET_AMOUNTR') }}{{ lang('COLON') }}</label></dt>
-									<dd><input type="text" tabindex="2" maxlength="10" class="inputbox autowidth" title="{{ lang('POINTS_NUMBER_FORMAT_EXPLAIN') }}" name="attacked_amount" value=""/> {{ POINTS_NAME }}</dd>
-								</dl>
-							</fieldset>
-							<fieldset class="submit-buttons">
-								{{ S_HIDDEN_FIELDS }}
-								<input type="submit" accesskey="s" tabindex="3" name="submit" value="{{ lang('ROBBERY_START') }}" class="button1" />
-								{{ S_FORM_TOKEN }}
-							</fieldset>
+						<p>{{ lang('POINTS_CASH_ON_HAND') }}{{ lang('COLON') }}&nbsp;{{ USER_POINTS }} {{ POINTS_NAME
+							}}</p><br/>
+						<fieldset>
+							<i>{{ U_ROBBERY_NAME }}</i><br/><br/>
+							<dl>
+								<dt><label>{{ lang('ROBBERY_SET_AMOUNTR') }}{{ lang('COLON') }}</label></dt>
+								<dd><input type="text" tabindex="2" maxlength="10" class="inputbox autowidth"
+											title="{{ lang('POINTS_NUMBER_FORMAT_EXPLAIN') }}" name="attacked_amount"
+											value=""/> {{ POINTS_NAME }}
+								</dd>
+							</dl>
+						</fieldset>
+						<fieldset class="submit-buttons">
+							{{ S_HIDDEN_FIELDS }}
+							<input type="submit" accesskey="s" tabindex="3" name="submit"
+									value="{{ lang('ROBBERY_START') }}" class="button1"/>
+							{{ S_FORM_TOKEN }}
+						</fieldset>
 						{% else %}
-							<p>{{ lang('POINTS_BOT_GUEST') }}</p>
+						<p>{{ lang('POINTS_BOT_GUEST') }}</p>
 						{% endif %}
 					</div>
 				</div>

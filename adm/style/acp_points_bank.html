@@ -7,14 +7,15 @@
 
 {% if S_POINTS_BANK %}
 
-<h1><i class="icon {{ POINTS_ICON_MAINICON }} fa-fw" aria-hidden="true"></i> {{ lang('ACP_POINTS') }} - {{ lang('ACP_POINTS_BANK_TITLE') }}</h1>
+<h1><i class="icon {{ POINTS_ICON_MAINICON }} fa-fw" aria-hidden="true"></i> {{ lang('ACP_POINTS') }} - {{
+	lang('ACP_POINTS_BANK_TITLE') }}</h1>
 <p>{{ lang('ACP_POINTS_BANK_EXPLAIN') }}</p>
 
 {% if S_ERROR %}
-	<div class="errorbox">
-		<h3>{{ lang('WARNING') }}</h3>
-		<p>{{ ERROR_MSG }}</p>
-	</div>
+<div class="errorbox">
+	<h3>{{ lang('WARNING') }}</h3>
+	<p>{{ ERROR_MSG }}</p>
+</div>
 {% endif %}
 
 <div class="successbox">{{ lang('ACP_POINTS_VALUES_HINT') }}</div>
@@ -23,58 +24,90 @@
 	<fieldset>
 		<legend><i class="icon fa-cog fa-lg" aria-hidden="true"></i> {{ lang('BANK_OPTIONS') }}</legend>
 		<dl>
-			<dt><label>{{ lang('BANK_ENABLE') }}{{ lang('COLON') }}</label><br /><span>{{ lang('BANK_ENABLE_EXPLAIN') }}</span></dt>
-			<dd><label><input type="radio" class="radio" name="bank_enable" value="1"{% if BANK_ENABLE %} id="bank_enable" checked="checked" {% endif %} /> {{ lang('YES') }}</label>
-				<label><input type="radio" class="radio" name="bank_enable" value="0"{% if not BANK_ENABLE %} id="bank_enable" checked="checked" {% endif %} /> {{ lang('NO') }}</label></dd>
+			<dt><label>{{ lang('BANK_ENABLE') }}{{ lang('COLON')
+				}}</label><br/><span>{{ lang('BANK_ENABLE_EXPLAIN') }}</span></dt>
+			<dd><label><input type="radio" class="radio" name="bank_enable" value="1" {% if BANK_ENABLE %}
+								id="bank_enable" checked="checked" {% endif %}/> {{ lang('YES') }}</label>
+				<label><input type="radio" class="radio" name="bank_enable" value="0" {% if not BANK_ENABLE %}
+								id="bank_enable" checked="checked" {% endif %}/> {{ lang('NO') }}</label></dd>
 		</dl>
 		<dl>
-			<dt><label for="bank_name">{{ lang('BANK_NAME') }}{{ lang('COLON') }}</label><br /><span>{{ lang('BANK_NAME_EXPLAIN') }}</span></dt>
-			<dd><input type="text" id="bank_name" name="bank_name" value="{{ BANK_NAME }}" maxlength="30" size="30" /></dd>
+			<dt><label for="bank_name">{{ lang('BANK_NAME') }}{{ lang('COLON') }}</label><br/><span>{{ lang('BANK_NAME_EXPLAIN') }}</span>
+			</dt>
+			<dd><input type="text" id="bank_name" name="bank_name" value="{{ BANK_NAME }}" maxlength="30" size="30"/>
+			</dd>
 		</dl>
 		{% macro option(name, value1) %}
 		{% set lang = lang(name|upper) eq name|upper ? lang('ACP_POINTS_' ~ name|upper) : lang(name|upper) %}
-		{% set lang_explain = lang(name|upper) eq name|upper ? lang('ACP_POINTS_' ~ name|upper ~ '_EXPLAIN') : lang(name|upper) %}
+		{% set lang_explain = lang(name|upper) eq name|upper ? lang('ACP_POINTS_' ~ name|upper ~ '_EXPLAIN') :
+		lang(name|upper) %}
 		<dl>
-			<dt><label>{{ lang }}{{ lang('COLON') }}</label><br />{{ lang_explain }}</dt>
-			<dd><input type="text" name="points_icon_{{ name }}" class="points-icon" value="{{ value1 }}" placeholder="{{ lang('POINTS_ICON_PLACEHOLDER') }}" required> <i class="icon {{ value1 }} fa-fw" aria-hidden="true"></i> {{ value1 }}</dd>
+			<dt><label>{{ lang }}{{ lang('COLON') }}</label><br/>{{ lang_explain }}</dt>
+			<dd><input type="text" name="points_icon_{{ name }}" class="points-icon" value="{{ value1 }}"
+						placeholder="{{ lang('POINTS_ICON_PLACEHOLDER') }}" required> <i class="icon {{ value1 }} fa-fw"
+																						aria-hidden="true"></i> {{
+				value1 }}
+			</dd>
 		</dl>
 		{% endmacro %}
 		{% import _self as points %}
 		{{ points.option('bankicon', POINTS_ICON_BANKICON) }}
 		<dl>
-			<dt><label for="bank_interest">{{ lang('BANK_INTEREST') }}{{ lang('COLON') }}</label><br /><span>{{ lang('BANK_INTEREST_EXPLAIN') }}</span></dt>
-			<dd><input type="text" id="bank_interest" name="bank_interest" value="{{ BANK_INTEREST }}" maxlength="10" size="10" /> %</dd>
+			<dt><label for="bank_interest">{{ lang('BANK_INTEREST') }}{{ lang('COLON') }}</label><br/><span>{{ lang('BANK_INTEREST_EXPLAIN') }}</span>
+			</dt>
+			<dd><input type="text" id="bank_interest" name="bank_interest" value="{{ BANK_INTEREST }}" maxlength="10"
+						size="10"/> %
+			</dd>
 		</dl>
 		<dl>
-			<dt><label for="bank_fees">{{ lang('BANK_FEES') }}{{ lang('COLON') }}</label><br /><span>{{ lang('BANK_FEES_EXPLAIN') }}</span></dt>
-			<dd><input type="text" id="bank_fees" name="bank_fees" value="{{ BANK_FEES }}" maxlength="10" size="10" /> %</dd>
+			<dt><label for="bank_fees">{{ lang('BANK_FEES') }}{{ lang('COLON') }}</label><br/><span>{{ lang('BANK_FEES_EXPLAIN') }}</span>
+			</dt>
+			<dd><input type="text" id="bank_fees" name="bank_fees" value="{{ BANK_FEES }}" maxlength="10" size="10"/> %
+			</dd>
 		</dl>
 		<dl>
-			<dt><label for="bank_pay_period">{{ lang('BANK_PAY') }}{{ lang('COLON') }}</label><br /><span>{{ lang('BANK_PAY_EXPLAIN') }}</span></dt>
-			<dd><input type="text" id="bank_pay_period" name="bank_pay_period" value="{{ BANK_PAY_PERIOD }}" maxlength="5" size="10" /> {{ lang('BANK_TIME') }}</dd>
+			<dt><label for="bank_pay_period">{{ lang('BANK_PAY') }}{{ lang('COLON') }}</label><br/><span>{{ lang('BANK_PAY_EXPLAIN') }}</span>
+			</dt>
+			<dd><input type="text" id="bank_pay_period" name="bank_pay_period" value="{{ BANK_PAY_PERIOD }}"
+						maxlength="5" size="10"/> {{ lang('BANK_TIME') }}
+			</dd>
 		</dl>
 		<dl>
-			<dt><label for="bank_min_withdraw">{{ lang('BANK_MINWITHDRAW') }}{{ lang('COLON') }}</label><br /><span>{{ lang('BANK_MINWITHDRAW_EXPLAIN') }}</span></dt>
-			<dd><input type="text" id="bank_min_withdraw" name="bank_min_withdraw" value="{{ BANK_MIN_WITHDRAW }}" maxlength="8" size="10" /> {{ BANK_POINTS_NAME }}</dd>
+			<dt><label for="bank_min_withdraw">{{ lang('BANK_MINWITHDRAW') }}{{ lang('COLON') }}</label><br/><span>{{ lang('BANK_MINWITHDRAW_EXPLAIN') }}</span>
+			</dt>
+			<dd><input type="text" id="bank_min_withdraw" name="bank_min_withdraw" value="{{ BANK_MIN_WITHDRAW }}"
+						maxlength="8" size="10"/> {{ BANK_POINTS_NAME }}
+			</dd>
 		</dl>
 		<dl>
-			<dt><label for="bank_min_deposit">{{ lang('BANK_MINDEPOSIT') }}{{ lang('COLON') }}</label><br /><span>{{ lang('BANK_MINDEPOSIT_EXPLAIN') }}</span></dt>
-			<dd><input type="text" id="bank_min_deposit" name="bank_min_deposit" value="{{ BANK_MIN_DEPOSIT }}" maxlength="8" size="10" /> {{ BANK_POINTS_NAME }}</dd>
+			<dt><label for="bank_min_deposit">{{ lang('BANK_MINDEPOSIT') }}{{ lang('COLON') }}</label><br/><span>{{ lang('BANK_MINDEPOSIT_EXPLAIN') }}</span>
+			</dt>
+			<dd><input type="text" id="bank_min_deposit" name="bank_min_deposit" value="{{ BANK_MIN_DEPOSIT }}"
+						maxlength="8" size="10"/> {{ BANK_POINTS_NAME }}
+			</dd>
 		</dl>
 		<dl>
-			<dt><label for="bank_interestcut">{{ lang('BANK_INTERESTCUT') }}{{ lang('COLON') }}</label><br /><span>{{ lang('BANK_INTERESTCUT_EXPLAIN') }}</span></dt>
-			<dd><input type="text" id="bank_interestcut" name="bank_interestcut" value="{{ BANK_INTERESTCUT }}" maxlength="15" size="10" /> {{ BANK_POINTS_NAME }}</dd>
+			<dt><label for="bank_interestcut">{{ lang('BANK_INTERESTCUT') }}{{ lang('COLON') }}</label><br/><span>{{ lang('BANK_INTERESTCUT_EXPLAIN') }}</span>
+			</dt>
+			<dd><input type="text" id="bank_interestcut" name="bank_interestcut" value="{{ BANK_INTERESTCUT }}"
+						maxlength="15" size="10"/> {{ BANK_POINTS_NAME }}
+			</dd>
 		</dl>
 		<dl>
-			<dt><label for="bank_cost">{{ lang('BANK_COST') }}{{ lang('COLON') }}</label><br /><span>{{ lang('BANK_COST_EXPLAIN') }}</span></dt>
-			<dd><input type="text" id="bank_cost" name="bank_cost" value="{{ BANK_COST }}" maxlength="8" size="10" /> {{ BANK_POINTS_NAME }}</dd>
+			<dt><label for="bank_cost">{{ lang('BANK_COST') }}{{ lang('COLON') }}</label><br/><span>{{ lang('BANK_COST_EXPLAIN') }}</span>
+			</dt>
+			<dd><input type="text" id="bank_cost" name="bank_cost" value="{{ BANK_COST }}" maxlength="8" size="10"/> {{
+				BANK_POINTS_NAME }}
+			</dd>
 		</dl>
 	</fieldset>
 
 	<fieldset class="submit-buttons">
 		<legend>{{ lang('SUBMIT') }}</legend>
-		<input class="ultimatepoints-button ultimatepoints-submit" type="submit" id="submit" name="submit" value="{{ lang('SUBMIT') }}" />&nbsp;
-		<input class="ultimatepoints-button ultimatepoints-reset" type="reset" id="reset" name="reset" value="{{ lang('RESET') }}" />
+		<input class="ultimatepoints-button ultimatepoints-submit" type="submit" id="submit" name="submit"
+				value="{{ lang('SUBMIT') }}"/>&nbsp;
+		<input class="ultimatepoints-button ultimatepoints-reset" type="reset" id="reset" name="reset"
+				value="{{ lang('RESET') }}"/>
 		{{ S_FORM_TOKEN }}
 	</fieldset>
 </form>

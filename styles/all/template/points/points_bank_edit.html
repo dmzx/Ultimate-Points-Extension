@@ -1,16 +1,19 @@
 {% INCLUDE 'overall_header.html' %}
 
 {% for administer_bank in loops.administer_bank %}
-<br style="clear:both" />
+<br style="clear:both"/>
 <form action="{{ S_ACTION }}" method="post">
 	<div class="panel bg1">
 		<div class="inner">
 			<div class="column1">
-				<h3><i class="icon fa {{ POINTS_ICON_BANKICON }}" aria-hidden="true"></i> {{ lang('EDIT_BANK_MODIFY') }}</h3>
+				<h3><i class="icon fa {{ POINTS_ICON_BANKICON }}" aria-hidden="true"></i> {{ lang('EDIT_BANK_MODIFY') }}
+				</h3>
 				<p>{{ lang('P_BANK_TITLE') }}</p>
 				<dl class="details">
-					<dt>{{ lang('USERNAME') }}{{ lang('COLON') }}</dt> <dd>{{ USER_NAME }}</dd>
-					<dt>{{ BANK_BALANCE }}{{ lang('COLON') }}</dt> <dd>{{ BANK_POINTS }} {{ POINTS_NAME }}</dd>
+					<dt>{{ lang('USERNAME') }}{{ lang('COLON') }}</dt>
+					<dd>{{ USER_NAME }}</dd>
+					<dt>{{ BANK_BALANCE }}{{ lang('COLON') }}</dt>
+					<dd>{{ BANK_POINTS }} {{ POINTS_NAME }}</dd>
 				</dl>
 			</div>
 			<div class="column2">
@@ -18,7 +21,9 @@
 				<p>&nbsp;</p>
 				<dl class="details">
 					<dt>{{ lang('SET_AMOUNT') }}{{ lang('COLON') }}</dt>
-					<dd><input type="text" tabindex="1" class="inputbox autowidth" maxlength="10" name="points" size="20" title="{{ lang('POINTS_NUMBER_FORMAT_EXPLAIN') }}" value="{{ CURRENT_VALUE }}" /></dd>
+					<dd><input type="text" tabindex="1" class="inputbox autowidth" maxlength="10" name="points"
+								size="20" title="{{ lang('POINTS_NUMBER_FORMAT_EXPLAIN') }}"
+								value="{{ CURRENT_VALUE }}"/></dd>
 				</dl>
 			</div>
 		</div>
@@ -28,14 +33,15 @@
 		<div class="inner">
 			<fieldset class="submit-buttons">
 				{{ S_HIDDEN_FIELDS }}
-				<input type="submit" tabindex="2" accesskey="s" name="submit" value="{{ lang('SUBMIT') }}" class="button1" />
+				<input type="submit" tabindex="2" accesskey="s" name="submit" value="{{ lang('SUBMIT') }}"
+						class="button1"/>
 				{{ S_FORM_TOKEN }}
 			</fieldset>
 		</div>
 	</div>
 </form>
 
-<br style="clear:both" />
+<br style="clear:both"/>
 {% endfor %}
 
 {% INCLUDE 'overall_footer.html' %}

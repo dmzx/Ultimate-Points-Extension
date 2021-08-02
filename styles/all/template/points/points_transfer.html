@@ -1,6 +1,6 @@
 {% INCLUDE 'overall_header.html' %}
 
-<br style="clear:both" />
+<br style="clear:both"/>
 
 <div class="panel bg3">
 	<div class="inner">
@@ -20,26 +20,32 @@
 				<h2><i class="icon fa-exchange" aria-hidden="true"></i> {{ lang('POINTS_TRANSFER') }}</h2>
 				<div class="panel">
 					<div class="inner">
-						<i>{{ U_TRANSFER_NAME }}</i><br /><br />
+						<i>{{ U_TRANSFER_NAME }}</i><br/><br/>
 						<fieldset>
 							<dl>
 								<dt><label>{{ lang('TRANSFER_AMOUNT') }}{{ lang('COLON') }}</label></dt>
-								<dd><input class="inputbox autowidth" tabindex="1" maxlength="10" type="text" name="amount" title="{{ lang('POINTS_NUMBER_FORMAT_EXPLAIN') }}" value="" />{{ POINTS_NAME }}</dd>
+								<dd><input class="inputbox autowidth" tabindex="1" maxlength="10" type="text"
+											name="amount" title="{{ lang('POINTS_NUMBER_FORMAT_EXPLAIN') }}" value=""/>{{
+									POINTS_NAME }}
+								</dd>
 							</dl>
 							<dl>
-								<dt><label>{{ lang('TRANSFER_FEE') }}{{ lang('COLON') }}</label><br /><em>{{ lang('TRANSFER_FEE_EXPLAIN') }}</em></dt>
+								<dt><label>{{ lang('TRANSFER_FEE') }}{{ lang('COLON') }}</label><br/><em>{{
+									lang('TRANSFER_FEE_EXPLAIN') }}</em></dt>
 								<dd>{{ TRANSFER_FEE }} %</dd>
 							</dl>
 							{% if POINTS_COMMENTS and S_ALLOW_SEND_PM %}
-								<dl>
-									<dt><label for="comment">{{ lang('TRANSFER_COMMENT') }}{{ lang('COLON') }}</label></dt>
-									<dd><textarea id="comment" tabindex="2" class="inputbox" name="comment" cols="50" rows="3" >{{ COMMENT }}</textarea></dd>
-								</dl>
+							<dl>
+								<dt><label for="comment">{{ lang('TRANSFER_COMMENT') }}{{ lang('COLON') }}</label></dt>
+								<dd><textarea id="comment" tabindex="2" class="inputbox" name="comment" cols="50"
+												rows="3">{{ COMMENT }}</textarea></dd>
+							</dl>
 							{% endif %}
 						</fieldset>
 						<fieldset class="submit-buttons">
 							{{ S_HIDDEN_FIELDS }}
-							<input type="submit" tabindex="3" name="submit" value="{{ lang('SUBMIT') }}" class="button1" />
+							<input type="submit" tabindex="3" name="submit" value="{{ lang('SUBMIT') }}"
+									class="button1"/>
 							{{ S_FORM_TOKEN }}
 						</fieldset>
 					</div>

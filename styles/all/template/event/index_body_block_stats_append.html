@@ -1,13 +1,16 @@
 {% if S_DISPLAY_POINTS_STATS and S_POINTS_ENABLE and U_USE_POINTS and loops.rich_user|length %}
 <h3><i class="fa fa-fw fa-signal"></i> {{ lang('POINTS_STATISTICS') }}</h3>
-<p>{{ TOTAL_POINTS_USER }}{% if S_BANK_ENABLE and USE_BANK %} &bull; {{ TOTAL_BANK_USER }} &bull; {{ TOTAL_BANK_POINTS }} {% endif %}<br />{% if S_DISPLAY_LOTTERY and S_LOTTERY_ENABLE and USE_LOTTERY %}{{ LOTTERY_TIME }} &bull; {{ lang('PREVIOUS_WINNER') }}{% endif %}</p>
+<p>{{ TOTAL_POINTS_USER }}{% if S_BANK_ENABLE and USE_BANK %} &bull; {{ TOTAL_BANK_USER }} &bull; {{ TOTAL_BANK_POINTS
+	}} {% endif %}<br/>{% if S_DISPLAY_LOTTERY and S_LOTTERY_ENABLE and USE_LOTTERY %}{{ LOTTERY_TIME }} &bull; {{
+	lang('PREVIOUS_WINNER') }}{% endif %}</p>
 
 {% if S_DISPLAY_INDEX %}
 <h3><i class="fa fa-list-ol"></i> {{ POINTS_MOST_RICH_USERS }}</h3>
 <p>{% for rich_user in loops.rich_user %}{% if not rich_user.S_FIRST_ROW %} &bull; {% endif %}
-	<div class="rich-user-avatar">
-		{% if rich_user.AVATAR %}{{ rich_user.AVATAR }}{% else %}<img src="{{ T_THEME_PATH }}/images/no_avatar.gif" width="60px;" height="60px;" alt="" />{% endif %}
-	</div>
-	{{ rich_user.USERNAME }} ({{ rich_user.SUM_POINTS }} {{ rich_user.SUM_POINTS_NAME }}){% endfor %}</p>
+<div class="rich-user-avatar">
+	{% if rich_user.AVATAR %}{{ rich_user.AVATAR }}{% else %}<img src="{{ T_THEME_PATH }}/images/no_avatar.gif"
+																	width="60px;" height="60px;" alt=""/>{% endif %}
+</div>
+{{ rich_user.USERNAME }} ({{ rich_user.SUM_POINTS }} {{ rich_user.SUM_POINTS_NAME }}){% endfor %}</p>
 {% endif %}
 {% endif %}

@@ -1,103 +1,103 @@
 .ultimatepoints-button {
-	border-radius: 0.25em;
-	border: 1px solid transparent;
-	color: #fff;
-	cursor: pointer;
-	font-family: "Lucida Grande", Verdana, Helvetica, Arial, sans-serif;
-	font-size: 1.2em;
-	font-weight: bold;
-	height: 25px;
-	padding: 2px 8px !important;
+    border-radius: 0.25em;
+    border: 1px solid transparent;
+    color: #fff;
+    cursor: pointer;
+    font-family: "Lucida Grande", Verdana, Helvetica, Arial, sans-serif;
+    font-size: 1.2em;
+    font-weight: bold;
+    height: 25px;
+    padding: 2px 8px !important;
 }
 
 .ultimatepoints-button:hover {
-	text-decoration: none;
-	color: #fff;
-	background-position: -.5em;
+    text-decoration: none;
+    color: #fff;
+    background-position: -.5em;
 }
 
 .ultimatepoints-submit {
-	background-color: #28a745;
-	background-image: linear-gradient(-180deg, #34d058 0%, #28a745 90%);
-	border-color: #28a745;
+    background-color: #28a745;
+    background-image: linear-gradient(-180deg, #34d058 0%, #28a745 90%);
+    border-color: #28a745;
 }
 
 .ultimatepoints-submit:hover {
-	background-color: #269f42;
-	background-image: linear-gradient(-180deg, #2fcb53 0%, #269f42 90%);
-	border-color: rgba(27,31,35,0.5);
+    background-color: #269f42;
+    background-image: linear-gradient(-180deg, #2fcb53 0%, #269f42 90%);
+    border-color: rgba(27, 31, 35, 0.5);
 }
 
 .ultimatepoints-reset {
-	background-color: #008cba;
-	background-image: linear-gradient(-180deg, #1997c0 0%, #007ea7 90%);
-	border-color: #008cba;
+    background-color: #008cba;
+    background-image: linear-gradient(-180deg, #1997c0 0%, #007ea7 90%);
+    border-color: #008cba;
 }
 
 .ultimatepoints-reset:hover {
-	background-color: #00546f;
-	background-image: linear-gradient(-180deg, #008cba 0%, #007094 90%);
-	border-color: #00546f;
+    background-color: #00546f;
+    background-image: linear-gradient(-180deg, #008cba 0%, #007094 90%);
+    border-color: #00546f;
 }
 
 .ultimatepoints-runnow {
-	background-color: #008cba;
-	background-image: linear-gradient(-180deg, #1997c0 0%, #007ea7 90%);
-	border-color: #008cba;
+    background-color: #008cba;
+    background-image: linear-gradient(-180deg, #1997c0 0%, #007ea7 90%);
+    border-color: #008cba;
 }
 
 .ultimatepoints-runnow:hover {
-	background-color: #00546f;
-	background-image: linear-gradient(-180deg, #008cba 0%, #007094 90%);
-	border-color: #00546f;
+    background-color: #00546f;
+    background-image: linear-gradient(-180deg, #008cba 0%, #007094 90%);
+    border-color: #00546f;
 }
 
-#bold {	
-	background-image:  url("./images/text_bold.png");
+#bold {
+    background-image: url("./images/text_bold.png");
 }
 
-#italic {	
-	background-image:  url("./images/text_italic.png");
+#italic {
+    background-image: url("./images/text_italic.png");
 }
 
-#underline {	
-	background-image:  url("./images/text_underline.png");
+#underline {
+    background-image: url("./images/text_underline.png");
 }
 
-#comments {	
-	background-image:  url("./images/comment.png");
+#comments {
+    background-image: url("./images/comment.png");
 }
 
-#page_white_code {	
-	background-image:  url("./images/page_white_code.png");
+#page_white_code {
+    background-image: url("./images/page_white_code.png");
 }
 
-#text_list_bullets {	
-	background-image:  url("./images/text_list_bullets.png");
+#text_list_bullets {
+    background-image: url("./images/text_list_bullets.png");
 }
 
-#text_list_numbers {	
-	background-image:  url("./images/text_list_numbers.png");
+#text_list_numbers {
+    background-image: url("./images/text_list_numbers.png");
 }
 
-#bullet_black {	
-	background-image:  url("./images/bullet_black.png");
+#bullet_black {
+    background-image: url("./images/bullet_black.png");
 }
 
-#images{	
-	background-image:  url("./images/images.png");
+#images {
+    background-image: url("./images/images.png");
 }
 
-#world_link{	
-	background-image:  url("./images/world_link.png");
+#world_link {
+    background-image: url("./images/world_link.png");
 }
 
-#page_white_flash{	
-	background-image:  url("./images/page_white_flash.png");
+#page_white_flash {
+    background-image: url("./images/page_white_flash.png");
 }
 
-#color_wheel{	
-	background-image:  url("./images/color_wheel.png");
+#color_wheel {
+    background-image: url("./images/color_wheel.png");
 }
 
 .ultimatepointsbuttons {
@@ -108,6 +108,7 @@
     margin: 6px 0px !important;
     border: 1px solid #979797 !important;
 }
+
 .ultimatepointsbuttons:hover {
     background-color: #ffffdf !important;
     border: 1px solid #BC2A4D !important;

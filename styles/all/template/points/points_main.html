@@ -4,11 +4,21 @@
 	<ul>
 		<li class="tab activetab"><a href="{{ U_POINTS }}"><span>{{ lang('POINTS_OVERVIEW') }}</span></a></li>
 		<li class="tab"><a href="{{ U_INFO }}"><span>{{ lang('POINTS_INFO') }}</span></a></li>
-		{% if TRANSFER_ENABLE and U_USE_TRANSFER %}<li class="tab"><a href="{{ U_TRANSFER_USER }}">{{ lang('POINTS_TRANSFER') }}</a></li>{% endif %}
-		{% if LOGS_ENABLE and U_USE_LOGS %}<li class="tab"><a href="{{ U_LOGS }}">{{ lang('POINTS_LOGS') }}</a></li>{% endif %}
-		{% if LOTTERY_ENABLE and U_USE_LOTTERY %}<li class="tab"><a href="{{ U_LOTTERY }}">{{ LOTTERY_NAME }}</a></li>{% endif %}
-		{% if BANK_ENABLE and U_USE_BANK %}<li class="tab"><a href="{{ U_BANK }}">{{ BANK_NAME }}</a></li>{% endif %}
-		{% if ROBBERY_ENABLE and U_USE_ROBBERY %}<li class="tab"><a href="{{ U_ROBBERY }}">{{ lang('POINTS_ROBBERY') }}</a></li>{% endif %}
+		{% if TRANSFER_ENABLE and U_USE_TRANSFER %}
+		<li class="tab"><a href="{{ U_TRANSFER_USER }}">{{ lang('POINTS_TRANSFER') }}</a></li>
+		{% endif %}
+		{% if LOGS_ENABLE and U_USE_LOGS %}
+		<li class="tab"><a href="{{ U_LOGS }}">{{ lang('POINTS_LOGS') }}</a></li>
+		{% endif %}
+		{% if LOTTERY_ENABLE and U_USE_LOTTERY %}
+		<li class="tab"><a href="{{ U_LOTTERY }}">{{ LOTTERY_NAME }}</a></li>
+		{% endif %}
+		{% if BANK_ENABLE and U_USE_BANK %}
+		<li class="tab"><a href="{{ U_BANK }}">{{ BANK_NAME }}</a></li>
+		{% endif %}
+		{% if ROBBERY_ENABLE and U_USE_ROBBERY %}
+		<li class="tab"><a href="{{ U_ROBBERY }}">{{ lang('POINTS_ROBBERY') }}</a></li>
+		{% endif %}
 	</ul>
 </div>
 
@@ -18,13 +28,17 @@
 		<div class="panel points-main-main">
 			<div class="inner">
 				<fieldset>
-					<br /><p>{{ lang('MAIN_HELLO_USERNAME') }}</p>{% if not U_USE_POINTS %}<br /><span style="color: red;"><b>{{ lang('MAIN_USERNAME_LOCKED') }}</b></span>{% endif %}
+					<br/>
+					<p>{{ lang('MAIN_HELLO_USERNAME') }}</p>{% if not U_USE_POINTS %}<br/><span style="color: red;"><b>{{ lang('MAIN_USERNAME_LOCKED') }}</b></span>{%
+					endif %}
 					{% if S_USER_LOGGED_IN %}
-						<p>{{ lang('MAIN_ON_HAND') }}</p>
-						<p>{% for has_bank_account in loops.has_bank_account %}{{ has_bank_account.L_MAIN_BANK_HAVE }}{% endfor %}<p>
-						<p>{{ lang('MAIN_LOTTERY_TICKETS') }}</p>
+					<p>{{ lang('MAIN_ON_HAND') }}</p>
+					<p>{% for has_bank_account in loops.has_bank_account %}{{ has_bank_account.L_MAIN_BANK_HAVE }}{%
+						endfor %}
+					<p>
+					<p>{{ lang('MAIN_LOTTERY_TICKETS') }}</p>
 					{% endif %}
-					<br /><br />
+					<br/><br/>
 				</fieldset>
 			</div>
 		</div>
@@ -33,11 +47,11 @@
 			<div class="inner" style="width: 200px;">
 				<h3>{{ lang('MAIN_LOTTERIES_WON') }}</h3>
 				{% for lotteries_won in loops.lotteries_won %}
-					<span class="column1">{{ lotteries_won.USER }}</span>
-					<span class="column2">{{ lotteries_won.TOTAL_WON }}{{ lang('COLON') }} {{ lotteries_won.TOTAL_PRIZE }}</span>
-					<br style="clear: both" />
+				<span class="column1">{{ lotteries_won.USER }}</span>
+				<span class="column2">{{ lotteries_won.TOTAL_WON }}{{ lang('COLON') }} {{ lotteries_won.TOTAL_PRIZE }}</span>
+				<br style="clear: both"/>
 				{% else %}
-					{{ lang('MAIN_LOTTERIES_NONE') }}
+				{{ lang('MAIN_LOTTERIES_NONE') }}
 				{% endfor %}
 			</div>
 		</div>
@@ -46,11 +60,11 @@
 			<div class="inner" style="width: 200px;">
 				<h3>{{ lang('MAIN_MOST_DONATED') }}</h3>
 				{% for most_donated in loops.most_donated %}
-					<span class="column1">{{ most_donated.USER }}</span>
-					<span class="column2">{{ most_donated.DONATED }}</span>
-					<br style="clear: both" />
+				<span class="column1">{{ most_donated.USER }}</span>
+				<span class="column2">{{ most_donated.DONATED }}</span>
+				<br style="clear: both"/>
 				{% else %}
-					{{ lang('MAIN_MOST_DONATED_NONE') }}
+				{{ lang('MAIN_MOST_DONATED_NONE') }}
 				{% endfor %}
 			</div>
 		</div>
@@ -59,11 +73,11 @@
 			<div class="inner" style="width: 200px;">
 				<h3>{{ lang('MAIN_RICH_BANK') }}</h3>
 				{% for richest_banker in loops.richest_banker %}
-					<span class="column1">{{ richest_banker.USER }}</span>
-					<span class="column2">{{ richest_banker.HOLDING }}</span>
-					<br style="clear: both" />
+				<span class="column1">{{ richest_banker.USER }}</span>
+				<span class="column2">{{ richest_banker.HOLDING }}</span>
+				<br style="clear: both"/>
 				{% else %}
-					{{ lang('MAIN_RICH_BANK_NONE') }}
+				{{ lang('MAIN_RICH_BANK_NONE') }}
 				{% endfor %}
 			</div>
 		</div>
@@ -72,13 +86,13 @@
 			<div class="inner" style="width: 200px;">
 				<h3>{{ POINTS_MOST_RICH_USERS }}</h3>
 				{% if S_DISPLAY_INDEX %}
-					{% for points in loops.points %}
-						<span class="column1">{{ points.USERNAME }}</span>
-						<span class="column2">{{ points.POINT }}</span>
-						<br style="clear: both" />
-					{% endfor %}
+				{% for points in loops.points %}
+				<span class="column1">{{ points.USERNAME }}</span>
+				<span class="column2">{{ points.POINT }}</span>
+				<br style="clear: both"/>
+				{% endfor %}
 				{% else %}
-						<span>{{ lang('POINTS_MOST_RICH_USERS_DISABLED') }}</span>
+				<span>{{ lang('POINTS_MOST_RICH_USERS_DISABLED') }}</span>
 				{% endif %}
 			</div>
 		</div>

@@ -1,11 +1,11 @@
 <?php
 /**
-*
-* @package phpBB Extension - Ultimate Points
-* @copyright (c) 2016 dmzx & posey - https://www.dmzx-web.net
-* @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
-*
-*/
+ *
+ * @package phpBB Extension - Ultimate Points
+ * @copyright (c) 2016 dmzx & posey - https://www.dmzx-web.net
+ * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
+ *
+ */
 
 namespace dmzx\ultimatepoints\migrations;
 
@@ -55,8 +55,8 @@ class ultimatepoints_install extends migration
 				'acp',
 				'ACP_POINTS',
 				[
-					'module_basename'	=> '\dmzx\ultimatepoints\acp\acp_ultimatepoints_module',
-					'modes' 			=> ['points', 'forumpoints', 'bank', 'lottery', 'robbery'],
+					'module_basename' => '\dmzx\ultimatepoints\acp\acp_ultimatepoints_module',
+					'modes' => ['points', 'forumpoints', 'bank', 'lottery', 'robbery'],
 				],
 			]],
 
@@ -70,9 +70,9 @@ class ultimatepoints_install extends migration
 				'ucp',
 				'UCP_ULTIMATEPOINTS_TITLE',
 				[
-					'module_basename'	=> '\dmzx\ultimatepoints\ucp\ucp_ultimatepoints_module',
-					'auth'				=> 'ext_dmzx/ultimatepoints',
-					'modes'				=> ['lottery', 'bank', 'robbery', 'transfer'],
+					'module_basename' => '\dmzx\ultimatepoints\ucp\ucp_ultimatepoints_module',
+					'auth' => 'ext_dmzx/ultimatepoints',
+					'modes' => ['lottery', 'bank', 'robbery', 'transfer'],
 				],
 			]],
 			// Insert sample data
@@ -89,133 +89,133 @@ class ultimatepoints_install extends migration
 	public function update_schema()
 	{
 		return [
-			'add_tables'	=> [
-				$this->table_prefix . 'points_bank'	=> [
-					'COLUMNS'	=> [
-						'id'			=> ['UINT:10', null, 'auto_increment'],
-						'user_id'		=> ['UINT:10', 0],
-						'holding'		=> ['DECIMAL:20', 0.00],
-						'totalwithdrew'	=> ['DECIMAL:20', 0.00],
-						'totaldeposit'	=> ['DECIMAL:20', 0.00],
-						'opentime'		=> ['UINT:10', 0],
-						'fees'			=> ['CHAR:5', 'on'],
+			'add_tables' => [
+				$this->table_prefix . 'points_bank' => [
+					'COLUMNS' => [
+						'id' => ['UINT:10', null, 'auto_increment'],
+						'user_id' => ['UINT:10', 0],
+						'holding' => ['DECIMAL:20', 0.00],
+						'totalwithdrew' => ['DECIMAL:20', 0.00],
+						'totaldeposit' => ['DECIMAL:20', 0.00],
+						'opentime' => ['UINT:10', 0],
+						'fees' => ['CHAR:5', 'on'],
 					],
-					'PRIMARY_KEY'	=> 'id',
+					'PRIMARY_KEY' => 'id',
 				],
 
-				$this->table_prefix . 'points_config'	=> [
-					'COLUMNS'	=> [
-						'config_name'		=> ['VCHAR', ''],
-						'config_value'		=> ['VCHAR_UNI', ''],
+				$this->table_prefix . 'points_config' => [
+					'COLUMNS' => [
+						'config_name' => ['VCHAR', ''],
+						'config_value' => ['VCHAR_UNI', ''],
 					],
-					'PRIMARY_KEY'	=> 'config_name',
+					'PRIMARY_KEY' => 'config_name',
 				],
 
-				$this->table_prefix . 'points_log'	=> [
-					'COLUMNS'	=> [
-						'id'			=> ['UINT:11', null, 'auto_increment'],
-						'point_send'	=> ['UINT:11', null, ''],
-						'point_recv'	=> ['UINT:11', null, ''],
-						'point_amount'	=> ['DECIMAL:20', 0.00],
-						'point_sendold'	=> ['DECIMAL:20', 0.00],
-						'point_recvold'	=> ['DECIMAL:20', 0.00],
-						'point_comment'	=> ['MTEXT_UNI', ''],
-						'point_type'	=> ['UINT:11', null, ''],
-						'point_date'	=> ['UINT:11', null, ''],
+				$this->table_prefix . 'points_log' => [
+					'COLUMNS' => [
+						'id' => ['UINT:11', null, 'auto_increment'],
+						'point_send' => ['UINT:11', null, ''],
+						'point_recv' => ['UINT:11', null, ''],
+						'point_amount' => ['DECIMAL:20', 0.00],
+						'point_sendold' => ['DECIMAL:20', 0.00],
+						'point_recvold' => ['DECIMAL:20', 0.00],
+						'point_comment' => ['MTEXT_UNI', ''],
+						'point_type' => ['UINT:11', null, ''],
+						'point_date' => ['UINT:11', null, ''],
 					],
-					'PRIMARY_KEY'	=> 'id',
+					'PRIMARY_KEY' => 'id',
 				],
 
-				$this->table_prefix . 'points_lottery_history'	=> [
-					'COLUMNS'	=> [
-						'id'		=> ['UINT:11', null, 'auto_increment'],
-						'user_id'	=> ['UINT', 0],
-						'user_name'	=> ['VCHAR', ''],
-						'time'		=> ['UINT:11', 0],
-						'amount'	=> ['DECIMAL:20', 0.00],
+				$this->table_prefix . 'points_lottery_history' => [
+					'COLUMNS' => [
+						'id' => ['UINT:11', null, 'auto_increment'],
+						'user_id' => ['UINT', 0],
+						'user_name' => ['VCHAR', ''],
+						'time' => ['UINT:11', 0],
+						'amount' => ['DECIMAL:20', 0.00],
 					],
-					'PRIMARY_KEY'	=> 'id',
+					'PRIMARY_KEY' => 'id',
 				],
 
-				$this->table_prefix . 'points_lottery_tickets'	=> [
-					'COLUMNS'	=> [
-						'ticket_id'	=> ['UINT:11', null, 'auto_increment'],
-						'user_id'	=> ['UINT:11', 0],
+				$this->table_prefix . 'points_lottery_tickets' => [
+					'COLUMNS' => [
+						'ticket_id' => ['UINT:11', null, 'auto_increment'],
+						'user_id' => ['UINT:11', 0],
 					],
-					'PRIMARY_KEY'	=> 'ticket_id',
+					'PRIMARY_KEY' => 'ticket_id',
 				],
 
-				$this->table_prefix . 'points_values'	=> [
-					'COLUMNS'	=> [
-						'bank_cost'						=> ['DECIMAL:10', 0.00],
-						'bank_fees'						=> ['DECIMAL:10', 0.00],
-						'bank_interest'					=> ['DECIMAL:10', 0.00],
-						'bank_interestcut'				=> ['DECIMAL:20', 0.00],
-						'bank_last_restocked'			=> ['UINT:11', null],
-						'bank_min_deposit'				=> ['DECIMAL:10', 0.00],
-						'bank_min_withdraw'				=> ['DECIMAL:10', 0.00],
-						'bank_name'						=> ['VCHAR:100', null],
-						'bank_pay_period'				=> ['UINT:10', 2592000],
-						'lottery_base_amount'			=> ['DECIMAL:10', 0.00],
-						'lottery_chance'				=> ['DECIMAL', 50.00],
-						'lottery_draw_period'			=> ['UINT:10', 3600],
-						'lottery_jackpot'				=> ['DECIMAL:20', 50.00],
-						'lottery_last_draw_time'		=> ['UINT:11', null],
-						'lottery_max_tickets'			=> ['UINT:10', 10],
-						'lottery_name'					=> ['VCHAR:100', ''],
-						'lottery_prev_winner'			=> ['VCHAR', ''],
-						'lottery_prev_winner_id'		=> ['UINT:10', 0],
-						'lottery_ticket_cost'			=> ['DECIMAL:10', 0.00],
-						'lottery_winners_total'			=> ['UINT', 0],
-						'number_show_per_page'			=> ['UINT:10', 0],
-						'number_show_top_points'		=> ['UINT', 0],
-						'points_bonus_chance'			=> ['DECIMAL:10', 0.00],
-						'points_bonus_min'				=> ['DECIMAL:10', 0.00],
-						'points_bonus_max'				=> ['DECIMAL:10', 0.00],
-						'points_per_attach'				=> ['DECIMAL:10', 0.00],
-						'points_per_attach_file'		=> ['DECIMAL:10', 0.00],
-						'points_per_poll'				=> ['DECIMAL:10', 0.00],
-						'points_per_poll_option'		=> ['DECIMAL:10', 0.00],
-						'points_per_post_character'		=> ['DECIMAL:10', 0.00],
-						'points_per_post_word'			=> ['DECIMAL:10', 0.00],
-						'points_per_topic_character'	=> ['DECIMAL:10', 0.00],
-						'points_per_topic_word'			=> ['DECIMAL:10', 0.00],
-						'points_per_warn'				=> ['DECIMAL:10', 0.00],
-						'reg_points_bonus'				=> ['DECIMAL:10', 0.00],
-						'robbery_chance'				=> ['DECIMAL:5', 0.00],
-						'robbery_loose'					=> ['DECIMAL:5', 0.00],
-						'robbery_max_rob'				=> ['DECIMAL:5', 10.00],
-						'transfer_fee'					=> ['UINT:10', 0],
-						'lottery_pm_from'				=> ['UINT:10', 0],
-						'forum_topic'					=> ['DECIMAL:10', 0.00],
-						'forum_post'					=> ['DECIMAL:10', 0.00],
-						'forum_edit'					=> ['DECIMAL:10', 0.00],
-						'forum_cost'					=> ['DECIMAL:10', 0.00],
-						'forum_cost_topic' 				=> ['DECIMAL:10', 0.00],
-						'forum_cost_post' 				=> ['DECIMAL:10', 0.00],
+				$this->table_prefix . 'points_values' => [
+					'COLUMNS' => [
+						'bank_cost' => ['DECIMAL:10', 0.00],
+						'bank_fees' => ['DECIMAL:10', 0.00],
+						'bank_interest' => ['DECIMAL:10', 0.00],
+						'bank_interestcut' => ['DECIMAL:20', 0.00],
+						'bank_last_restocked' => ['UINT:11', null],
+						'bank_min_deposit' => ['DECIMAL:10', 0.00],
+						'bank_min_withdraw' => ['DECIMAL:10', 0.00],
+						'bank_name' => ['VCHAR:100', null],
+						'bank_pay_period' => ['UINT:10', 2592000],
+						'lottery_base_amount' => ['DECIMAL:10', 0.00],
+						'lottery_chance' => ['DECIMAL', 50.00],
+						'lottery_draw_period' => ['UINT:10', 3600],
+						'lottery_jackpot' => ['DECIMAL:20', 50.00],
+						'lottery_last_draw_time' => ['UINT:11', null],
+						'lottery_max_tickets' => ['UINT:10', 10],
+						'lottery_name' => ['VCHAR:100', ''],
+						'lottery_prev_winner' => ['VCHAR', ''],
+						'lottery_prev_winner_id' => ['UINT:10', 0],
+						'lottery_ticket_cost' => ['DECIMAL:10', 0.00],
+						'lottery_winners_total' => ['UINT', 0],
+						'number_show_per_page' => ['UINT:10', 0],
+						'number_show_top_points' => ['UINT', 0],
+						'points_bonus_chance' => ['DECIMAL:10', 0.00],
+						'points_bonus_min' => ['DECIMAL:10', 0.00],
+						'points_bonus_max' => ['DECIMAL:10', 0.00],
+						'points_per_attach' => ['DECIMAL:10', 0.00],
+						'points_per_attach_file' => ['DECIMAL:10', 0.00],
+						'points_per_poll' => ['DECIMAL:10', 0.00],
+						'points_per_poll_option' => ['DECIMAL:10', 0.00],
+						'points_per_post_character' => ['DECIMAL:10', 0.00],
+						'points_per_post_word' => ['DECIMAL:10', 0.00],
+						'points_per_topic_character' => ['DECIMAL:10', 0.00],
+						'points_per_topic_word' => ['DECIMAL:10', 0.00],
+						'points_per_warn' => ['DECIMAL:10', 0.00],
+						'reg_points_bonus' => ['DECIMAL:10', 0.00],
+						'robbery_chance' => ['DECIMAL:5', 0.00],
+						'robbery_loose' => ['DECIMAL:5', 0.00],
+						'robbery_max_rob' => ['DECIMAL:5', 10.00],
+						'transfer_fee' => ['UINT:10', 0],
+						'lottery_pm_from' => ['UINT:10', 0],
+						'forum_topic' => ['DECIMAL:10', 0.00],
+						'forum_post' => ['DECIMAL:10', 0.00],
+						'forum_edit' => ['DECIMAL:10', 0.00],
+						'forum_cost' => ['DECIMAL:10', 0.00],
+						'forum_cost_topic' => ['DECIMAL:10', 0.00],
+						'forum_cost_post' => ['DECIMAL:10', 0.00],
 					],
 				],
 			],
-			'add_columns'	=> [
+			'add_columns' => [
 				$this->table_prefix . 'users' => [
-					'user_points' 					=> ['DECIMAL:20', 0.00],
+					'user_points' => ['DECIMAL:20', 0.00],
 				],
 
 				$this->table_prefix . 'posts' => [
-					'points_received'				=> ['DECIMAL:20', 0.00],
-					'points_poll_received'			=> ['DECIMAL:20', 0.00],
-					'points_attachment_received'	=> ['DECIMAL:20', 0.00],
-					'points_topic_received'			=> ['DECIMAL:20', 0.00],
-					'points_post_received'			=> ['DECIMAL:20', 0.00],
+					'points_received' => ['DECIMAL:20', 0.00],
+					'points_poll_received' => ['DECIMAL:20', 0.00],
+					'points_attachment_received' => ['DECIMAL:20', 0.00],
+					'points_topic_received' => ['DECIMAL:20', 0.00],
+					'points_post_received' => ['DECIMAL:20', 0.00],
 				],
 
 				$this->table_prefix . 'forums' => [
-					'forum_perpost' 				=> ['DECIMAL:10', 5.00],
-					'forum_peredit' 				=> ['DECIMAL:10', 0.05],
-					'forum_pertopic' 				=> ['DECIMAL:10', 15.00],
-					'forum_cost'					=> ['DECIMAL:10', 0.00],
-					'forum_cost_topic'				=> ['DECIMAL:10', 0.00],
-					'forum_cost_post'				=> ['DECIMAL:10', 0.00],
+					'forum_perpost' => ['DECIMAL:10', 5.00],
+					'forum_peredit' => ['DECIMAL:10', 0.05],
+					'forum_pertopic' => ['DECIMAL:10', 15.00],
+					'forum_cost' => ['DECIMAL:10', 0.00],
+					'forum_cost_topic' => ['DECIMAL:10', 0.00],
+					'forum_cost_post' => ['DECIMAL:10', 0.00],
 				],
 			],
 		];
@@ -223,7 +223,7 @@ class ultimatepoints_install extends migration
 
 	public function revert_schema()
 	{
-		return 	[
+		return [
 			'drop_tables' => [
 				$this->table_prefix . 'points_bank',
 				$this->table_prefix . 'points_config',
@@ -233,11 +233,11 @@ class ultimatepoints_install extends migration
 				$this->table_prefix . 'points_values',
 			],
 			'drop_columns' => [
-				$this->table_prefix . 'users'	=> [
+				$this->table_prefix . 'users' => [
 					'user_points',
 				],
 
-				$this->table_prefix . 'posts'	=> [
+				$this->table_prefix . 'posts' => [
 					'points_received',
 					'points_poll_received',
 					'points_attachment_received',
@@ -245,7 +245,7 @@ class ultimatepoints_install extends migration
 					'points_post_received',
 				],
 
-				$this->table_prefix . 'forums'	=> [
+				$this->table_prefix . 'forums' => [
 					'forum_perpost',
 					'forum_peredit',
 					'forum_pertopic',
@@ -314,64 +314,64 @@ class ultimatepoints_install extends migration
 			// Define sample rule data
 			$config_data = [
 				[
-					'config_name' 	=> 'transfer_enable',
-					'config_value'	=> '1',
+					'config_name' => 'transfer_enable',
+					'config_value' => '1',
 				],
 				[
-					'config_name' 	=> 'transfer_pm_enable',
-					'config_value'	=> '1',
+					'config_name' => 'transfer_pm_enable',
+					'config_value' => '1',
 				],
 				[
-					'config_name' 	=> 'comments_enable',
-					'config_value'	=> '1',
+					'config_name' => 'comments_enable',
+					'config_value' => '1',
 				],
 				[
-					'config_name' 	=> 'logs_enable',
-					'config_value'	=> '1',
+					'config_name' => 'logs_enable',
+					'config_value' => '1',
 				],
 				[
-					'config_name' 	=> 'images_topic_enable',
-					'config_value'	=> '1',
+					'config_name' => 'images_topic_enable',
+					'config_value' => '1',
 				],
 				[
-					'config_name' 	=> 'images_memberlist_enable',
-					'config_value'	=> '1',
+					'config_name' => 'images_memberlist_enable',
+					'config_value' => '1',
 				],
 				[
-					'config_name' 	=> 'lottery_enable',
-					'config_value'	=> '1',
+					'config_name' => 'lottery_enable',
+					'config_value' => '1',
 				],
 				[
-					'config_name' 	=> 'bank_enable',
-					'config_value'	=> '1',
+					'config_name' => 'bank_enable',
+					'config_value' => '1',
 				],
 				[
-					'config_name' 	=> 'robbery_enable',
-					'config_value'	=> '1',
+					'config_name' => 'robbery_enable',
+					'config_value' => '1',
 				],
 				[
-					'config_name' 	=> 'points_disablemsg',
-					'config_value'	=> 'Ultimate Points is currently disabled!',
+					'config_name' => 'points_disablemsg',
+					'config_value' => 'Ultimate Points is currently disabled!',
 				],
 				[
-					'config_name' 	=> 'stats_enable',
-					'config_value'	=> '1',
+					'config_name' => 'stats_enable',
+					'config_value' => '1',
 				],
 				[
-					'config_name' 	=> 'lottery_multi_ticket_enable',
-					'config_value'	=> '1',
+					'config_name' => 'lottery_multi_ticket_enable',
+					'config_value' => '1',
 				],
 				[
-					'config_name' 	=> 'robbery_notify',
-					'config_value'	=> '1',
+					'config_name' => 'robbery_notify',
+					'config_value' => '1',
 				],
 				[
-					'config_name' 	=> 'display_lottery_stats',
-					'config_value'	=> '1',
+					'config_name' => 'display_lottery_stats',
+					'config_value' => '1',
 				],
 				[
-					'config_name' 	=> 'uplist_enable',
-					'config_value'	=> '1',
+					'config_name' => 'uplist_enable',
+					'config_value' => '1',
 				],
 			];
 		}

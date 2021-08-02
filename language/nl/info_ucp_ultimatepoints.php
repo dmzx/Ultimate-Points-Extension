@@ -1,12 +1,12 @@
 <?php
 /**
-*
-* @package phpBB Extension - Ultimate Points
-* @copyright (c) 2016 dmzx & posey - http://www.dmzx-web.net
-* Nederlandse vertaling @ Solidjeuh <https://www.froddelpower.be>
-* @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
-*
-*/
+ *
+ * @package phpBB Extension - Ultimate Points
+ * @copyright (c) 2016 dmzx & posey - http://www.dmzx-web.net
+ * Nederlandse vertaling @ Solidjeuh <https://www.froddelpower.be>
+ * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
+ *
+ */
 
 if (!defined('IN_PHPBB'))
 {
@@ -34,6 +34,6 @@ if (empty($lang) || !is_array($lang))
 // ’ » “ ” …
 
 $lang = array_merge($lang, [
-	'UCP_ULTIMATEPOINTS_TITLE'			=> 'Ultimate Points',
-	'UCP_ULTIMATEPOINTS_EXPLAIN'		=> 'Jouw statistieken'
+	'UCP_ULTIMATEPOINTS_TITLE' => 'Ultimate Points',
+	'UCP_ULTIMATEPOINTS_EXPLAIN' => 'Jouw statistieken'
 ]);

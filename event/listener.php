@@ -1,11 +1,11 @@
 <?php
 /**
-*
-* @package phpBB Extension - Ultimate Points
-* @copyright (c) 2016 dmzx & posey - https://www.dmzx-web.net
-* @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
-*
-*/
+ *
+ * @package phpBB Extension - Ultimate Points
+ * @copyright (c) 2016 dmzx & posey - https://www.dmzx-web.net
+ * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
+ *
+ */
 
 namespace dmzx\ultimatepoints\event;
 
@@ -22,11 +22,11 @@ use phpbb\user;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
-* Event listener
-*/
+ * Event listener
+ */
 class listener implements EventSubscriberInterface
 {
-	/** @var functions_points*/
+	/** @var functions_points */
 	protected $functions_points;
 
 	/** @var user */
@@ -60,10 +60,10 @@ class listener implements EventSubscriberInterface
 	protected $php_ext;
 
 	/**
-	* The database tables
-	*
-	* @var string
-	*/
+	 * The database tables
+	 *
+	 * @var string
+	 */
 	protected $points_bank_table;
 
 	protected $points_config_table;
@@ -74,86 +74,86 @@ class listener implements EventSubscriberInterface
 	protected $files_factory;
 
 	/**
-	* Constructor
-	*
-	* @var functions_points		$functions_points
-	* @param user				$user
-	* @param template			$template
-	* @param driver_interface	$db
-	* @param config				$config
-	* @param auth				$auth
-	* @param helper				$helper
-	* @param service			$cache
-	* @param request		 	$request
-	* @param string				$root_path
-	* @param string				$php_ext
-	* @param string 			$points_bank_table
-	* @param string 			$points_config_table
-	* @param string 			$points_values_table
-	* @param factory			$files_factory
-	*
-	*/
+	 * Constructor
+	 *
+	 * @param user $user
+	 * @param template $template
+	 * @param driver_interface $db
+	 * @param config $config
+	 * @param auth $auth
+	 * @param helper $helper
+	 * @param service $cache
+	 * @param request $request
+	 * @param string $root_path
+	 * @param string $php_ext
+	 * @param string $points_bank_table
+	 * @param string $points_config_table
+	 * @param string $points_values_table
+	 * @param factory $files_factory
+	 *
+	 * @var functions_points $functions_points
+	 */
 	public function __construct(
 		functions_points $functions_points,
-		user $user,
-		template $template,
+		user			 $user,
+		template		 $template,
 		driver_interface $db,
-		config $config,
-		auth $auth,
-		helper $helper,
-		service $cache,
-		request $request,
-		$root_path,
-		$php_ext,
-		$points_bank_table,
-		$points_config_table,
-		$points_values_table,
-		factory $files_factory = null
+		config			$config,
+		auth			 $auth,
+		helper			$helper,
+		service			$cache,
+		request			$request,
+						 $root_path,
+						 $php_ext,
+						 $points_bank_table,
+						 $points_config_table,
+						 $points_values_table,
+		factory			$files_factory = null
 	)
 	{
-		$this->functions_points 	= $functions_points;
-		$this->user					= $user;
-		$this->template				= $template;
-		$this->db					= $db;
-		$this->config				= $config;
-		$this->auth 				= $auth;
-		$this->helper 				= $helper;
-		$this->cache 				= $cache;
-		$this->request 				= $request;
-		$this->root_path 			= $root_path;
-		$this->php_ext 				= $php_ext;
-		$this->points_bank_table 	= $points_bank_table;
-		$this->points_config_table 	= $points_config_table;
-		$this->points_values_table 	= $points_values_table;
-		$this->files_factory 		= $files_factory;
+		$this->functions_points = $functions_points;
+		$this->user = $user;
+		$this->template = $template;
+		$this->db = $db;
+		$this->config = $config;
+		$this->auth = $auth;
+		$this->helper = $helper;
+		$this->cache = $cache;
+		$this->request = $request;
+		$this->root_path = $root_path;
+		$this->php_ext = $php_ext;
+		$this->points_bank_table = $points_bank_table;
+		$this->points_config_table = $points_config_table;
+		$this->points_values_table = $points_values_table;
+		$this->files_factory = $files_factory;
 	}
 
 	static public function getSubscribedEvents()
 	{
 		return [
-			'core.user_setup'								=> 'load_language_on_setup',
-			'core.common'									=> 'common_config',
-			'core.index_modify_page_title'					=> 'index_modify_page_title',
-			'core.memberlist_view_profile'					=> 'memberlist_view_profile',
-			'core.viewtopic_assign_template_vars_before'	=> 'viewtopic_assign_template_vars_before',
-			'core.parse_attachments_modify_template_data'	=> 'parse_attachments_modify_template_data',
-			'core.viewtopic_get_post_data'					=> 'viewtopic_get_post_data',
-			'core.viewtopic_post_rowset_data'				=> 'viewtopic_post_rowset_data',
-			'core.viewtopic_modify_post_row'				=> 'viewtopic_modify_post_row',
-			'core.page_header'								=> 'page_header',
-			'core.viewonline_overwrite_location'			=> 'add_page_viewonline',
-			'core.download_file_send_to_browser_before'		=> 'download_file_send_to_browser_before',
-			'core.acp_manage_forums_request_data'			=> 'acp_manage_forums_request_data',
-			'core.acp_manage_forums_initialise_data'		=> 'acp_manage_forums_initialise_data',
-			'core.acp_manage_forums_display_form'			=> 'acp_manage_forums_display_form',
-			'core.acp_users_overview_modify_data'			=> 'acp_users_overview_modify_data',
-			'core.acp_users_display_overview'				=> 'acp_users_display_overview',
-			'core.mcp_warn_user_before'						=> 'mcp_warn_user_before',
-			'core.mcp_warn_user_after'						=> 'mcp_warn_user_after',
-			'core.user_add_modify_data'						=> 'user_add_modify_data',
-			'core.submit_post_end'							=> 'submit_post_end',
-			'core.modify_posting_auth'						=> 'modify_posting_auth',
-			'core.permissions'								=> 'permissions',
+			'core.user_setup' => 'load_language_on_setup',
+			'core.common' => 'common_config',
+			'core.index_modify_page_title' => 'index_modify_page_title',
+			'core.memberlist_view_profile' => 'memberlist_view_profile',
+			'core.viewtopic_assign_template_vars_before' => 'viewtopic_assign_template_vars_before',
+			'core.parse_attachments_modify_template_data' => 'parse_attachments_modify_template_data',
+			'core.viewtopic_get_post_data' => 'viewtopic_get_post_data',
+			'core.viewtopic_post_rowset_data' => 'viewtopic_post_rowset_data',
+			'core.viewtopic_modify_post_row' => 'viewtopic_modify_post_row',
+			'core.page_header' => 'page_header',
+			'core.viewonline_overwrite_location' => 'add_page_viewonline',
+			'core.download_file_send_to_browser_before' => 'download_file_send_to_browser_before',
+			'core.acp_manage_forums_request_data' => 'acp_manage_forums_request_data',
+			'core.acp_manage_forums_initialise_data' => 'acp_manage_forums_initialise_data',
+			'core.acp_manage_forums_display_form' => 'acp_manage_forums_display_form',
+			'core.acp_users_overview_modify_data' => 'acp_users_overview_modify_data',
+			'core.acp_users_display_overview' => 'acp_users_display_overview',
+			'core.mcp_warn_user_before' => 'mcp_warn_user_before',
+			'core.mcp_warn_user_after' => 'mcp_warn_user_after',
+			'core.user_add_modify_data' => 'user_add_modify_data',
+			'core.submit_post_end' => 'submit_post_end',
+			'core.modify_posting_auth' => 'modify_posting_auth',
+			'core.permissions' => 'permissions',
 		];
 	}
 
@@ -191,11 +191,11 @@ class listener implements EventSubscriberInterface
 
 			// Generate the bank statistics
 			$sql_array = [
-				'SELECT'	=> 'SUM(holding) AS total_holding, count(user_id) AS total_users',
-				'FROM'		=> [
+				'SELECT' => 'SUM(holding) AS total_holding, count(user_id) AS total_users',
+				'FROM' => [
 					$this->points_bank_table => 'b',
 				],
-				'WHERE'		=> 'id > 0',
+				'WHERE' => 'id > 0',
 			];
 			$sql = $this->db->sql_build_query('SELECT', $sql_array);
 			$result = $this->db->sql_query($sql);
@@ -206,15 +206,15 @@ class listener implements EventSubscriberInterface
 			// Create richest users - cash and bank
 			$limit = $points_values['number_show_top_points'];
 			$sql_array = [
-				'SELECT'	=> 'u.user_id, u.username, u.user_colour, u.user_points, u.user_avatar, u.user_avatar_type, u.user_avatar_height, u.user_avatar_width, b.holding',
+				'SELECT' => 'u.user_id, u.username, u.user_colour, u.user_points, u.user_avatar, u.user_avatar_type, u.user_avatar_height, u.user_avatar_width, b.holding',
 
-				'FROM'		=> [
-					USERS_TABLE	=> 'u',
+				'FROM' => [
+					USERS_TABLE => 'u',
 				],
 				'LEFT_JOIN' => [
 					[
-						'FROM'	=> [$this->points_bank_table => 'b'],
-						'ON'	=> 'u.user_id = b.user_id'
+						'FROM' => [$this->points_bank_table => 'b'],
+						'ON' => 'u.user_id = b.user_id'
 					]
 				],
 			];
@@ -245,7 +245,7 @@ class listener implements EventSubscriberInterface
 			arsort($rich_users_sort);
 
 			// Extract the user ids
-			$rich_users_sort	= array_keys($rich_users_sort);
+			$rich_users_sort = array_keys($rich_users_sort);
 
 			// Create new sorted rich users array
 			$rich_users_sorted = [];
@@ -262,20 +262,20 @@ class listener implements EventSubscriberInterface
 			foreach ($rich_users_sorted as $var)
 			{
 				$this->template->assign_block_vars('rich_user', [
-					'USERNAME'		 	=> get_username_string('full', $var['user_id'], $var['username'], $var['user_colour']),
-					'AVATAR'			=> phpbb_get_user_avatar($var),
-					'SUM_POINTS'		=> $this->functions_points->number_format_points($var['total_points']),
-					'SUM_POINTS_NAME'	=> $this->config['points_name'],
+					'USERNAME' => get_username_string('full', $var['user_id'], $var['username'], $var['user_colour']),
+					'AVATAR' => phpbb_get_user_avatar($var),
+					'SUM_POINTS' => $this->functions_points->number_format_points($var['total_points']),
+					'SUM_POINTS_NAME' => $this->config['points_name'],
 				]);
 			}
 
 			//Generate the points statistics
 			$sql_array = [
-				'SELECT'	=> 'SUM(user_points) AS total_points',
-				'FROM'		=> [
+				'SELECT' => 'SUM(user_points) AS total_points',
+				'FROM' => [
 					USERS_TABLE => 'u',
 				],
-				'WHERE'		=> 'user_points > 0',
+				'WHERE' => 'user_points > 0',
 			];
 			$sql = $this->db->sql_build_query('SELECT', $sql_array);
 			$result = $this->db->sql_query($sql);
@@ -301,11 +301,11 @@ class listener implements EventSubscriberInterface
 
 			// Lottery winner index
 			$sql_array = [
-				'SELECT'	=> 'user_id, username, user_colour',
-				'FROM'		=> [
+				'SELECT' => 'user_id, username, user_colour',
+				'FROM' => [
 					USERS_TABLE => 'u',
 				],
-				'WHERE'		=> 'user_id = ' . (int) $points_values['lottery_prev_winner_id'],
+				'WHERE' => 'user_id = ' . (int)$points_values['lottery_prev_winner_id'],
 			];
 			$sql = $this->db->sql_build_query('SELECT', $sql_array);
 			$result = $this->db->sql_query($sql);
@@ -314,23 +314,22 @@ class listener implements EventSubscriberInterface
 			if ($row == null)
 			{
 				$username_colored = $this->user->lang['LOTTERY_NO_WINNER'];
-			}
-			else
+			} else
 			{
 				$username_colored = get_username_string('full', $row['user_id'], $row['username'], $row['user_colour']);
 			}
 
 			$this->template->assign_vars([
-				'TOTAL_BANK_USER'			=> sprintf($this->user->lang['POINTS_BUPOINTS_TOTAL'], $points_values['bank_name'], $bankusers),
-				'TOTAL_BANK_POINTS'			=> sprintf($this->user->lang['POINTS_BPOINTS_TOTAL'], $points_values['bank_name'], $this->functions_points->number_format_points($bankholdings), $this->config['points_name'], $points_values['bank_name']),
-				'TOTAL_POINTS_USER'			=> sprintf($this->user->lang['POINTS_TOTAL'], $this->functions_points->number_format_points($totalpoints), $this->config['points_name']),
-				'LOTTERY_TIME'				=> sprintf($this->user->lang['POINTS_LOTTERY_TIME'], $points_values['lottery_name'], $lottery_time),
-				'S_DISPLAY_LOTTERY'			=> ($points_config['display_lottery_stats']) ? true : false,
-				'S_DISPLAY_POINTS_STATS'	=> ($points_config['stats_enable']) ? true : false,
-				'S_DISPLAY_INDEX'			=> ($points_values['number_show_top_points'] > 0) ? true : false,
-				'U_USE_POINTS'				=> $this->auth->acl_get('u_use_points'),
-				'L_PREVIOUS_WINNER'	 		=> sprintf($this->user->lang['LOTTERY_WINNER_INDEX'], $points_values['lottery_name'], $username_colored),
-				'POINTS_MOST_RICH_USERS'	=> sprintf($this->user->lang['POINTS_MOST_RICH_USERS'], $points_values['number_show_top_points']),
+				'TOTAL_BANK_USER' => sprintf($this->user->lang['POINTS_BUPOINTS_TOTAL'], $points_values['bank_name'], $bankusers),
+				'TOTAL_BANK_POINTS' => sprintf($this->user->lang['POINTS_BPOINTS_TOTAL'], $points_values['bank_name'], $this->functions_points->number_format_points($bankholdings), $this->config['points_name'], $points_values['bank_name']),
+				'TOTAL_POINTS_USER' => sprintf($this->user->lang['POINTS_TOTAL'], $this->functions_points->number_format_points($totalpoints), $this->config['points_name']),
+				'LOTTERY_TIME' => sprintf($this->user->lang['POINTS_LOTTERY_TIME'], $points_values['lottery_name'], $lottery_time),
+				'S_DISPLAY_LOTTERY' => ($points_config['display_lottery_stats']) ? true : false,
+				'S_DISPLAY_POINTS_STATS' => ($points_config['stats_enable']) ? true : false,
+				'S_DISPLAY_INDEX' => ($points_values['number_show_top_points'] > 0) ? true : false,
+				'U_USE_POINTS' => $this->auth->acl_get('u_use_points'),
+				'L_PREVIOUS_WINNER' => sprintf($this->user->lang['LOTTERY_WINNER_INDEX'], $points_values['lottery_name'], $username_colored),
+				'POINTS_MOST_RICH_USERS' => sprintf($this->user->lang['POINTS_MOST_RICH_USERS'], $points_values['number_show_top_points']),
 			]);
 		}
 	}
@@ -349,34 +348,34 @@ class listener implements EventSubscriberInterface
 		// Grab user's bank holdings
 		$sql = 'SELECT holding
 			FROM ' . $this->points_bank_table . '
-			WHERE user_id = '. $user_id;
+			WHERE user_id = ' . $user_id;
 		$result = $this->db->sql_query($sql);
 		$holding = $this->db->sql_fetchfield('holding');
 
 		$this->template->assign_vars([
-			'USER_PROF_POINTS'		=> $this->functions_points->number_format_points($user_points),
-			'USER_LOCK'				=> !$this->auth->acl_get('u_use_points'),
-			'USER_BANK_LOCK'		=> !$this->auth->acl_get('u_use_bank'),
-			'USER_BANK_ACC'			=> ($holding) ? true : false,
-			'USER_BANK_POINTS'		=> $this->functions_points->number_format_points($holding),
-			'L_USER_NO_BANK_ACC'	=> sprintf($this->user->lang['BANK_NO_ACCOUNT'], $points_values['bank_name']),
-			'L_MOD_USER_POINTS'		=> ($this->auth->acl_get('a_') && $this->auth->acl_get('m_chg_points')) ? sprintf($this->user->lang['POINTS_MODIFY']) : '',
-			'U_POINTS_MODIFY'		=> ($this->auth->acl_get('a_') && $this->auth->acl_get('m_chg_points')) ? $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'points_edit', 'user_id' => $user_id, 'adm_points' => '1']) : '',
-			'L_MOD_USER_BANK'		=> ($this->auth->acl_get('a_') && $this->auth->acl_get('m_chg_bank')) ? sprintf($this->user->lang['POINTS_MODIFY']) : '',
-			'U_BANK_MODIFY'			=> ($this->auth->acl_get('a_') && $this->auth->acl_get('m_chg_points')) ? $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'bank_edit', 'user_id' => $user_id, 'adm_points' => '1']) : '',
-			'L_DONATE'				=> ($this->auth->acl_get('u_use_points')) ? sprintf($this->user->lang['POINTS_DONATE']) : '',
-			'U_POINTS_DONATE'		=> ($this->auth->acl_get('u_use_points')) ? $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'transfer', 'i' => $user_id, 'adm_points' => '1']) : '',
-			'P_NAME'				=> $this->config['points_name'],
-			'USE_POINTS'			=> $this->config['points_enable'],
-			'USE_IMAGES_POINTS'		=> $points_config['images_memberlist_enable'],
-			'USE_BANK'				=> $points_config['bank_enable'],
-			'S_IS_OWN_PROF'			=> ($user_id == $this->user->data['user_id']) ? true : false,
-			'U_ROBBERY'				=> $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'robbery_user', 'user_id' => $user_id]),
-			'U_USE_ROBBERY'			=> $this->auth->acl_get('u_use_robbery') && $points_config['robbery_enable'],
-			'U_USE_TRANSFER'		=> $this->auth->acl_get('u_use_transfer') && $points_config['transfer_enable'],
-			'U_USE_POINTS'			=> $this->auth->acl_get('u_use_points'),
-			'L_ROBBERY'				=> $this->user->lang['ROBBERY_USER'],
-			'BANK_BALANCE'			=> sprintf($this->user->lang['BANK_BALANCE'], $points_values['bank_name']),
+			'USER_PROF_POINTS' => $this->functions_points->number_format_points($user_points),
+			'USER_LOCK' => !$this->auth->acl_get('u_use_points'),
+			'USER_BANK_LOCK' => !$this->auth->acl_get('u_use_bank'),
+			'USER_BANK_ACC' => ($holding) ? true : false,
+			'USER_BANK_POINTS' => $this->functions_points->number_format_points($holding),
+			'L_USER_NO_BANK_ACC' => sprintf($this->user->lang['BANK_NO_ACCOUNT'], $points_values['bank_name']),
+			'L_MOD_USER_POINTS' => ($this->auth->acl_get('a_') && $this->auth->acl_get('m_chg_points')) ? sprintf($this->user->lang['POINTS_MODIFY']) : '',
+			'U_POINTS_MODIFY' => ($this->auth->acl_get('a_') && $this->auth->acl_get('m_chg_points')) ? $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'points_edit', 'user_id' => $user_id, 'adm_points' => '1']) : '',
+			'L_MOD_USER_BANK' => ($this->auth->acl_get('a_') && $this->auth->acl_get('m_chg_bank')) ? sprintf($this->user->lang['POINTS_MODIFY']) : '',
+			'U_BANK_MODIFY' => ($this->auth->acl_get('a_') && $this->auth->acl_get('m_chg_points')) ? $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'bank_edit', 'user_id' => $user_id, 'adm_points' => '1']) : '',
+			'L_DONATE' => ($this->auth->acl_get('u_use_points')) ? sprintf($this->user->lang['POINTS_DONATE']) : '',
+			'U_POINTS_DONATE' => ($this->auth->acl_get('u_use_points')) ? $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'transfer', 'i' => $user_id, 'adm_points' => '1']) : '',
+			'P_NAME' => $this->config['points_name'],
+			'USE_POINTS' => $this->config['points_enable'],
+			'USE_IMAGES_POINTS' => $points_config['images_memberlist_enable'],
+			'USE_BANK' => $points_config['bank_enable'],
+			'S_IS_OWN_PROF' => ($user_id == $this->user->data['user_id']) ? true : false,
+			'U_ROBBERY' => $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'robbery_user', 'user_id' => $user_id]),
+			'U_USE_ROBBERY' => $this->auth->acl_get('u_use_robbery') && $points_config['robbery_enable'],
+			'U_USE_TRANSFER' => $this->auth->acl_get('u_use_transfer') && $points_config['transfer_enable'],
+			'U_USE_POINTS' => $this->auth->acl_get('u_use_points'),
+			'L_ROBBERY' => $this->user->lang['ROBBERY_USER'],
+			'BANK_BALANCE' => sprintf($this->user->lang['BANK_BALANCE'], $points_values['bank_name']),
 		]);
 	}
 
@@ -386,33 +385,33 @@ class listener implements EventSubscriberInterface
 		$points_values = $this->cache->get('points_values');
 
 		$this->template->assign_vars([
-			'P_NAME'			=> $this->config['points_name'],
-			'USE_POINTS'		=> $this->config['points_enable'],
-			'USE_IMAGES_POINTS'	=> $points_config['images_topic_enable'],
-			'USE_BANK'			=> $points_config['bank_enable'],
-			'BANK_BALANCE'		=> sprintf($this->user->lang['BANK_BALANCE'], $points_values['bank_name']),
-			'U_USE_POINTS'		=> $this->auth->acl_get('u_use_points'),
+			'P_NAME' => $this->config['points_name'],
+			'USE_POINTS' => $this->config['points_enable'],
+			'USE_IMAGES_POINTS' => $points_config['images_topic_enable'],
+			'USE_BANK' => $points_config['bank_enable'],
+			'BANK_BALANCE' => sprintf($this->user->lang['BANK_BALANCE'], $points_values['bank_name']),
+			'U_USE_POINTS' => $this->auth->acl_get('u_use_points'),
 		]);
 	}
 
 	public function parse_attachments_modify_template_data($event)
 	{
 		$block_array = $event['block_array'];
-		$forum_id = (int) $event['forum_id'];
-		$display_cat = (int) $event['display_cat'];
+		$forum_id = (int)$event['forum_id'];
+		$display_cat = (int)$event['display_cat'];
 
 		$sql = 'SELECT forum_cost
 			FROM ' . FORUMS_TABLE . '
-			WHERE forum_id = ' . (int) $forum_id;
+			WHERE forum_id = ' . (int)$forum_id;
 		$result = $this->db->sql_query($sql);
 		$forum_cost = $this->db->sql_fetchfield('forum_cost');
 		$this->db->sql_freeresult($result);
 
-		if ($forum_cost > 0 && $this->auth->acl_get('f_pay_attachment', (int) $forum_id) && $display_cat != 1)
+		if ($forum_cost > 0 && $this->auth->acl_get('f_pay_attachment', (int)$forum_id) && $display_cat != 1)
 		{
 			$this->template->assign_vars([
-				'L_DOWNLOAD_COST'		=> $this->user->lang['POINTS_DOWNLOAD_COST'],
-				'DOWNLOAD_COST'			=> $forum_cost,
+				'L_DOWNLOAD_COST' => $this->user->lang['POINTS_DOWNLOAD_COST'],
+				'DOWNLOAD_COST' => $forum_cost,
 			]);
 		}
 	}
@@ -423,9 +422,9 @@ class listener implements EventSubscriberInterface
 		$sql_ary['SELECT'] .= ', pb.id AS pb_id, pb.holding AS pb_holding';
 
 		$sql_ary['LEFT_JOIN'][] = [
-			'FROM'	=> [
-				$this->points_bank_table		=> 'pb',],
-			'ON'	=> 'pb.user_id = p.poster_id'
+			'FROM' => [
+				$this->points_bank_table => 'pb',],
+			'ON' => 'pb.user_id = p.poster_id'
 		];
 		$event['sql_ary'] = $sql_ary;
 	}
@@ -469,18 +468,17 @@ class listener implements EventSubscriberInterface
 				$has_account = false;
 			}
 			$holding[$poster_id] = ($row['pb_holding']) ? $row['pb_holding'] : '0';
-		}
-		else
+		} else
 		{
 			$holding[$poster_id] = '0';
 		}
 
 		$rowset_data = array_merge($rowset_data, [
-			'points'			=> $row['user_points'],
-			'bank_points'		=> $holding[$poster_id],
-			'points_lock'		=> $pointslock,
-			'bank_lock'			=> $banklock,
-			'bank_account'		=> $has_account,
+			'points' => $row['user_points'],
+			'bank_points' => $holding[$poster_id],
+			'points_lock' => $pointslock,
+			'bank_lock' => $banklock,
+			'bank_account' => $has_account,
 		]);
 		$event['rowset_data'] = $rowset_data;
 	}
@@ -490,29 +488,29 @@ class listener implements EventSubscriberInterface
 		$row = $event['row'];
 		$user_poster_data = $event['user_poster_data'];
 		$post_row = $event['post_row'];
-		$post_id = (int) $row['post_id'];
-		$poster_id = (int) $event['poster_id'];
+		$post_id = (int)$row['post_id'];
+		$poster_id = (int)$event['poster_id'];
 		$points_config = $this->cache->get('points_config');
 		$points_values = $this->cache->get('points_values');
 
 		$post_row = array_merge($post_row, [
-			'POSTER_POINTS'			=> $this->functions_points->number_format_points($row['points']),
-			'POSTER_LOCK'			=> $row['points_lock'],
-			'POSTER_BANK_LOCK'		=> $row['bank_lock'],
-			'USER_ID'				=> $poster_id,
-			'BANK_GOLD'				=> $this->functions_points->number_format_points($row['bank_points']),
-			'BANK_ACCOUNT'			=> $row['bank_account'],
-			'L_MOD_USER_POINTS'		=> ($this->auth->acl_get('a_') && $this->auth->acl_get('m_chg_points')) ? sprintf($this->user->lang['POINTS_MODIFY']) : '',
-			'U_POINTS_MODIFY'		=> ($this->auth->acl_get('a_') && $this->auth->acl_get('m_chg_points')) ? $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'points_edit', 'user_id' => $poster_id, 'adm_points' => '1', 'post_id' => $row['post_id']]) : '',
-			'L_BANK_USER_POINTS'	=> ($this->auth->acl_get('a_') && $this->auth->acl_get('m_chg_bank')) ? sprintf($this->user->lang['POINTS_MODIFY']) : '',
-			'U_BANK_MODIFY'			=> ($this->auth->acl_get('a_') && $this->auth->acl_get('m_chg_bank')) ? $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'bank_edit', 'user_id' => $poster_id, 'adm_points' => '1', 'post_id' => $row['post_id']]) : '',
-			'L_DONATE'				=> ($this->auth->acl_get('u_use_points') && $points_config['transfer_enable']) ? sprintf($this->user->lang['POINTS_DONATE']) : '',
-			'U_POINTS_DONATE'		=> ($this->auth->acl_get('u_use_points')) ? $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'transfer', 'i' => $poster_id, 'adm_points' => '1', 'post_id' => $row['post_id']]) : '',
-			'S_IS_OWN_POST'			=> ($poster_id == $this->user->data['user_id']) ? true : false,
-			'U_ROBBERY'				=> $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'robbery_user', 'user_id' => $poster_id]),
-			'U_USE_ROBBERY'			=> $this->auth->acl_get('u_use_robbery') && $points_config['robbery_enable'],
-			'U_USE_TRANSFER'		=> $this->auth->acl_get('u_use_transfer') && $points_config['transfer_enable'],
-			'L_ROBBERY'				=> $this->user->lang['ROBBERY_USER'],
+			'POSTER_POINTS' => $this->functions_points->number_format_points($row['points']),
+			'POSTER_LOCK' => $row['points_lock'],
+			'POSTER_BANK_LOCK' => $row['bank_lock'],
+			'USER_ID' => $poster_id,
+			'BANK_GOLD' => $this->functions_points->number_format_points($row['bank_points']),
+			'BANK_ACCOUNT' => $row['bank_account'],
+			'L_MOD_USER_POINTS' => ($this->auth->acl_get('a_') && $this->auth->acl_get('m_chg_points')) ? sprintf($this->user->lang['POINTS_MODIFY']) : '',
+			'U_POINTS_MODIFY' => ($this->auth->acl_get('a_') && $this->auth->acl_get('m_chg_points')) ? $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'points_edit', 'user_id' => $poster_id, 'adm_points' => '1', 'post_id' => $row['post_id']]) : '',
+			'L_BANK_USER_POINTS' => ($this->auth->acl_get('a_') && $this->auth->acl_get('m_chg_bank')) ? sprintf($this->user->lang['POINTS_MODIFY']) : '',
+			'U_BANK_MODIFY' => ($this->auth->acl_get('a_') && $this->auth->acl_get('m_chg_bank')) ? $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'bank_edit', 'user_id' => $poster_id, 'adm_points' => '1', 'post_id' => $row['post_id']]) : '',
+			'L_DONATE' => ($this->auth->acl_get('u_use_points') && $points_config['transfer_enable']) ? sprintf($this->user->lang['POINTS_DONATE']) : '',
+			'U_POINTS_DONATE' => ($this->auth->acl_get('u_use_points')) ? $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'transfer', 'i' => $poster_id, 'adm_points' => '1', 'post_id' => $row['post_id']]) : '',
+			'S_IS_OWN_POST' => ($poster_id == $this->user->data['user_id']) ? true : false,
+			'U_ROBBERY' => $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'robbery_user', 'user_id' => $poster_id]),
+			'U_USE_ROBBERY' => $this->auth->acl_get('u_use_robbery') && $points_config['robbery_enable'],
+			'U_USE_TRANSFER' => $this->auth->acl_get('u_use_transfer') && $points_config['transfer_enable'],
+			'L_ROBBERY' => $this->user->lang['ROBBERY_USER'],
 		]);
 		$event['post_row'] = $post_row;
 	}
@@ -525,23 +523,23 @@ class listener implements EventSubscriberInterface
 			$points_config = $this->cache->get('points_config');
 
 			$this->template->assign_vars([
-				'U_POINTS'					=> $this->helper->route('dmzx_ultimatepoints_controller'),
-				'U_POINTS_LIST'				=> $this->helper->route('dmzx_ultimatepoints_list_controller'),
-				'POINTS_LINK'				=> $this->config['points_name'],
-				'USER_POINTS'				=> sprintf($this->functions_points->number_format_points($this->user->data['user_points'])),
-				'S_POINTS_ENABLE'			=> $this->config['points_enable'],
-				'S_UPLIST_ENABLE'			=> $points_config['uplist_enable'],
-				'S_USE_POINTS'				=> $this->auth->acl_get('u_use_points'),
-				'POINTS_ICON_MAINICON'		=> $this->config['points_icon_mainicon'],
-				'POINTS_ICON_UPLIST'		=> $this->config['points_icon_uplist'],
-				'POINTS_LIST_TOTAL'			=> $this->config['points_name_uplist'],
-				'POINTS_ICON_BANKICON'		=> $this->config['points_icon_bankicon'],
-				'POINTS_ICON_LOTTERYICON'	=> $this->config['points_icon_lotteryicon'],
-				'S_BANK_ENABLE'				=> $points_config['bank_enable'],
-				'USE_BANK'					=> $this->auth->acl_get('u_use_bank'),
-				'S_LOTTERY_ENABLE'			=> $points_config['lottery_enable'],
-				'USE_LOTTERY'				=> $this->auth->acl_get('u_use_lottery'),
-				'PHPBB_IS_32'				=> ($this->files_factory !== null) ? true : false,
+				'U_POINTS' => $this->helper->route('dmzx_ultimatepoints_controller'),
+				'U_POINTS_LIST' => $this->helper->route('dmzx_ultimatepoints_list_controller'),
+				'POINTS_LINK' => $this->config['points_name'],
+				'USER_POINTS' => sprintf($this->functions_points->number_format_points($this->user->data['user_points'])),
+				'S_POINTS_ENABLE' => $this->config['points_enable'],
+				'S_UPLIST_ENABLE' => $points_config['uplist_enable'],
+				'S_USE_POINTS' => $this->auth->acl_get('u_use_points'),
+				'POINTS_ICON_MAINICON' => $this->config['points_icon_mainicon'],
+				'POINTS_ICON_UPLIST' => $this->config['points_icon_uplist'],
+				'POINTS_LIST_TOTAL' => $this->config['points_name_uplist'],
+				'POINTS_ICON_BANKICON' => $this->config['points_icon_bankicon'],
+				'POINTS_ICON_LOTTERYICON' => $this->config['points_icon_lotteryicon'],
+				'S_BANK_ENABLE' => $points_config['bank_enable'],
+				'USE_BANK' => $this->auth->acl_get('u_use_bank'),
+				'S_LOTTERY_ENABLE' => $points_config['lottery_enable'],
+				'USE_LOTTERY' => $this->auth->acl_get('u_use_lottery'),
+				'PHPBB_IS_32' => ($this->files_factory !== null) ? true : false,
 			]);
 		}
 	}
@@ -565,25 +563,25 @@ class listener implements EventSubscriberInterface
 	// Check if people have to pay points for downloading attachments
 	public function download_file_send_to_browser_before($event)
 	{
-		$topic_id = (int) $event['attachment']['topic_id'];
+		$topic_id = (int)$event['attachment']['topic_id'];
 		$display_cat = $event['display_cat'];
 		$points_values = $this->cache->get('points_values');
 
 		$sql_array = [
-			'SELECT'	=> 'f.forum_cost',
+			'SELECT' => 'f.forum_cost',
 
-			'FROM'		=> [
-				FORUMS_TABLE	=> 'f',
+			'FROM' => [
+				FORUMS_TABLE => 'f',
 			],
 
 			'LEFT_JOIN' => [
 				[
-					'FROM'	=> [TOPICS_TABLE => 't'],
-					'ON'	=> 't.forum_id = f.forum_id',
+					'FROM' => [TOPICS_TABLE => 't'],
+					'ON' => 't.forum_id = f.forum_id',
 				]
 			],
 
-			'WHERE'	 => 't.topic_id = ' . $topic_id,
+			'WHERE' => 't.topic_id = ' . $topic_id,
 		];
 
 		$sql = $this->db->sql_build_query('SELECT', $sql_array);
@@ -611,12 +609,12 @@ class listener implements EventSubscriberInterface
 		$forum_data = $event['forum_data'];
 
 		$forum_data = array_merge($forum_data, [
-			'forum_pertopic'	=> $this->request->variable('forum_pertopic', 0.00),
-			'forum_perpost'		=> $this->request->variable('forum_perpost', 0.00),
-			'forum_peredit'		=> $this->request->variable('forum_peredit', 0.00),
-			'forum_cost'		=> $this->request->variable('forum_cost', 0.00),
-			'forum_cost_topic'	=> $this->request->variable('forum_cost_topic', 0.00),
-			'forum_cost_post'	=> $this->request->variable('forum_cost_post', 0.00),
+			'forum_pertopic' => $this->request->variable('forum_pertopic', 0.00),
+			'forum_perpost' => $this->request->variable('forum_perpost', 0.00),
+			'forum_peredit' => $this->request->variable('forum_peredit', 0.00),
+			'forum_cost' => $this->request->variable('forum_cost', 0.00),
+			'forum_cost_topic' => $this->request->variable('forum_cost_topic', 0.00),
+			'forum_cost_post' => $this->request->variable('forum_cost_post', 0.00),
 		]);
 
 		$event['forum_data'] = $forum_data;
@@ -630,11 +628,11 @@ class listener implements EventSubscriberInterface
 		if ($event['action'] == 'add')
 		{
 			$forum_data['forum_pertopic'] = 0.00;
-			$forum_data['forum_perpost'] =	0.00;
-			$forum_data['forum_peredit'] =	0.00;
+			$forum_data['forum_perpost'] = 0.00;
+			$forum_data['forum_peredit'] = 0.00;
 			$forum_data['forum_cost'] = 0.00;
 			$forum_data['forum_cost_topic'] = 0.00;
-			$forum_data['forum_cost_post']	= 0.00;
+			$forum_data['forum_cost_post'] = 0.00;
 		}
 		$event['forum_data'] = $forum_data;
 	}
@@ -646,45 +644,45 @@ class listener implements EventSubscriberInterface
 		$forum_data = $event['forum_data'];
 
 		$template_data = array_merge($template_data, [
-			'FORUM_PERTOPIC'			=> $forum_data['forum_pertopic'],
-			'FORUM_PERPOST'				=> $forum_data['forum_perpost'],
-			'FORUM_PEREDIT'				=> $forum_data['forum_peredit'],
-			'FORUM_COST'				=> $forum_data['forum_cost'],
-			'FORUM_COST_TOPIC'			=> $forum_data['forum_cost_topic'],
-			'FORUM_COST_POST'			=> $forum_data['forum_cost_post'],
+			'FORUM_PERTOPIC' => $forum_data['forum_pertopic'],
+			'FORUM_PERPOST' => $forum_data['forum_perpost'],
+			'FORUM_PEREDIT' => $forum_data['forum_peredit'],
+			'FORUM_COST' => $forum_data['forum_cost'],
+			'FORUM_COST_TOPIC' => $forum_data['forum_cost_topic'],
+			'FORUM_COST_POST' => $forum_data['forum_cost_post'],
 		]);
 		$event['template_data'] = $template_data;
 	}
 
 	/**
-	* Allow Admin to enter a user points
-	*
-	* @param object $event The event object
-	* @return null
-	* @access public
-	*/
+	 * Allow Admin to enter a user points
+	 *
+	 * @param object $event The event object
+	 * @return null
+	 * @access public
+	 */
 	public function acp_users_overview_modify_data($event)
 	{
 		$event['data'] = array_merge($event['data'], [
-			'user_points'	=> $this->request->variable('user_points', 0.00),
+			'user_points' => $this->request->variable('user_points', 0.00),
 		]);
 
 		$event['sql_ary'] = array_merge($event['sql_ary'], [
-			'user_points' 		=> $event['data']['user_points'],
+			'user_points' => $event['data']['user_points'],
 		]);
 	}
 
 	/**
-	* Display Overview in ACP
-	*
-	* @param object $event The event object
-	* @return null
-	* @access public
-	*/
+	 * Display Overview in ACP
+	 *
+	 * @param object $event The event object
+	 * @return null
+	 * @access public
+	 */
 	public function acp_users_display_overview($event)
 	{
 		$this->template->assign_vars([
-			'USER_POINTS'		=> $event['user_row']['user_points'],
+			'USER_POINTS' => $event['user_row']['user_points'],
 		]);
 	}
 
@@ -712,7 +710,7 @@ class listener implements EventSubscriberInterface
 		if ($this->config['points_enable'])
 		{
 			// Substract user's points
-			$this->functions_points->substract_points((int) $event['user_row']['user_id'], $points_values['points_per_warn']);
+			$this->functions_points->substract_points((int)$event['user_row']['user_id'], $points_values['points_per_warn']);
 
 			// Notify the moderator about the additional point deduction
 			$message = $event['message'];
@@ -730,13 +728,12 @@ class listener implements EventSubscriberInterface
 		if ($this->config['points_enable'] && $reg_points_bonus)
 		{
 			$event['sql_ary'] = array_merge($event['sql_ary'], [
-				'user_points'	=> $points_values['reg_points_bonus'],
+				'user_points' => $points_values['reg_points_bonus'],
 			]);
-		}
-		else
+		} else
 		{
 			$event['sql_ary'] = array_merge($event['sql_ary'], [
-				'user_points'	=> 0,
+				'user_points' => 0,
 			]);
 		}
 	}
@@ -752,19 +749,19 @@ class listener implements EventSubscriberInterface
 			$data = $event['data'];
 			$mode = $event['mode'];
 			$poll = $event['poll'];
-			$post_id = (int) $data['post_id'];
-			$topic_id = (int) $data['topic_id'];
-			$forum_id = (int) $data['forum_id'];
-			$user_id = (int) $this->user->data['user_id'];
+			$post_id = (int)$data['post_id'];
+			$topic_id = (int)$data['topic_id'];
+			$forum_id = (int)$data['forum_id'];
+			$user_id = (int)$this->user->data['user_id'];
 
 			// Send the user_id away to check for a bonus increment
 			$this->functions_points->random_bonus_increment($user_id);
 
 			/**
-			* Grab our message and strip it clean.
-			* This means removing all BBCode,
-			* and removing text inside code and quote blocks
-			*/
+			 * Grab our message and strip it clean.
+			 * This means removing all BBCode,
+			 * and removing text inside code and quote blocks
+			 */
 			$message = $this->functions_points->strip_text($data['message']);
 
 			// Set default values
@@ -788,19 +785,18 @@ class listener implements EventSubscriberInterface
 			// We grab forum specific points increment
 			$sql = 'SELECT forum_peredit, forum_perpost, forum_pertopic, forum_cost_topic, forum_cost_post
 				FROM ' . FORUMS_TABLE . '
-				WHERE forum_id = ' . (int) $forum_id;
+				WHERE forum_id = ' . (int)$forum_id;
 			$result = $this->db->sql_query($sql);
 			$forum = $this->db->sql_fetchrow($result);
 			$this->db->sql_freeresult($result);
 
 			// First we check if we have to pay for new topics/post
-			if ($mode == 'post' && $forum['forum_cost_topic'] > 0 && $this->auth->acl_get('f_pay_topic', (int) $forum_id))
+			if ($mode == 'post' && $forum['forum_cost_topic'] > 0 && $this->auth->acl_get('f_pay_topic', (int)$forum_id))
 			{
-				$this->functions_points->substract_points((int) $user_id, $forum['forum_cost_topic']);
-			}
-			else if (($mode == 'reply' || $mode == 'quote') && $forum['forum_cost_post'] > 0 && $this->auth->acl_get('f_pay_post', (int) $forum_id))
+				$this->functions_points->substract_points((int)$user_id, $forum['forum_cost_topic']);
+			} else if (($mode == 'reply' || $mode == 'quote') && $forum['forum_cost_post'] > 0 && $this->auth->acl_get('f_pay_post', (int)$forum_id))
 			{
-				$this->functions_points->substract_points((int) $user_id, $forum['forum_cost_post']);
+				$this->functions_points->substract_points((int)$user_id, $forum['forum_cost_post']);
 			}
 
 			// We grab some specific message data
@@ -832,8 +828,7 @@ class listener implements EventSubscriberInterface
 				// We add the total points
 				$this->functions_points->add_points($user_id, $total_points); // Add to the user
 				$this->functions_points->add_points_to_table($post_id, $total_points, 'topic', $total_attachments, $total_poll_options); // Add to the post table
-			}
-			// If it's a new post
+			} // If it's a new post
 			else if (($mode == 'reply' || $mode == 'quote') && $forum['forum_perpost'] > 0)
 			{
 				// We calculate the total points
@@ -844,8 +839,7 @@ class listener implements EventSubscriberInterface
 				// We add the total points
 				$this->functions_points->add_points($user_id, $total_points); // Add to the user
 				$this->functions_points->add_points_to_table($post_id, $total_points, 'post', $total_attachments, 0); // Add to the post table
-			}
-			// If it's a topic edit
+			} // If it's a topic edit
 			else if (($mode == 'edit_topic' || $mode == 'edit_first_post') && $forum['forum_peredit'] > 0)
 			{
 				// We calculate the total points
@@ -856,7 +850,7 @@ class listener implements EventSubscriberInterface
 				// We grab previously received points amount
 				$sql = 'SELECT points_topic_received
 					FROM ' . POSTS_TABLE . '
-					WHERE post_id = ' . (int) $post_id;
+					WHERE post_id = ' . (int)$post_id;
 				$result = $this->db->sql_query($sql);
 				$prev_points = $this->db->sql_fetchfield('points_topic_received');
 				$this->db->sql_freeresult($result);
@@ -869,13 +863,11 @@ class listener implements EventSubscriberInterface
 				{
 					$this->functions_points->add_points($user_id, $difference); // Add to the user
 					$this->functions_points->add_points_to_table($post_id, $total_points, 'topic', $total_attachments, $total_poll_options); // Update to the post table
-				}
-				else
+				} else
 				{
 					return; // "AM I NOT MERCIFUL??" - Caesar Commodus (Gladiator [2000])
 				}
-			}
-			// If it's a post edit
+			} // If it's a post edit
 			else if (($mode == 'edit' || $mode == 'edit_last_post') && $forum['forum_peredit'] > 0)
 			{
 				// We calculate the total points
@@ -886,7 +878,7 @@ class listener implements EventSubscriberInterface
 				// We grab previously received points amount
 				$sql = 'SELECT points_post_received
 					FROM ' . POSTS_TABLE . '
-					WHERE post_id = ' . (int) $post_id;
+					WHERE post_id = ' . (int)$post_id;
 				$result = $this->db->sql_query($sql);
 				$prev_points = $this->db->sql_fetchfield('points_post_received');
 				$this->db->sql_freeresult($result);
@@ -899,19 +891,16 @@ class listener implements EventSubscriberInterface
 				{
 					$this->functions_points->add_points($user_id, $difference); // Add to the user
 					$this->functions_points->add_points_to_table($post_id, $total_points, 'post', $total_attachments, 0); // Update to the post table
-				}
-				else
+				} else
 				{
 					return; // "AM I NOT MERCIFUL??" - Caesar Commodus (Gladiator [2000])
 				}
-			}
-			else
+			} else
 			{
 				// We do nothing..
 				return; // The only thing necessary for the triumph of evil, is for good men to do nothing. - Edmund Burke
 			}
-		}
-		else
+		} else
 		{
 			return;
 		}
@@ -926,7 +915,7 @@ class listener implements EventSubscriberInterface
 			// Grab the costs of making a topic or post in this forum
 			$sql = 'SELECT forum_cost_topic, forum_cost_post
 				FROM ' . FORUMS_TABLE . '
-				WHERE forum_id = ' . (int) $event['forum_id'];
+				WHERE forum_id = ' . (int)$event['forum_id'];
 			$result = $this->db->sql_query($sql);
 			$forum = $this->db->sql_fetchrow($result);
 			$this->db->sql_freeresult($result);
@@ -934,21 +923,20 @@ class listener implements EventSubscriberInterface
 			// Grab the user's points
 			$sql = 'SELECT user_points
 				FROM ' . USERS_TABLE . '
-				WHERE user_id = ' . (int) $this->user->data['user_id'];
+				WHERE user_id = ' . (int)$this->user->data['user_id'];
 			$result = $this->db->sql_query($sql);
 			$user_points = $this->db->sql_fetchfield('user_points');
 			$this->db->sql_freeresult($result);
 
-			if ($mode == 'post' && $forum['forum_cost_topic'] > 0 && $user_points < $forum['forum_cost_topic'] && $this->auth->acl_get('f_pay_topic', (int) $event['forum_id']))
+			if ($mode == 'post' && $forum['forum_cost_topic'] > 0 && $user_points < $forum['forum_cost_topic'] && $this->auth->acl_get('f_pay_topic', (int)$event['forum_id']))
 			{
 				$message = sprintf($this->user->lang['POINTS_INSUFFICIENT_TOPIC'], $forum['forum_cost_topic'], $this->config['points_name']);
-				$message .= '<br /><br />' . $this->user->lang('RETURN_FORUM', '<a href="' . append_sid("{$this->root_path}viewforum.{$this->php_ext}", 'f=' . (int) $event['forum_id']) . '">', '</a>');
+				$message .= '<br /><br />' . $this->user->lang('RETURN_FORUM', '<a href="' . append_sid("{$this->root_path}viewforum.{$this->php_ext}", 'f=' . (int)$event['forum_id']) . '">', '</a>');
 				trigger_error($message);
-			}
-			else if (($mode == 'reply' || $mode == 'quote') && $forum['forum_cost_post'] > 0 && $user_points < $forum['forum_cost_post'] && $this->auth->acl_get('f_pay_post', (int) $event['forum_id']))
+			} else if (($mode == 'reply' || $mode == 'quote') && $forum['forum_cost_post'] > 0 && $user_points < $forum['forum_cost_post'] && $this->auth->acl_get('f_pay_post', (int)$event['forum_id']))
 			{
 				$message = sprintf($this->user->lang['POINTS_INSUFFICIENT_POST'], $forum['forum_cost_post'], $this->config['points_name']);
-				$message .= '<br /><br />' . $this->user->lang('RETURN_FORUM', '<a href="' . append_sid("{$this->root_path}viewforum.{$this->php_ext}", 'f=' . (int) $event['forum_id']) . '">', '</a>');
+				$message .= '<br /><br />' . $this->user->lang('RETURN_FORUM', '<a href="' . append_sid("{$this->root_path}viewforum.{$this->php_ext}", 'f=' . (int)$event['forum_id']) . '">', '</a>');
 				trigger_error($message);
 			}
 		}
@@ -959,53 +947,53 @@ class listener implements EventSubscriberInterface
 	{
 		$permissions = $event['permissions'];
 		$permissions += [
-			'u_use_points'		=> [
-				'lang'		=> 'ACL_U_USE_POINTS',
-				'cat'		=> 'ultimatepoints'
+			'u_use_points' => [
+				'lang' => 'ACL_U_USE_POINTS',
+				'cat' => 'ultimatepoints'
 			],
-			'u_use_bank'	=> [
-				'lang'		=> 'ACL_U_USE_BANK',
-				'cat'		=> 'ultimatepoints'
+			'u_use_bank' => [
+				'lang' => 'ACL_U_USE_BANK',
+				'cat' => 'ultimatepoints'
 			],
-			'u_use_logs'	=> [
-				'lang'		=> 'ACL_U_USE_LOGS',
-				'cat'		=> 'ultimatepoints'
+			'u_use_logs' => [
+				'lang' => 'ACL_U_USE_LOGS',
+				'cat' => 'ultimatepoints'
 			],
-			'u_use_robbery'	=> [
-				'lang'		=> 'ACL_U_USE_ROBBERY',
-				'cat'		=> 'ultimatepoints'
+			'u_use_robbery' => [
+				'lang' => 'ACL_U_USE_ROBBERY',
+				'cat' => 'ultimatepoints'
 			],
-			'u_use_lottery'	=> [
-				'lang'		=> 'ACL_U_USE_LOTTERY',
-				'cat'		=> 'ultimatepoints'
+			'u_use_lottery' => [
+				'lang' => 'ACL_U_USE_LOTTERY',
+				'cat' => 'ultimatepoints'
 			],
-			'u_use_transfer'	=> [
-				'lang'		=> 'ACL_U_USE_TRANSFER',
-				'cat'		=> 'ultimatepoints'
+			'u_use_transfer' => [
+				'lang' => 'ACL_U_USE_TRANSFER',
+				'cat' => 'ultimatepoints'
 			],
-			'f_pay_attachment'	=> [
-				'lang'		=> 'ACL_F_PAY_ATTACHMENT',
-				'cat'		=> 'ultimatepoints'
+			'f_pay_attachment' => [
+				'lang' => 'ACL_F_PAY_ATTACHMENT',
+				'cat' => 'ultimatepoints'
 			],
-			'f_pay_topic'	=> [
-				'lang'		=> 'ACL_F_PAY_TOPIC',
-				'cat'		=> 'ultimatepoints'
+			'f_pay_topic' => [
+				'lang' => 'ACL_F_PAY_TOPIC',
+				'cat' => 'ultimatepoints'
 			],
-			'f_pay_post'	=> [
-				'lang'		=> 'ACL_F_PAY_POST',
-				'cat'		=> 'ultimatepoints'
+			'f_pay_post' => [
+				'lang' => 'ACL_F_PAY_POST',
+				'cat' => 'ultimatepoints'
 			],
-			'm_chg_points'	=> [
-				'lang'		=> 'ACL_M_CHG_POINTS',
-				'cat'		=> 'ultimatepoints'
+			'm_chg_points' => [
+				'lang' => 'ACL_M_CHG_POINTS',
+				'cat' => 'ultimatepoints'
 			],
-			'm_chg_bank'	=> [
-				'lang'		=> 'ACL_M_CHG_BANK',
-				'cat'		=> 'ultimatepoints'
+			'm_chg_bank' => [
+				'lang' => 'ACL_M_CHG_BANK',
+				'cat' => 'ultimatepoints'
 			],
-			'a_points'	=> [
-				'lang'		=> 'ACL_A_POINTS',
-				'cat'		=> 'ultimatepoints'
+			'a_points' => [
+				'lang' => 'ACL_A_POINTS',
+				'cat' => 'ultimatepoints'
 			],
 		];
 		$event['permissions'] = $permissions;

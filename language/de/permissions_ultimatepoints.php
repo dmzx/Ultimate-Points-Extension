@@ -1,12 +1,12 @@
 <?php
 /**
-*
-* @version $Id: permissions_ultimatepoints.php 156 2018-05-18 20:34:31Z Scanialady $
-* @package phpBB Extension - Ultimate Points (DEUTSCH)
-* @copyright (c) 2016 dmzx & posey - https://www.dmzx-web.net
-* @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
-*
-*/
+ *
+ * @version $Id: permissions_ultimatepoints.php 156 2018-05-18 20:34:31Z Scanialady $
+ * @package phpBB Extension - Ultimate Points (DEUTSCH)
+ * @copyright (c) 2016 dmzx & posey - https://www.dmzx-web.net
+ * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
+ *
+ */
 
 if (!defined('IN_PHPBB'))
 {
@@ -34,17 +34,17 @@ if (empty($lang) || !is_array($lang))
 // ‚ ‘ ’ « » „ “ ” …
 
 $lang = array_merge($lang, [
-	'ACL_CAT_POINTS'		=> 'Ultimate Points',
-	'ACL_U_USE_POINTS'		=> 'Kann Ultimate Points benutzen',
-	'ACL_U_USE_ROBBERY'		=> 'Kann Diebstahlmodul benutzen',
-	'ACL_U_USE_BANK'		=> 'Kann Bankmodul benutzen',
-	'ACL_U_USE_LOGS'		=> 'Kann Protokollmodul benutzen',
-	'ACL_U_USE_LOTTERY'		=> 'Kann Lotteriemodul benutzen',
-	'ACL_U_USE_TRANSFER'	=> 'Kann Überweisungsmodul benutzen',
-	'ACL_F_PAY_ATTACHMENT'	=> 'Muss zahlen für Dateianhang-Download',
-	'ACL_F_PAY_TOPIC'		=> 'Muss zahlen für Erstellung neuer Themen',
-	'ACL_F_PAY_POST'		=> 'Muss zahlen für Erstellung neuer Beiträge',
-	'ACL_M_CHG_POINTS'		=> 'Kann Benutzerpunkte ändern',
-	'ACL_M_CHG_BANK'		=> 'Kann Bankguthaben der Benutzer ändern',
-	'ACL_A_POINTS'			=> 'Kann Ultimate Points administrieren',
+	'ACL_CAT_POINTS' => 'Ultimate Points',
+	'ACL_U_USE_POINTS' => 'Kann Ultimate Points benutzen',
+	'ACL_U_USE_ROBBERY' => 'Kann Diebstahlmodul benutzen',
+	'ACL_U_USE_BANK' => 'Kann Bankmodul benutzen',
+	'ACL_U_USE_LOGS' => 'Kann Protokollmodul benutzen',
+	'ACL_U_USE_LOTTERY' => 'Kann Lotteriemodul benutzen',
+	'ACL_U_USE_TRANSFER' => 'Kann Überweisungsmodul benutzen',
+	'ACL_F_PAY_ATTACHMENT' => 'Muss zahlen für Dateianhang-Download',
+	'ACL_F_PAY_TOPIC' => 'Muss zahlen für Erstellung neuer Themen',
+	'ACL_F_PAY_POST' => 'Muss zahlen für Erstellung neuer Beiträge',
+	'ACL_M_CHG_POINTS' => 'Kann Benutzerpunkte ändern',
+	'ACL_M_CHG_BANK' => 'Kann Bankguthaben der Benutzer ändern',
+	'ACL_A_POINTS' => 'Kann Ultimate Points administrieren',
 ]);

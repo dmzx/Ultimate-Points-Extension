@@ -1,14 +1,21 @@
 {% if USE_POINTS and U_USE_POINTS %}
 <dt>{{ lang('POINTS_CASH_ON_HAND') }}{{ lang('COLON') }}</dt>
-<dd>{% if U_LOCKED %}<b>{{ lang('POINTS_LOCKED') }}</b>{% else %}{{ USER_PROF_POINTS }} {% if USE_IMAGES_POINTS %}<i class="icon fa {{ POINTS_ICON_MAINICON }}" aria-hidden="true"></i>{% else %}{{ P_NAME }}{% endif %} {% if not S_IS_OWN_PROF and U_USE_TRANSFER %}<a href="{{ U_POINTS_DONATE }}">{{ lang('DONATE') }}</a>{% endif %} {% if not S_IS_OWN_PROF and U_USE_ROBBERY %}<a href="{{ U_ROBBERY }}">{{ lang('ROBBERY') }}</a>{% endif %}<a href="{{ U_POINTS_MODIFY }}">{{ lang('MOD_USER_POINTS') }}</a>{% endif %}</dd>
+<dd>{% if U_LOCKED %}<b>{{ lang('POINTS_LOCKED') }}</b>{% else %}{{ USER_PROF_POINTS }} {% if USE_IMAGES_POINTS %}<i
+		class="icon fa {{ POINTS_ICON_MAINICON }}" aria-hidden="true"></i>{% else %}{{ P_NAME }}{% endif %} {% if not
+	S_IS_OWN_PROF and U_USE_TRANSFER %}<a href="{{ U_POINTS_DONATE }}">{{ lang('DONATE') }}</a>{% endif %} {% if not
+	S_IS_OWN_PROF and U_USE_ROBBERY %}<a href="{{ U_ROBBERY }}">{{ lang('ROBBERY') }}</a>{% endif %}<a
+			href="{{ U_POINTS_MODIFY }}">{{ lang('MOD_USER_POINTS') }}</a>{% endif %}
+</dd>
 {% if USE_BANK %}
-	<dt>{{ BANK_BALANCE }}{{ lang('COLON') }}</dt>
-	{% if USE_BANK and USER_BANK_ACC %}
-		<dd>
-			{% if USER_BANK_LOCK %}<b>{{ lang('POINTS_LOCKED') }}</b>{% else %} {{ USER_BANK_POINTS }} {% if USE_IMAGES_POINTS %}<i class="icon fa {{ POINTS_ICON_BANKICON }}" aria-hidden="true"></i>{% else %}{{ P_NAME }}{% endif %} <a href="{{ U_BANK_MODIFY }}">{{ lang('MOD_USER_BANK') }}</a>{% endif %}
-		</dd>
-	{% else %}
-		<dd>{{ lang('USER_NO_BANK_ACC') }}</dd>
-	{% endif %}
+<dt>{{ BANK_BALANCE }}{{ lang('COLON') }}</dt>
+{% if USE_BANK and USER_BANK_ACC %}
+<dd>
+	{% if USER_BANK_LOCK %}<b>{{ lang('POINTS_LOCKED') }}</b>{% else %} {{ USER_BANK_POINTS }} {% if USE_IMAGES_POINTS
+	%}<i class="icon fa {{ POINTS_ICON_BANKICON }}" aria-hidden="true"></i>{% else %}{{ P_NAME }}{% endif %} <a
+		href="{{ U_BANK_MODIFY }}">{{ lang('MOD_USER_BANK') }}</a>{% endif %}
+</dd>
+{% else %}
+<dd>{{ lang('USER_NO_BANK_ACC') }}</dd>
+{% endif %}
 {% endif %}
 {% endif %}

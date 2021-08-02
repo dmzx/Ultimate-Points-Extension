@@ -7,13 +7,14 @@
 {% if S_ROBBERY %}
 
 {% if S_ERROR %}
-	<div class="errorbox">
-		<h3>{{ lang('WARNING') }}</h3>
-		<p>{{ ERROR_MSG }}</p>
-	</div>
+<div class="errorbox">
+	<h3>{{ lang('WARNING') }}</h3>
+	<p>{{ ERROR_MSG }}</p>
+</div>
 {% endif %}
 
-<h1><i class="icon {{ POINTS_ICON_MAINICON }} fa-fw" aria-hidden="true"></i> {{ lang('ACP_POINTS') }} - {{ lang('ACP_POINTS_ROBBERY_TITLE') }}</h1>
+<h1><i class="icon {{ POINTS_ICON_MAINICON }} fa-fw" aria-hidden="true"></i> {{ lang('ACP_POINTS') }} - {{
+	lang('ACP_POINTS_ROBBERY_TITLE') }}</h1>
 <p>{{ lang('ACP_POINTS_ROBBERY_EXPLAIN') }}</p>
 
 <div class="successbox">{{ lang('ACP_POINTS_VALUES_HINT') }}</div>
@@ -22,26 +23,41 @@
 	<fieldset>
 		<legend><i class="icon fa-cog fa-lg" aria-hidden="true"></i> {{ lang('ROBBERY_OPTIONS') }}</legend>
 		<dl>
-			<dt><label>{{ lang('ROBBERY_ENABLE') }}{{ lang('COLON') }}</label><br /><span>{{ lang('ROBBERY_ENABLE_EXPLAIN') }}</span></dt>
-			<dd><label><input type="radio" class="radio" name="robbery_enable" value="1"{% if ROBBERY_ENABLE %} id="robbery_enable" checked="checked" {% endif %} /> {{ lang('YES') }}</label>
-				<label><input type="radio" class="radio" name="robbery_enable" value="0"{% if not ROBBERY_ENABLE %} id="robbery_enable" checked="checked" {% endif %} /> {{ lang('NO') }}</label></dd>
+			<dt><label>{{ lang('ROBBERY_ENABLE') }}{{ lang('COLON') }}</label><br/><span>{{ lang('ROBBERY_ENABLE_EXPLAIN') }}</span>
+			</dt>
+			<dd><label><input type="radio" class="radio" name="robbery_enable" value="1" {% if ROBBERY_ENABLE %}
+								id="robbery_enable" checked="checked" {% endif %}/> {{ lang('YES') }}</label>
+				<label><input type="radio" class="radio" name="robbery_enable" value="0" {% if not ROBBERY_ENABLE %}
+								id="robbery_enable" checked="checked" {% endif %}/> {{ lang('NO') }}</label></dd>
 		</dl>
 		<dl>
-			<dt><label>{{ lang('ROBBERY_NOTIFY') }}{{ lang('COLON') }}</label><br /><span>{{ lang('ROBBERY_NOTIFY_EXPLAIN') }}</span></dt>
-			<dd><label><input type="radio" class="radio" name="robbery_notify" value="1"{% if ROBBERY_NOTIFY %} id="robbery_notify" checked="checked" {% endif %} /> {{ lang('YES') }}</label>
-				<label><input type="radio" class="radio" name="robbery_notify" value="0"{% if not ROBBERY_NOTIFY %} id="robbery_notify" checked="checked" {% endif %} /> {{ lang('NO') }}</label></dd>
+			<dt><label>{{ lang('ROBBERY_NOTIFY') }}{{ lang('COLON') }}</label><br/><span>{{ lang('ROBBERY_NOTIFY_EXPLAIN') }}</span>
+			</dt>
+			<dd><label><input type="radio" class="radio" name="robbery_notify" value="1" {% if ROBBERY_NOTIFY %}
+								id="robbery_notify" checked="checked" {% endif %}/> {{ lang('YES') }}</label>
+				<label><input type="radio" class="radio" name="robbery_notify" value="0" {% if not ROBBERY_NOTIFY %}
+								id="robbery_notify" checked="checked" {% endif %}/> {{ lang('NO') }}</label></dd>
 		</dl>
 		<dl>
-			<dt><label for="robbery_chance">{{ lang('ROBBERY_CHANCE') }}{{ lang('COLON') }}</label><br /><span>{{ lang('ROBBERY_CHANCE_EXPLAIN') }}</span></dt>
-			<dd><input type="text" id="robbery_chance" name="robbery_chance" value="{{ ROBBERY_CHANCE }}" maxlength="5" size="10" /> %</dd>
+			<dt><label for="robbery_chance">{{ lang('ROBBERY_CHANCE') }}{{ lang('COLON') }}</label><br/><span>{{ lang('ROBBERY_CHANCE_EXPLAIN') }}</span>
+			</dt>
+			<dd><input type="text" id="robbery_chance" name="robbery_chance" value="{{ ROBBERY_CHANCE }}" maxlength="5"
+						size="10"/> %
+			</dd>
 		</dl>
 		<dl>
-			<dt><label for="robbery_loose">{{ lang('ROBBERY_LOOSE') }}{{ lang('COLON') }}</label><br /><span>{{ lang('ROBBERY_LOOSE_EXPLAIN') }}</span></dt>
-			<dd><input type="text" id="robbery_loose" name="robbery_loose" value="{{ ROBBERY_LOOSE }}" maxlength="5" size="10" /> %</dd>
+			<dt><label for="robbery_loose">{{ lang('ROBBERY_LOOSE') }}{{ lang('COLON') }}</label><br/><span>{{ lang('ROBBERY_LOOSE_EXPLAIN') }}</span>
+			</dt>
+			<dd><input type="text" id="robbery_loose" name="robbery_loose" value="{{ ROBBERY_LOOSE }}" maxlength="5"
+						size="10"/> %
+			</dd>
 		</dl>
 		<dl>
-			<dt><label for="robbery_max_rob">{{ lang('ROBBERY_MAX_ROB') }}{{ lang('COLON') }}</label><br /><span>{{ lang('ROBBERY_MAX_ROB_EXPLAIN') }}</span></dt>
-			<dd><input type="text" id="robbery_max_rob" name="robbery_max_rob" value="{{ ROBBERY_MAX_ROB }}" maxlength="5" size="10" /> %</dd>
+			<dt><label for="robbery_max_rob">{{ lang('ROBBERY_MAX_ROB') }}{{ lang('COLON') }}</label><br/><span>{{ lang('ROBBERY_MAX_ROB_EXPLAIN') }}</span>
+			</dt>
+			<dd><input type="text" id="robbery_max_rob" name="robbery_max_rob" value="{{ ROBBERY_MAX_ROB }}"
+						maxlength="5" size="10"/> %
+			</dd>
 		</dl>
 	</fieldset>
 
@@ -49,10 +65,13 @@
 	<fieldset>
 		<legend><i class="icon fa fa-weixin fa-lg" aria-hidden="true"></i> {{ lang('ROBBERY_MCHAT_OPTIONS') }}</legend>
 		<dl>
-			<dt><label>{{ lang('ROBBERY_MCHAT_ENABLE') }}{{ lang('COLON') }}</label><br /><span>{{ lang('ROBBERY_MCHAT_ENABLE_EXPLAIN') }}</span></dt>
+			<dt><label>{{ lang('ROBBERY_MCHAT_ENABLE') }}{{ lang('COLON') }}</label><br/><span>{{ lang('ROBBERY_MCHAT_ENABLE_EXPLAIN') }}</span>
+			</dt>
 			<dd>
-				<label><input name="robbery_mchat_enable" type="radio" {% if ROBBERY_MCHAT_ENABLE %} checked="checked"{% endif %} class="radio" value="1" /> {{ lang('YES') }}</label>
-				<label><input name="robbery_mchat_enable" type="radio" {% if not ROBBERY_MCHAT_ENABLE %} checked="checked"{% endif %} class="radio" value="0" /> {{ lang('NO') }}</label>
+				<label><input name="robbery_mchat_enable" type="radio" {% if ROBBERY_MCHAT_ENABLE %} checked="checked"
+								{% endif %} class="radio" value="1"/> {{ lang('YES') }}</label>
+				<label><input name="robbery_mchat_enable" type="radio" {% if not ROBBERY_MCHAT_ENABLE %}
+								checked="checked" {% endif %} class="radio" value="0"/> {{ lang('NO') }}</label>
 			</dd>
 		</dl>
 	</fieldset>
@@ -60,8 +79,10 @@
 
 	<fieldset class="submit-buttons">
 		<legend>{{ lang('SUBMIT') }}</legend>
-		<input class="ultimatepoints-button ultimatepoints-submit" type="submit" id="submit" name="submit" value="{{ lang('SUBMIT') }}" />&nbsp;
-		<input class="ultimatepoints-button ultimatepoints-reset" type="reset" id="reset" name="reset" value="{{ lang('RESET') }}" />
+		<input class="ultimatepoints-button ultimatepoints-submit" type="submit" id="submit" name="submit"
+				value="{{ lang('SUBMIT') }}"/>&nbsp;
+		<input class="ultimatepoints-button ultimatepoints-reset" type="reset" id="reset" name="reset"
+				value="{{ lang('RESET') }}"/>
 		{{ S_FORM_TOKEN }}
 	</fieldset>
 </form>

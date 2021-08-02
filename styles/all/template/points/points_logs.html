@@ -4,11 +4,21 @@
 	<ul>
 		<li class="tab"><a href="{{ U_POINTS }}">{{ lang('POINTS_OVERVIEW') }}</a></li>
 		<li class="tab"><a href="{{ U_INFO }}">{{ lang('POINTS_INFO') }}</a></li>
-		{% if TRANSFER_ENABLE and U_USE_TRANSFER %}<li class="tab"><a href="{{ U_TRANSFER_USER }}">{{ lang('POINTS_TRANSFER') }}</a></li>{% endif %}
-		{% if LOGS_ENABLE and U_USE_LOGS %}<li class="tab activetab"><a href="{{ U_LOGS }}">{{ lang('POINTS_LOGS') }}</a></li>{% endif %}
-		{% if LOTTERY_ENABLE and U_USE_LOTTERY %}<li class="tab"><a href="{{ U_LOTTERY }}">{{ LOTTERY_NAME }}</a></li>{% endif %}
-		{% if BANK_ENABLE and U_USE_BANK %}<li class="tab"><a href="{{ U_BANK }}">{{ BANK_NAME }}</a></li>{% endif %}
-		{% if ROBBERY_ENABLE and U_USE_ROBBERY %}<li class="tab"><a href="{{ U_ROBBERY }}">{{ lang('POINTS_ROBBERY') }}</a></li>{% endif %}
+		{% if TRANSFER_ENABLE and U_USE_TRANSFER %}
+		<li class="tab"><a href="{{ U_TRANSFER_USER }}">{{ lang('POINTS_TRANSFER') }}</a></li>
+		{% endif %}
+		{% if LOGS_ENABLE and U_USE_LOGS %}
+		<li class="tab activetab"><a href="{{ U_LOGS }}">{{ lang('POINTS_LOGS') }}</a></li>
+		{% endif %}
+		{% if LOTTERY_ENABLE and U_USE_LOTTERY %}
+		<li class="tab"><a href="{{ U_LOTTERY }}">{{ LOTTERY_NAME }}</a></li>
+		{% endif %}
+		{% if BANK_ENABLE and U_USE_BANK %}
+		<li class="tab"><a href="{{ U_BANK }}">{{ BANK_NAME }}</a></li>
+		{% endif %}
+		{% if ROBBERY_ENABLE and U_USE_ROBBERY %}
+		<li class="tab"><a href="{{ U_ROBBERY }}">{{ lang('POINTS_ROBBERY') }}</a></li>
+		{% endif %}
 	</ul>
 </div>
 
@@ -31,49 +41,51 @@
 				<div class="inner">
 					<table class="table1">
 						<thead class="logs_head">
-							<tr>
-								<th>{{ lang('LOGS_DATE') }}</th>
-								<th>{{ lang('LOGS_TYPE') }}</th>
-								<th>{{ lang('LOGS_WHO') }}</th>
-								<th>{{ lang('LOGS_TO') }}</th>
-								<th>{{ lang('LOGS_COMMENT') }}</th>
-							</tr>
+						<tr>
+							<th>{{ lang('LOGS_DATE') }}</th>
+							<th>{{ lang('LOGS_TYPE') }}</th>
+							<th>{{ lang('LOGS_WHO') }}</th>
+							<th>{{ lang('LOGS_TO') }}</th>
+							<th>{{ lang('LOGS_COMMENT') }}</th>
+						</tr>
 						</thead>
 						<tbody>
-							{% for logs in loops.logs %}
-								<tr class="bg{% if log.S_ROW_COUNT is even %}1{% else %}2{% endif %}">
-									<td style="text-align:center;">{{ logs.DATE }}</td>
-									<td style="text-align:center;">{{ logs.TYPE }}</td>
-									<td style="text-align:center;">{{ logs.WHO }}</td>
-									<td style="text-align:center;">{{ logs.TO }}</td>
-									<td style="text-align:center;">{{ logs.COMMENT }}</td>
-								</tr>
-							{% else %}
-								<tr>
-									<td class="bg1" colspan="{% if S_CLEAR_ALLOWED %}6{% else %}5{% endif %}" align="center"><span class="gen">{{ lang('LOGS_REASON_NOLOGS') }}</span></td>
-								</tr>
-							{% endfor %}
+						{% for logs in loops.logs %}
+						<tr class="bg{% if log.S_ROW_COUNT is even %}1{% else %}2{% endif %}">
+							<td style="text-align:center;">{{ logs.DATE }}</td>
+							<td style="text-align:center;">{{ logs.TYPE }}</td>
+							<td style="text-align:center;">{{ logs.WHO }}</td>
+							<td style="text-align:center;">{{ logs.TO }}</td>
+							<td style="text-align:center;">{{ logs.COMMENT }}</td>
+						</tr>
+						{% else %}
+						<tr>
+							<td class="bg1" colspan="{% if S_CLEAR_ALLOWED %}6{% else %}5{% endif %}" align="center">
+								<span class="gen">{{ lang('LOGS_REASON_NOLOGS') }}</span></td>
+						</tr>
+						{% endfor %}
 						</tbody>
 					</table>
 					<form action="{{ S_LOGS_ACTION }}" method="post">
 						<fieldset class="display-options">
 							<label>{{ lang('SORT_BY') }} {{ S_SELECT_SORT_KEY }}</label>
-							<label>{{ S_SELECT_SORT_DIR }} <input type="submit" name="sort" value="{{ lang('GO') }}" class="button2" /></label>
+							<label>{{ S_SELECT_SORT_DIR }} <input type="submit" name="sort" value="{{ lang('GO') }}"
+																	class="button2"/></label>
 						</fieldset>
 					</form>
 
-				<div class="action-bar bottom">
-					{% if loops.pagination|length or PAGINATION %}
+					<div class="action-bar bottom">
+						{% if loops.pagination|length or PAGINATION %}
 						<div class="pagination">
 							{{ lang('POINTS_LOG_TOTAL') }}{{ lang('COLON') }} {{ PAGINATION }}
 							{% if loops.pagination|length %}
-								{% INCLUDE 'pagination.html' %}
+							{% INCLUDE 'pagination.html' %}
 							{% else %}
-								&bull; {{ PAGE_NUMBER }}
+							&bull; {{ PAGE_NUMBER }}
 							{% endif %}
 						</div>
-					{% endif %}
-				</div>
+						{% endif %}
+					</div>
 				</div>
 			</div>
 		</div>

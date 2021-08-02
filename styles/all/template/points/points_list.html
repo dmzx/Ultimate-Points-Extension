@@ -6,9 +6,9 @@
 	<div class="pagination">
 		{{ TOTAL_ULTIMATEPOINTS_LIST }}
 		{% if loops.pagination|length %}
-			{% INCLUDE 'pagination.html' %}
+		{% INCLUDE 'pagination.html' %}
 		{% else %}
-			&bull; {{ PAGE_NUMBER }}
+		&bull; {{ PAGE_NUMBER }}
 		{% endif %}
 	</div>
 	{% endif %}
@@ -20,21 +20,28 @@
 		<ul class="topiclist">
 			<li class="header">
 				<dl class="row-item">
-					<dt><div class="list-inner">{{ lang('USERNAME') }}</div></dt>
+					<dt>
+						<div class="list-inner">{{ lang('USERNAME') }}</div>
+					</dt>
 					<dd class="lastpost">{{ POINTS_LINK }}</dd>
 				</dl>
 			</li>
 		</ul>
 		<ul class="topiclist forums">
-		{% for ultimatelist in loops.ultimatelist %}
+			{% for ultimatelist in loops.ultimatelist %}
 			<li class="row {% if ultimatelist.S_ROW_COUNT is even %}bg1{% else %}bg2{% endif %}">
 				<dl>
 					<dt style="font-size: 1.2em;line-height: 2.2em;padding: 4px 0;">
 						<div class="list-inner">
-							<div class="rich-user-avatar">{% if ultimatelist.AVATAR %}{{ ultimatelist.AVATAR }}{% else %}<img src="{{ T_THEME_PATH }}/images/no_avatar.gif" width="60px;" height="60px;" alt="" />{% endif %}</div> {{ ultimatelist.USERNAME }}
+							<div class="rich-user-avatar">{% if ultimatelist.AVATAR %}{{ ultimatelist.AVATAR }}{% else
+								%}<img src="{{ T_THEME_PATH }}/images/no_avatar.gif" width="60px;" height="60px;"
+										alt=""/>{% endif %}
+							</div>
+							{{ ultimatelist.USERNAME }}
 						</div>
 					</dt>
-					<dd class="lastpost"><span style="margin-top:5px;font-size: 1.2em;">{{ ultimatelist.POINT }}</span></dd>
+					<dd class="lastpost"><span style="margin-top:5px;font-size: 1.2em;">{{ ultimatelist.POINT }}</span>
+					</dd>
 				</dl>
 			</li>
 			{% endfor %}
@@ -49,7 +56,9 @@
 		<ul class="topiclist">
 			<li class="header">
 				<dl class="row-item">
-					<dt><div class="list-inner">{{ lang('USERNAME') }}</div></dt>
+					<dt>
+						<div class="list-inner">{{ lang('USERNAME') }}</div>
+					</dt>
 					<dd></dd>
 				</dl>
 			</li>
@@ -69,15 +78,15 @@
 </div>
 {% endif %}
 
-<hr />
+<hr/>
 <div class="action-bar bottom">
 	{% if loops.pagination|length or TOTAL_ULTIMATEPOINTS_LIST %}
 	<div class="pagination">
 		{{ TOTAL_ULTIMATEPOINTS_LIST }}
 		{% if loops.pagination|length %}
-			{% INCLUDE 'pagination.html' %}
+		{% INCLUDE 'pagination.html' %}
 		{% else %}
-			&bull; {{ PAGE_NUMBER }}
+		&bull; {{ PAGE_NUMBER }}
 		{% endif %}
 	</div>
 	{% endif %}

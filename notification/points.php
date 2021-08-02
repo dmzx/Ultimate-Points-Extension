@@ -1,11 +1,11 @@
 <?php
 /**
-*
-* @package phpBB Extension - Ultimate Points
-* @copyright (c) 2016 dmzx & posey - https://www.dmzx-web.net
-* @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
-*
-*/
+ *
+ * @package phpBB Extension - Ultimate Points
+ * @copyright (c) 2016 dmzx & posey - https://www.dmzx-web.net
+ * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
+ *
+ */
 
 namespace dmzx\ultimatepoints\notification;
 
@@ -35,8 +35,8 @@ class points extends base
 	}
 
 	public static $notification_option = [
-		'lang'		=> 'NOTIFICATION_POINTS_UCP',
-		'group'		=> 'NOTIFICATION_GROUP_MISCELLANEOUS',
+		'lang' => 'NOTIFICATION_POINTS_UCP',
+		'group' => 'NOTIFICATION_GROUP_MISCELLANEOUS',
 	];
 
 	public function is_available()
@@ -46,7 +46,7 @@ class points extends base
 
 	public static function get_item_id($data)
 	{
-		return (int) $data['points_notify_id'];
+		return (int)$data['points_notify_id'];
 	}
 
 	public static function get_item_parent_id($data)

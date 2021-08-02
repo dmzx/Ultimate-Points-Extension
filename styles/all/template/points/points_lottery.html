@@ -4,11 +4,21 @@
 	<ul>
 		<li class="tab"><a href="{{ U_POINTS }}">{{ lang('POINTS_OVERVIEW') }}</a></li>
 		<li class="tab"><a href="{{ U_INFO }}">{{ lang('POINTS_INFO') }}</a></li>
-		{% if TRANSFER_ENABLE and U_USE_TRANSFER %}<li class="tab"><a href="{{ U_TRANSFER_USER }}">{{ lang('POINTS_TRANSFER') }}</a></li>{% endif %}
-		{% if LOGS_ENABLE and U_USE_LOGS %}<li class="tab"><a href="{{ U_LOGS }}">{{ lang('POINTS_LOGS') }}</a></li>{% endif %}
-		{% if LOTTERY_ENABLE and U_USE_LOTTERY %}<li class="tab activetab"><a href="{{ U_LOTTERY }}">{{ LOTTERY_NAME }}</a></li>{% endif %}
-		{% if BANK_ENABLE and U_USE_BANK %}<li class="tab"><a href="{{ U_BANK }}">{{ BANK_NAME }}</a></li>{% endif %}
-		{% if ROBBERY_ENABLE and U_USE_ROBBERY %}<li class="tab"><a href="{{ U_ROBBERY }}">{{ lang('POINTS_ROBBERY') }}</a></li>{% endif %}
+		{% if TRANSFER_ENABLE and U_USE_TRANSFER %}
+		<li class="tab"><a href="{{ U_TRANSFER_USER }}">{{ lang('POINTS_TRANSFER') }}</a></li>
+		{% endif %}
+		{% if LOGS_ENABLE and U_USE_LOGS %}
+		<li class="tab"><a href="{{ U_LOGS }}">{{ lang('POINTS_LOGS') }}</a></li>
+		{% endif %}
+		{% if LOTTERY_ENABLE and U_USE_LOTTERY %}
+		<li class="tab activetab"><a href="{{ U_LOTTERY }}">{{ LOTTERY_NAME }}</a></li>
+		{% endif %}
+		{% if BANK_ENABLE and U_USE_BANK %}
+		<li class="tab"><a href="{{ U_BANK }}">{{ BANK_NAME }}</a></li>
+		{% endif %}
+		{% if ROBBERY_ENABLE and U_USE_ROBBERY %}
+		<li class="tab"><a href="{{ U_ROBBERY }}">{{ lang('POINTS_ROBBERY') }}</a></li>
+		{% endif %}
 	</ul>
 </div>
 
@@ -18,7 +28,8 @@
 			<div id="navigation" class="navigation" role="navigation">
 				<ul>
 					<li><a href="{{ U_VIEW_HISTORY }}"><span>{{ lang('LOTTERY_VIEW_HISTORY') }}</span></a></li>
-					<li><a href="{{ U_VIEW_SELF_HISTORY }}"><span>{{ lang('LOTTERY_VIEW_SELF_HISTORY') }}</span></a></li>
+					<li><a href="{{ U_VIEW_SELF_HISTORY }}"><span>{{ lang('LOTTERY_VIEW_SELF_HISTORY') }}</span></a>
+					</li>
 				</ul>
 				<div class="cp-mini">
 					<div class="inner">
@@ -37,106 +48,126 @@
 				<div class="panel">
 					<div class="inner">
 						{% if S_VIEW_HISTORY %}
-							<h3>{{ LOTTERY_NAME }} {{ lang('LOTTERY_HISTORY') }}</h3>
-							<table cellpadding="4" cellspacing="1" border="0" class="table1">
-								<thead class="logs_head">
-										<th>#</th>
-										<th>{{ lang('USERNAME') }}</th>
-										<th>{{ lang('LOTTERY_WINNINGS') }}</th>
-										<th>{{ lang('LOTTERY_DATE') }}</th>
-								</thead>
-								<tbody>
-									{% for history_row in loops.history_row %}
-										{% if history_row.S_ROW_COUNT is even %}<tr class="bg1">{% else %}<tr class="bg2">{% endif %}
-											<td class="row{{ history_row.ROW_COLOR }}" align="center">{{ history_row.NUMBER }}</td>
-											<td class="row{{ history_row.ROW_COLOR }}" align="center">{{ history_row.WINNER_PROFILE }}</td>
-											<td class="row{{ history_row.ROW_COLOR }}" align="center">{% if history_row.WINNINGS == 0 %}{% else %}{{ history_row.WINNINGS }} {{ POINTS_NAME }}{% endif %}</td>
-											<td class="row{{ history_row.ROW_COLOR }}" align="center">{{ history_row.DATE }}</td>
-										</tr>
-									{% else %}
-										<tr>
-											<td class="bg1" colspan="{% if S_CLEAR_ALLOWED %}6{% else %}5{% endif %}" align="center"><span class="gen">{{ lang('LOTTERY_NO_WINNERS') }}</span></td>
-										</tr>
-									{% endfor %}
-								</tbody>
-							</table>
-							<div class="action-bar bottom">
-								{% if loops.pagination|length or PAGINATION %}
-									<div class="pagination">
-										{{ lang('POINTS_LOG_TOTAL') }}{{ lang('COLON') }} {{ PAGINATION }}
-										{% if loops.pagination|length %}
-											{% INCLUDE 'pagination.html' %}
-										{% else %}
-											&bull; {{ PAGE_NUMBER }}
-										{% endif %}
-									</div>
+						<h3>{{ LOTTERY_NAME }} {{ lang('LOTTERY_HISTORY') }}</h3>
+						<table cellpadding="4" cellspacing="1" border="0" class="table1">
+							<thead class="logs_head">
+							<th>#</th>
+							<th>{{ lang('USERNAME') }}</th>
+							<th>{{ lang('LOTTERY_WINNINGS') }}</th>
+							<th>{{ lang('LOTTERY_DATE') }}</th>
+							</thead>
+							<tbody>
+							{% for history_row in loops.history_row %}
+							{% if history_row.S_ROW_COUNT is even %}
+							<tr class="bg1">{% else %}
+							<tr class="bg2">{% endif %}
+								<td class="row{{ history_row.ROW_COLOR }}" align="center">{{ history_row.NUMBER }}</td>
+								<td class="row{{ history_row.ROW_COLOR }}" align="center">{{ history_row.WINNER_PROFILE
+									}}
+								</td>
+								<td class="row{{ history_row.ROW_COLOR }}" align="center">{% if history_row.WINNINGS ==
+									0 %}{% else %}{{ history_row.WINNINGS }} {{ POINTS_NAME }}{% endif %}
+								</td>
+								<td class="row{{ history_row.ROW_COLOR }}" align="center">{{ history_row.DATE }}</td>
+							</tr>
+							{% else %}
+							<tr>
+								<td class="bg1" colspan="{% if S_CLEAR_ALLOWED %}6{% else %}5{% endif %}"
+									align="center"><span class="gen">{{ lang('LOTTERY_NO_WINNERS') }}</span></td>
+							</tr>
+							{% endfor %}
+							</tbody>
+						</table>
+						<div class="action-bar bottom">
+							{% if loops.pagination|length or PAGINATION %}
+							<div class="pagination">
+								{{ lang('POINTS_LOG_TOTAL') }}{{ lang('COLON') }} {{ PAGINATION }}
+								{% if loops.pagination|length %}
+								{% INCLUDE 'pagination.html' %}
+								{% else %}
+								&bull; {{ PAGE_NUMBER }}
 								{% endif %}
 							</div>
-							<br /><a href="{{ U_BACK_TO_LOTTERY }}" class="back-lottery">&laquo; {{ lang('LOTTERY_BACK') }}</a>
-						{% else %}
-							{% if S_USER_LOGGED_IN %}
-								<p>{{ lang('POINTS_CASH_ON_HAND') }}:&nbsp;{{ USER_POINTS }} {{ POINTS_NAME }}</p>
-							{% else %}
-								<p>{{ lang('POINTS_BOT_GUEST') }}</p>
 							{% endif %}
-							<fieldset>
-								{% if S_DRAWING_ENABLED and S_USER_LOGGED_IN %}
-									<h3>{{ lang('LOTTERY_ACTIONS') }}</h3>
-									<dl>
-										<dt><label>{{ lang('LOTTERY_VIEWER_TICKETS') }}</label></dt>
-										<dd>{{ VIEWER_TICKETS_TOTAL }} <i class="icon fa {{ POINTS_ICON_LOTTERYICON }}" aria-hidden="true"></i>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-										{% if S_PURCHASE_SINGLE %}
-											<input type="hidden" name="total_tickets" value="1" />
-											<input type="submit" tabindex="2" name="purchase_ticket" value="{{ lang('LOTTERY_PURCHASE_TICKET') }}" class="button2" />
-											{{ S_FORM_TOKEN }}
-										{% endif %}
-										{% if S_PURCHASE_MULTI %}
-											<input type="text" tabindex="1" class="inputbox autowidth" maxlength="3" name="total_tickets" value="1" size="3" />
-											<input type="submit" tabindex="2" name="purchase_ticket" value="{{ lang('LOTTERY_PURCHASE_TICKETS') }}" class="button2" />
-											{{ S_FORM_TOKEN }}
-										{% endif %}
-										</dd>
-									</dl>
-								{% endif %}
-								<h3>{{ LOTTERY_INFO }}</h3>
-								{% if S_LOTTERY_ENABLE %}
-									<dl>
-										<dt>{{ lang('LOTTERY_TICKETS') }}{{ lang('COLON') }}</dt>
-										<dd>{{ LOTTERY_TICKETS }} <i class="icon fa {{ POINTS_ICON_LOTTERYICON }}" aria-hidden="true"></i></dd>
-									</dl>
-									<dl>
-										<dt>{{ lang('LOTTERY_PLAYERS') }}{{ lang('COLON') }}</dt>
-										<dd>{{ LOTTERY_PLAYERS }} <i class="icon fa {{ POINTS_ICON_LOTTERYICON }}" aria-hidden="true"></i></dd>
-									</dl>
-									<p><hr class="dashed" /></p>
-									<dl>
-										<dt>{{ lang('LOTTERY_TICKET_COST') }}{{ lang('COLON') }}</dt>
-										<dd>{{ TICKET_COST }} {{ POINTS_NAME }}</dd>
-									</dl>
-										{% if S_MULTI_TICKETS %}
-											<dl>
-												<dt>{{ lang('LOTTERY_MAX_TICKETS') }}{{ lang('COLON') }}</dt>
-												<dd>{{ MAX_TICKETS }} <i class="icon fa {{ POINTS_ICON_LOTTERYICON }}" aria-hidden="true"></i></dd>
-											</dl>
-										{% endif %}
-									<dl>
-										<dt>{{ lang('LOTTERY_JACKPOT') }}{{ lang('COLON') }}</dt>
-										<dd>{{ JACKPOT }} {{ POINTS_NAME }}</dd>
-									</dl>
-									<p><hr class="dashed" /></p>
-								{% endif %}
-								{% if S_DRAWING_ENABLED %}
-									<dl>
-										<dt>{{ lang('LOTTERY_NEXT_DRAWING') }}{{ lang('COLON') }}</dt>
-										<dd>{{ NEXT_DRAWING }}</dd>
-									</dl>
-								{% endif %}
-								<dl>
-									<dt>{{ LOTTERY_LAST_WINNER }}{{ lang('COLON') }}</dt>
-									<dd>{{ PREVIOUS_WINNER }}</dd>
-								</dl>
-								<br />
-							</fieldset>
+						</div>
+						<br/><a href="{{ U_BACK_TO_LOTTERY }}" class="back-lottery">&laquo; {{ lang('LOTTERY_BACK')
+						}}</a>
+						{% else %}
+						{% if S_USER_LOGGED_IN %}
+						<p>{{ lang('POINTS_CASH_ON_HAND') }}:&nbsp;{{ USER_POINTS }} {{ POINTS_NAME }}</p>
+						{% else %}
+						<p>{{ lang('POINTS_BOT_GUEST') }}</p>
+						{% endif %}
+						<fieldset>
+							{% if S_DRAWING_ENABLED and S_USER_LOGGED_IN %}
+							<h3>{{ lang('LOTTERY_ACTIONS') }}</h3>
+							<dl>
+								<dt><label>{{ lang('LOTTERY_VIEWER_TICKETS') }}</label></dt>
+								<dd>{{ VIEWER_TICKETS_TOTAL }} <i class="icon fa {{ POINTS_ICON_LOTTERYICON }}"
+																	aria-hidden="true"></i>&nbsp; &nbsp; &nbsp; &nbsp;
+									&nbsp;
+									{% if S_PURCHASE_SINGLE %}
+									<input type="hidden" name="total_tickets" value="1"/>
+									<input type="submit" tabindex="2" name="purchase_ticket"
+											value="{{ lang('LOTTERY_PURCHASE_TICKET') }}" class="button2"/>
+									{{ S_FORM_TOKEN }}
+									{% endif %}
+									{% if S_PURCHASE_MULTI %}
+									<input type="text" tabindex="1" class="inputbox autowidth" maxlength="3"
+											name="total_tickets" value="1" size="3"/>
+									<input type="submit" tabindex="2" name="purchase_ticket"
+											value="{{ lang('LOTTERY_PURCHASE_TICKETS') }}" class="button2"/>
+									{{ S_FORM_TOKEN }}
+									{% endif %}
+								</dd>
+							</dl>
+							{% endif %}
+							<h3>{{ LOTTERY_INFO }}</h3>
+							{% if S_LOTTERY_ENABLE %}
+							<dl>
+								<dt>{{ lang('LOTTERY_TICKETS') }}{{ lang('COLON') }}</dt>
+								<dd>{{ LOTTERY_TICKETS }} <i class="icon fa {{ POINTS_ICON_LOTTERYICON }}"
+															 aria-hidden="true"></i></dd>
+							</dl>
+							<dl>
+								<dt>{{ lang('LOTTERY_PLAYERS') }}{{ lang('COLON') }}</dt>
+								<dd>{{ LOTTERY_PLAYERS }} <i class="icon fa {{ POINTS_ICON_LOTTERYICON }}"
+															 aria-hidden="true"></i></dd>
+							</dl>
+							<p>
+							<hr class="dashed"/>
+							</p>
+							<dl>
+								<dt>{{ lang('LOTTERY_TICKET_COST') }}{{ lang('COLON') }}</dt>
+								<dd>{{ TICKET_COST }} {{ POINTS_NAME }}</dd>
+							</dl>
+							{% if S_MULTI_TICKETS %}
+							<dl>
+								<dt>{{ lang('LOTTERY_MAX_TICKETS') }}{{ lang('COLON') }}</dt>
+								<dd>{{ MAX_TICKETS }} <i class="icon fa {{ POINTS_ICON_LOTTERYICON }}"
+														 aria-hidden="true"></i></dd>
+							</dl>
+							{% endif %}
+							<dl>
+								<dt>{{ lang('LOTTERY_JACKPOT') }}{{ lang('COLON') }}</dt>
+								<dd>{{ JACKPOT }} {{ POINTS_NAME }}</dd>
+							</dl>
+							<p>
+							<hr class="dashed"/>
+							</p>
+							{% endif %}
+							{% if S_DRAWING_ENABLED %}
+							<dl>
+								<dt>{{ lang('LOTTERY_NEXT_DRAWING') }}{{ lang('COLON') }}</dt>
+								<dd>{{ NEXT_DRAWING }}</dd>
+							</dl>
+							{% endif %}
+							<dl>
+								<dt>{{ LOTTERY_LAST_WINNER }}{{ lang('COLON') }}</dt>
+								<dd>{{ PREVIOUS_WINNER }}</dd>
+							</dl>
+							<br/>
+						</fieldset>
 						{% endif %}
 					</div>
 				</div>
