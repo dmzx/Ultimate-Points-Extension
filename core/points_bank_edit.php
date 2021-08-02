@@ -149,9 +149,9 @@ class points_bank_edit
 					'SELECT'	=> 'user_id, username, user_points, user_colour',
 					'FROM'		=> [
 						USERS_TABLE => 'u',
-                    ],
+					],
 					'WHERE'		=> 'user_id = ' . (int) $u_id,
-                ];
+				];
 				$sql = $this->db->sql_build_query('SELECT', $sql_array);
 				$result = $this->db->sql_query($sql);
 				$points_user = $this->db->sql_fetchrow($result);
@@ -168,17 +168,17 @@ class points_bank_edit
 
 					'FROM'		=> [
 						USERS_TABLE	=> 'u',
-                    ],
+					],
 
 					'LEFT_JOIN'	=> [
 						[
 							'FROM'	=> [$this->points_bank_table => 'b'],
 							'ON'	=> 'u.user_id = b.user_id'
-                        ],
-                    ],
+						],
+					],
 
 					'WHERE'		=> 'u.user_id = ' . (int) $u_id,
-                ];
+				];
 				$sql = $this->db->sql_build_query('SELECT', $sql_array);
 				$result = $this->db->sql_query($sql);
 				$row = $this->db->sql_fetchrow($result);
@@ -192,7 +192,7 @@ class points_bank_edit
 				$hidden_fields = build_hidden_fields([
 					'user_id'	=> $u_id,
 					'post_id'	=> $post_id,
-                ]);
+				]);
 
 				$points_values = $this->cache->get('points_values');
 
@@ -209,7 +209,7 @@ class points_bank_edit
 					'U_USER_LINK'		=> append_sid("{$this->root_path}memberlist.{$this->php_ext}", "mode=viewprofile&amp;u=" . $u_id),
 					'S_ACTION'			=> $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'bank_edit', 'adm_points' => '1']),
 					'S_HIDDEN_FIELDS'	=> $hidden_fields,
-                ]);
+				]);
 			}
 		}
 		// Generate the page
@@ -218,7 +218,7 @@ class points_bank_edit
 		// Generate the page template
 		$this->template->set_filenames([
 			'body'	=> 'points/points_bank_edit.html'
-        ]);
+		]);
 
 		page_footer();
 	}

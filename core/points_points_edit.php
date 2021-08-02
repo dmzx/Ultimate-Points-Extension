@@ -147,9 +147,9 @@ class points_points_edit
 					'SELECT'	=> 'user_id, username, user_points, user_colour',
 					'FROM'		=> [
 						USERS_TABLE => 'u',
-                    ],
+					],
 					'WHERE'		=> 'user_id = ' . (int) $u_id,
-                ];
+				];
 				$sql = $this->db->sql_build_query('SELECT', $sql_array);
 				$result = $this->db->sql_query($sql);
 				$points_user = $this->db->sql_fetchrow($result);
@@ -165,9 +165,9 @@ class points_points_edit
 					'SELECT'	=> 'user_id, username, user_points, user_colour',
 					'FROM'		=> [
 						USERS_TABLE => 'u',
-                    ],
+					],
 					'WHERE'		=> 'user_id = ' . (int) $u_id,
-                ];
+				];
 				$sql = $this->db->sql_build_query('SELECT', $sql_array);
 				$result = $this->db->sql_query($sql);
 				$row = $this->db->sql_fetchrow($result);
@@ -181,7 +181,7 @@ class points_points_edit
 				$hidden_fields = build_hidden_fields([
 					'user_id'	=> $u_id,
 					'post_id'	=> $post_id,
-                ]);
+				]);
 
 				$this->template->assign_vars([
 					'USER_NAME'				=> get_username_string('full', $u_id, $row['username'], $row['user_colour']),
@@ -194,7 +194,7 @@ class points_points_edit
 					'S_ACTION'				=> $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'points_edit', 'adm_points' => '1']),
 					'S_HIDDEN_FIELDS'		=> $hidden_fields,
 					'U_USER_LINK'			=> append_sid("{$this->root_path}memberlist.{$this->php_ext}", "mode=viewprofile&amp;u=" . $u_id),
-                ]);
+				]);
 			}
 		}
 
@@ -204,7 +204,7 @@ class points_points_edit
 		// Generate the page template
 		$this->template->set_filenames([
 			'body'	=> 'points/points_points_edit.html'
-        ]);
+		]);
 
 		page_footer();
 	}

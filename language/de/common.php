@@ -221,7 +221,7 @@ $lang = array_merge($lang, [
 	'POINTS_LOG_COUNT'	=> [
 		1 => '%d Eintrag',
 		2 => '%d Einträge',
-    ],
+	],
 	'POINTS_LIST_DISABLE'				=> 'Ultimate Points Liste deaktiviert',
 	'POINTS_LIST_NO_USER'				=> 'Keine Benutzer mit Punkten',
 	'POINTS_LIST_USER'					=> '1 Benutzer',

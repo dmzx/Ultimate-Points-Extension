@@ -117,7 +117,7 @@ class userlist
 				'USERNAME'	=> get_username_string('full', $row['user_id'], $row['username'], $row['user_colour']),
 				'AVATAR'	=> phpbb_get_user_avatar($row),
 				'POINT'		=> sprintf($this->functions_points->number_format_points($row['user_points'])),
-            ]);
+			]);
 		}
 		$this->db->sql_freeresult($result);
 
@@ -137,14 +137,14 @@ class userlist
 			'POINTS_LIST_TOTAL'				=> $this->config['points_name_uplist'],
 			'POINTS_LINK'					=> $this->config['points_name'],
 			'ULTIMATEPOINTS_FOOTER_VIEW'	=> true,
-        ]);
+		]);
 
 		// Output the page
 		page_header($this->config['points_name_uplist']);
 
 		$this->template->set_filenames([
 			'body' => 'points/points_list.html'
-        ]);
+		]);
 
 		page_footer();
 	}

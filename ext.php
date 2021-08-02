@@ -25,7 +25,7 @@ class ext extends \phpbb\extension\base
 
 	protected static $notification_types = [
 			'dmzx.ultimatepoints.notification.type.points',
-    ];
+	];
 
 	/**
 	 * Enable our notifications.

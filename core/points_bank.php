@@ -153,7 +153,7 @@ class points_bank
 		$this->template->assign_block_vars('navlinks', [
 			'U_VIEW_FORUM'	=> $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'bank']),
 			'FORUM_NAME'	=> $points_values['bank_name'],
-        ]);
+		]);
 
 		// Check, if it's time to pay users
 		if ((time() - $points_values['bank_last_restocked']) > $points_values['bank_pay_period'])
@@ -165,9 +165,9 @@ class points_bank
 			'SELECT'	=> '*',
 			'FROM'		=> [
 				$this->points_bank_table => 'u',
-            ],
+			],
 			'WHERE'		=> 'user_id = ' . (int) $this->user->data['user_id'],
-        ];
+		];
 		$sql = $this->db->sql_build_query('SELECT', $sql_array);
 		$result = $this->db->sql_query($sql);
 		$row = $this->db->sql_fetchrow($result);
@@ -180,14 +180,14 @@ class points_bank
 		{
 			$this->template->set_filenames([
 				'body' => 'points/points_bank.html'
-            ]);
+			]);
 
 			if (!isset($row['holding']) && $this->user->data['user_id'] > 0 && $this->user->data['username'] != ANONYMOUS)
 			{
 				$this->template->assign_block_vars('no_account', [
 					'USER_NO_ACCOUNT'	=> sprintf($this->user->lang['BANK_USER_NO_ACCOUNT'], $points_values['bank_name']),
 					'OPEN_ACCOUNT'		=> sprintf($this->user->lang['BANK_OPEN_ACCOUNT'], '<a href="' . $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'bank', 'action' => 'createaccount']) . '" title="' . $this->user->lang['BANK_OPEN_ACCOUNT'] . '!">', '</a>')
-                ]);
+				]);
 			}
 			else if ($this->user->data['user_id'] > 0 && $this->user->data['username'] != ANONYMOUS)
 			{
@@ -198,9 +198,9 @@ class points_bank
 				'SELECT'	=> 'SUM(holding) AS total_holding, count(user_id) AS total_users',
 				'FROM'		=> [
 					$this->points_bank_table => 'u',
-                ],
+				],
 				'WHERE'		=> 'id > 0',
-            ];
+			];
 			$sql = $this->db->sql_build_query('SELECT', $sql_array);
 			$result = $this->db->sql_query($sql);
 			$b_row = $this->db->sql_fetchrow($result);
@@ -257,7 +257,7 @@ $holding = (is_array($row) && $row['holding']);
 
 				'U_WITHDRAW' 			=> $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'bank', 'action' => 'withdraw']),
 				'U_DEPOSIT' 			=> $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'bank', 'action' => 'deposit'])
-            ]);
+			]);
 
 		}
 		// Start page, where an account is created
@@ -270,7 +270,7 @@ $holding = (is_array($row) && $row['holding']);
 
 			$this->template->set_filenames([
 				'body' => 'points/points_bank.html'
-            ]);
+			]);
 $holding = (is_array($row) && $row['holding']);
 			if (is_numeric($holding))
 			{
@@ -282,7 +282,7 @@ $holding = (is_array($row) && $row['holding']);
 					'user_id'			=> (int) $this->user->data['user_id'],
 					'opentime'			=> time(),
 					'fees'				=> 'on',
-                    ]);
+					]);
 				$this->db->sql_query($sql);
 
 				trigger_error(' ' . $this->user->lang['BANK_WELCOME_BANK'] . ' ' . $points_values['bank_name'] . '! <br />' . $this->user->lang['BANK_START_BALANCE'] . '<br />' . $this->user->lang['BANK_YOUR_ACCOUNT'] . '!<br /><br />' . sprintf($this->user->lang['BANK_BACK_TO_BANK'], '<a href="' . $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'bank']) . '">', '</a>') . sprintf('<br />' . $this->user->lang['BANK_BACK_TO_INDEX'], '<a href="' . append_sid("{$this->root_path}index.{$this->php_ext}") . '">', '</a>'));
@@ -325,9 +325,9 @@ $holding = (is_array($row) && $row['holding']);
 				'SELECT'	=> 'holding, totaldeposit',
 				'FROM'		=> [
 					$this->points_bank_table => 'b',
-                ],
+				],
 				'WHERE'		=> 'user_id = ' . (int) $this->user->data['user_id'],
-            ];
+			];
 			$sql = $this->db->sql_build_query('SELECT', $sql_array);
 			$result = $this->db->sql_query($sql);
 
@@ -339,7 +339,7 @@ $holding = (is_array($row) && $row['holding']);
 			$data = [
 				'holding'		=> $user_holding + $deposit,
 				'totaldeposit'	=> $user_totaldeposit + $deposit,
-            ];
+			];
 
 			$sql = 'UPDATE ' . $this->points_bank_table . '
 				SET ' . $this->db->sql_build_array('UPDATE', $data) . '
@@ -407,9 +407,9 @@ $holding = (is_array($row) && $row['holding']);
 				'SELECT'	=> 'holding, totalwithdrew',
 				'FROM'		=> [
 					$this->points_bank_table => 'b',
-                ],
+				],
 				'WHERE'		=> 'user_id = ' . (int) $this->user->data['user_id'],
-            ];
+			];
 			$sql = $this->db->sql_build_query('SELECT', $sql_array);
 			$result = $this->db->sql_query($sql);
 
@@ -421,7 +421,7 @@ $holding = (is_array($row) && $row['holding']);
 			$data = [
 				'holding'		=> $user_holding - $withdrawtotal,
 				'totalwithdrew'	=> $user_totalwithdrew + $withdraw,
-            ];
+			];
 
 			$sql = 'UPDATE ' . $this->points_bank_table . '
 				SET ' . $this->db->sql_build_array('UPDATE', $data) . '
@@ -442,18 +442,18 @@ $holding = (is_array($row) && $row['holding']);
 
 			'FROM'		=> [
 				USERS_TABLE	=> 'u',
-            ],
+			],
 
 			'LEFT_JOIN'	=> [
 				[
 					'FROM'	=> [$this->points_bank_table => 'b'],
 					'ON'	=> 'u.user_id = b.user_id'
-                ],
-            ],
+				],
+			],
 
 			'WHERE'		=> 'b.holding > 0',
 			'ORDER_BY'	=> 'b.holding DESC, u.username ASC',
-        ];
+		];
 
 		$sql = $this->db->sql_build_query('SELECT', $sql_array);
 		$result = $this->db->sql_query_limit($sql, $limit);
@@ -463,7 +463,7 @@ $holding = (is_array($row) && $row['holding']);
 			$this->template->assign_block_vars('bank', [
 				'USERNAME'	=> get_username_string('full', $row['user_id'], $row['username'], $row['user_colour']),
 				'POINT'		=> sprintf($this->functions_points->number_format_points($row['holding'])),
-            ]);
+			]);
 		}
 		$this->db->sql_freeresult($result);
 
@@ -482,7 +482,7 @@ $holding = (is_array($row) && $row['holding']);
 				'hour'		=> 60 * 60,
 				'minute'	=> 60,
 				'second'	=> 0,
-            ];
+			];
 
 			foreach ($time_array as $key => $value)
 			{
@@ -521,7 +521,7 @@ $holding = (is_array($row) && $row['holding']);
 			'U_USE_LOTTERY'			=> $this->auth->acl_get('u_use_lottery'),
 			'U_USE_BANK'			=> $this->auth->acl_get('u_use_bank'),
 			'U_USE_ROBBERY'			=> $this->auth->acl_get('u_use_robbery'),
-        ]);
+		]);
 
 		page_footer();
 	}

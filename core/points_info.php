@@ -89,7 +89,7 @@ class points_info
 		$this->template->assign_block_vars('navlinks', [
 			'U_VIEW_FORUM'	=> $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'info']),
 			'FORUM_NAME'	=> sprintf($this->user->lang['POINTS_INFO'], $this->config['points_name']),
-        ]);
+		]);
 
 		// Read out all the need values
 		$info_attach 							= ($points_values['points_per_attach'] == 0) ? sprintf($this->user->lang['INFO_NO_POINTS'], $this->config['points_name']) :	sprintf($this->functions_points->number_format_points($points_values['points_per_attach']) . '&nbsp;' . $this->config['points_name']);
@@ -163,7 +163,7 @@ class points_info
 			'U_USE_LOTTERY'						=> $this->auth->acl_get('u_use_lottery'),
 			'U_USE_BANK'						=> $this->auth->acl_get('u_use_bank'),
 			'U_USE_ROBBERY'						=> $this->auth->acl_get('u_use_robbery'),
-        ]);
+		]);
 
 		// Generate the page
 		page_header($this->user->lang['POINTS_INFO']);
@@ -171,7 +171,7 @@ class points_info
 		// Generate the page template
 		$this->template->set_filenames([
 			'body'	=> 'points/points_info.html'
-        ]);
+		]);
 
 		page_footer();
 	}

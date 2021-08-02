@@ -151,12 +151,12 @@ class points_lottery
 		$this->template->assign_block_vars('navlinks', [
 			'U_VIEW_FORUM'	=> $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'lottery']),
 			'FORUM_NAME'	=> $points_values['lottery_name'],
-        ]);
+		]);
 
 		// Add lottery base amount in description
 		$this->template->assign_vars([
 			'L_LOTTERY_BASE_AMOUNT'	=> sprintf($this->user->lang['LOTTERY_DESCRIPTION'], sprintf($this->functions_points->number_format_points($points_values['lottery_base_amount'])), $this->config['points_name']),
-        ]);
+		]);
 
 		// Recheck, if lottery was run, for those boards only having one user per day and which don't call the index page first
 		if ($points_values['lottery_draw_period'] != 0 && time() > $points_values['lottery_last_draw_time'] + $points_values['lottery_draw_period'])
@@ -180,9 +180,9 @@ class points_lottery
 				'SELECT'	=> 'COUNT(ticket_id) AS number_of_tickets',
 				'FROM'		=> [
 					$this->points_lottery_tickets_table => 't',
-                ],
+				],
 				'WHERE'		=> 'user_id = ' . (int) $this->user->data['user_id'],
-            ];
+			];
 			$sql = $this->db->sql_build_query('SELECT', $sql_array);
 			$result = $this->db->sql_query($sql);
 			$number_tickets = $this->db->sql_fetchfield('number_of_tickets');
@@ -224,9 +224,9 @@ class points_lottery
 					'SELECT'	=> '*',
 					'FROM'		=> [
 						USERS_TABLE => 'u',
-                    ],
+					],
 					'WHERE'		=> 'user_id = ' . (int) $this->user->data['user_id'],
-                ];
+				];
 				$sql = $this->db->sql_build_query('SELECT', $sql_array);
 				$result = $this->db->sql_query($sql);
 				$purchaser = $this->db->sql_fetchrow($result);
@@ -245,7 +245,7 @@ class points_lottery
 			{
 				$sql_insert_ary[] = [
 					'user_id'	=> $this->user->data['user_id'],
-                ];
+				];
 			}
 			$this->db->sql_multi_insert($this->points_lottery_tickets_table, $sql_insert_ary);
 
@@ -274,7 +274,7 @@ class points_lottery
 
 			$this->template->assign_vars([
 				'U_ACTION'		=> $this->u_action,
-            ]);
+			]);
 		}
 
 		// Display main page
@@ -298,9 +298,9 @@ class points_lottery
 					'SELECT'	=> 'COUNT(id) AS viewer_history',
 					'FROM'		=> [
 						$this->points_lottery_history_table => 'h',
-                    ],
+					],
 					'WHERE'		=> 'user_id = ' . (int) $this->user->data['user_id'],
-                ];
+				];
 				$sql = $this->db->sql_build_query('SELECT', $sql_array);
 				$result = $this->db->sql_query($sql);
 				$total_wins =	(int) $this->db->sql_fetchfield('viewer_history');
@@ -319,7 +319,7 @@ class points_lottery
 					'U_LOTTERY'			=> $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'lottery']),
 					'U_BANK'			=> $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'bank']),
 					'U_ROBBERY'			=> $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'robbery']),
-                ]);
+				]);
 			}
 
 			// Check, if user is viewing all or own entries
@@ -329,8 +329,8 @@ class points_lottery
 					'SELECT'	=> 'COUNT(id) AS total_entries',
 					'FROM'		=> [
 						$this->points_lottery_history_table => 'h',
-                    ],
-                ];
+					],
+				];
 				$sql = $this->db->sql_build_query('SELECT', $sql_array);
 				$result = $this->db->sql_query($sql);
 				$total_entries = (int) $this->db->sql_fetchfield('total_entries');
@@ -340,15 +340,15 @@ class points_lottery
 					'SELECT'	=> 'h.*, u.*',
 					'FROM'		=> [
 						$this->points_lottery_history_table	=> 'h',
-                    ],
+					],
 					'LEFT_JOIN'	=> [
 						[
 							'FROM'	=> [USERS_TABLE => 'u'],
 							'ON'	=> 'h.user_id = u.user_id'
-                        ],
-                    ],
+						],
+					],
 					'ORDER_BY'	=> 'time DESC',
-                ];
+				];
 			}
 			else
 			{
@@ -356,9 +356,9 @@ class points_lottery
 					'SELECT'	=> 'COUNT(id) AS total_entries',
 					'FROM'		=> [
 						$this->points_lottery_history_table => 'h',
-                    ],
+					],
 					'WHERE'		=> 'user_id = ' . (int) $this->user->data['user_id'],
-                ];
+				];
 				$sql = $this->db->sql_build_query('SELECT', $sql_array);
 				$result = $this->db->sql_query($sql);
 				$total_entries =	(int) $this->db->sql_fetchfield('total_entries');
@@ -368,16 +368,16 @@ class points_lottery
 					'SELECT'	=> 'h.*, u.*',
 					'FROM'		=> [
 						$this->points_lottery_history_table	=> 'h',
-                    ],
+					],
 					'LEFT_JOIN'	=> [
 						[
 							'FROM'	=> [USERS_TABLE => 'u'],
 							'ON'	=> 'h.user_id = u.user_id'
-                        ],
-                    ],
+						],
+					],
 					'WHERE'		=> 'h.user_id = ' . (int) $this->user->data['user_id'],
 					'ORDER_BY'	=> 'time DESC',
-                ];
+				];
 			}
 
 			$sql = $this->db->sql_build_query('SELECT', $sql_array);
@@ -406,7 +406,7 @@ class points_lottery
 					'WINNINGS' 			=> sprintf($this->functions_points->number_format_points($row['amount'])),
 					'DATE' 				=> $this->user->format_date($row['time']),
 					'ROW_COLOR' 		=> $row_color,
-                ]);
+				]);
 
 				$this->template->assign_vars([
 					'U_VIEW_HISTORY'	=> $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'lottery', 'history' => 'all']),
@@ -417,7 +417,7 @@ class points_lottery
 					'U_LOTTERY'			=> $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'lottery']),
 					'U_BANK'			=> $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'bank']),
 					'U_ROBBERY'			=> $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'robbery']),
-                ]);
+				]);
 			}
 
 			//Start pagination
@@ -437,7 +437,7 @@ class points_lottery
 				'U_LOTTERY'				=> $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'lottery']),
 				'U_BANK'				=> $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'bank']),
 				'U_ROBBERY'				=> $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'robbery']),
-            ]);
+			]);
 
 		}
 		else
@@ -451,9 +451,9 @@ class points_lottery
 					'SELECT'	=> 'COUNT(ticket_id) AS num_tickets',
 					'FROM'		=> [
 						$this->points_lottery_tickets_table => 'h',
-                    ],
+					],
 					'WHERE'		=> 'user_id = ' . (int) $this->user->data['user_id'],
-                ];
+				];
 				$sql = $this->db->sql_build_query('SELECT', $sql_array);
 				$result = $this->db->sql_query($sql);
 				$viewer_total_tickets = (int) $this->db->sql_fetchfield('num_tickets');
@@ -465,9 +465,9 @@ class points_lottery
 				'SELECT'	=> 'user_id, username, user_colour',
 				'FROM'		=> [
 					USERS_TABLE => 'u',
-                ],
+				],
 				'WHERE'		=> 'user_id = ' . (int) $points_values['lottery_prev_winner_id'],
-            ];
+			];
 			$sql = $this->db->sql_build_query('SELECT', $sql_array);
 			$result = $this->db->sql_query($sql);
 			$row = $this->db->sql_fetchrow($result);
@@ -496,8 +496,8 @@ class points_lottery
 				'SELECT'	=> 'COUNT(ticket_id) AS no_of_tickets',
 				'FROM'		=> [
 					$this->points_lottery_tickets_table => 't',
-                ],
-            ];
+				],
+			];
 			$sql = $this->db->sql_build_query('SELECT', $sql_array);
 			$result = $this->db->sql_query($sql);
 			$row = $this->db->sql_fetchrow($result);
@@ -509,8 +509,8 @@ class points_lottery
 				'SELECT'	=> 'user_id',
 				'FROM'		=> [
 					$this->points_lottery_tickets_table => 't',
-                ],
-            ];
+				],
+			];
 			$sql = $this->db->sql_build_query('SELECT_DISTINCT', $sql_array);
 			$result = $this->db->sql_query($sql);
 			$no_of_players = 0;
@@ -555,7 +555,7 @@ class points_lottery
 				'USER_POINTS'			=> sprintf($this->functions_points->number_format_points($checked_user['user_points'])),
 				'LOTTERY_INFO'			=> sprintf($this->user->lang['LOTTERY_INFO'], $points_values['lottery_name']),
 				'LOTTERY_LAST_WINNER'	=> sprintf($this->user->lang['LOTTERY_LAST_WINNER'], $points_values['lottery_name']),
-            ]);
+			]);
 		}
 
 		// Generate the page header
@@ -564,7 +564,7 @@ class points_lottery
 		// Generate the page template
 		$this->template->set_filenames([
 			'body' => 'points/points_lottery.html',
-        ]);
+		]);
 
 		page_footer();
 	}

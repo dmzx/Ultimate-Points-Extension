@@ -21,23 +21,23 @@ class ucp_ultimatepoints_info
 					'title'	=> 'LOTTERY_TITLE_MAIN',
 					'auth'	=> 'ext_dmzx/ultimatepoints',
 					'cat'	=> ['UCP_MAIN'],
-                ],
+				],
 				'bank'		=> [
 					'title'	=> 'BANK_TITLE_MAIN',
 					'auth'	=> 'ext_dmzx/ultimatepoints',
 					'cat'	=> ['UCP_MAIN'],
-                ],
+				],
 				'robbery'	=> [
 					'title'	=> 'POINTS_ROBBERY',
 					'auth'	=> 'ext_dmzx/ultimatepoints',
 					'cat'	=> ['UCP_MAIN'],
-                ],
+				],
 				'transfer'	=> [
 					'title'	=> 'POINTS_TRANSFER_RECIEVED',
 					'auth'	=> 'ext_dmzx/ultimatepoints',
 					'cat'	=> ['UCP_MAIN'],
-                ],
-            ],
-        ];
+				],
+			],
+		];
 	}
 }

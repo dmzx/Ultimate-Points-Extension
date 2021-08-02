@@ -15,13 +15,13 @@ class ultimatepoints_1_2_1 extends \phpbb\db\migration\migration
 	{
 		return [
 			'\dmzx\ultimatepoints\migrations\ultimatepoints_1_2_0',
-        ];
+		];
 	}
 
 	public function update_data()
 	{
 		return [
 			['config.update', ['ultimate_points_version', '1.2.1']],
-        ];
+		];
 	}
 }

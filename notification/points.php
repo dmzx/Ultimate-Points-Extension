@@ -36,7 +36,7 @@ class points extends base
 	public static $notification_option = [
 		'lang'		=> 'NOTIFICATION_POINTS_UCP',
 		'group'		=> 'NOTIFICATION_GROUP_MISCELLANEOUS',
-    ];
+	];
 
 	public function is_available()
 	{

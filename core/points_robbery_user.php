@@ -142,7 +142,7 @@ class points_robbery_user
 		$this->template->assign_block_vars('navlinks', [
 			'U_VIEW_FORUM'	=> $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'robbery_user']),
 			'FORUM_NAME'	=> sprintf($this->user->lang['POINTS_ROBBERY'], $this->config['points_name']),
-        ]);
+		]);
 
 		// Read out cash of current user
 		$pointsa = $this->user->data['user_points'];
@@ -162,9 +162,9 @@ class points_robbery_user
 				'SELECT'	=> 'user_id',
 				'FROM'		=> [
 					USERS_TABLE => 'u',
-                ],
+				],
 				'WHERE'		=> 'user_id = ' . (int) $u_id,
-            ];
+			];
 			$sql = $this->db->sql_build_query('SELECT', $sql_array);
 			$result = $this->db->sql_query($sql);
 			$user_id = (int) $this->db->sql_fetchfield('user_id');
@@ -213,9 +213,9 @@ class points_robbery_user
 				'SELECT'	=> 'user_points',
 				'FROM'		=> [
 					USERS_TABLE => 'u',
-                ],
+				],
 				'WHERE'		=> 'user_id = ' . (int) $user_id,
-            ];
+			];
 			$sql = $this->db->sql_build_query('SELECT', $sql_array);
 			$result = $this->db->sql_query($sql);
 			$pointsa = $this->db->sql_fetchfield('user_points');
@@ -260,7 +260,7 @@ class points_robbery_user
 					'point_comment'		=> '',
 					'point_type'		=> '3',
 					'point_date'		=> time(),
-                    ]);
+					]);
 				$this->db->sql_query($sql);
 
 				if ($points_config['robbery_notify'])
@@ -275,7 +275,7 @@ class points_robbery_user
 						'sender'				=> (int) $this->user->data['user_id'],
 						'receiver'				=> (int) $user_id,
 						'mode'					=> 'robbery',
-                    ];
+					];
 
 					// Update mChat with good robbery
 					if ($this->phpbb_container->has('dmzx.mchat.settings') && $this->config['robbery_mchat_enable'])
@@ -313,7 +313,7 @@ class points_robbery_user
 							'sender'				=> (int) $this->user->data['user_id'],
 							'receiver'				=> (int) $user_id,
 							'mode'					=> 'robbery',
-                        ];
+						];
 
 						// Update mChat with robbery fail
 						if ($this->phpbb_container->has('dmzx.mchat.settings') && $this->config['robbery_mchat_enable'])
@@ -337,7 +337,7 @@ class points_robbery_user
 				'USER_NAME'				=> get_username_string('full', $checked_user['user_id'], $points_config['username'], $points_config['user_colour']),
 				'U_ACTION'				=> $this->u_action,
 				'S_HIDDEN_FIELDS'		=> $hidden_fields,
-            ]);
+			]);
 		}
 
 		// Select the user_id of user to be robbed
@@ -345,9 +345,9 @@ class points_robbery_user
 			'SELECT'	=> '*',
 			'FROM'		=> [
 				USERS_TABLE => 'u',
-            ],
+			],
 			'WHERE'		=> 'user_id = ' . (int) $u_id,
-         ];
+		 ];
 		$sql = $this->db->sql_build_query('SELECT', $sql_array);
 		$result = $this->db->sql_query($sql);
 		$opponent = $this->db->sql_fetchrow($result);
@@ -364,7 +364,7 @@ class points_robbery_user
 			'L_ROBBERY_AMOUNTLOSE'	=> sprintf($this->user->lang['ROBBERY_AMOUNTLOSE'], ($this->functions_points->number_format_points($points_values['robbery_loose']))),
 			'U_USE_ROBBERY'			=> $this->auth->acl_get('u_use_robbery'),
 			'U_ROBBERY_NAME'		=> ($this->auth->acl_get('u_use_robbery')) ? sprintf($this->user->lang['ROBBERY_TO_NAME'], $username_full, $this->config['points_name']) : '',
-        ]);
+		]);
 
 		// Generate the page
 		page_header($this->user->lang['POINTS_ROBBERY']);
@@ -372,7 +372,7 @@ class points_robbery_user
 		// Generate the page template
 		$this->template->set_filenames([
 			'body'	=> 'points/points_robbery_user.html'
-        ]);
+		]);
 
 		page_footer();
 	}

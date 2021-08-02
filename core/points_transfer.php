@@ -147,7 +147,7 @@ class points_transfer
 		$this->template->assign_block_vars('navlinks', [
 			'U_VIEW_FORUM'	=> $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'transfer_user']),
 			'FORUM_NAME'	=> sprintf($this->user->lang['TRANSFER_TITLE'], $this->config['points_name']),
-        ]);
+		]);
 
 		if ($this->request->is_set_post('submit'))
 		{
@@ -203,7 +203,7 @@ class points_transfer
 				'point_comment'	=> $text,
 				'point_type'	=> '1',
 				'point_date'	=> $current_time,
-                ]);
+				]);
 			$this->db->sql_query($sql);
 
 			// Update mChat with good transfer
@@ -223,9 +223,9 @@ class points_transfer
 					'SELECT'	=> '*',
 					'FROM'		=> [
 						USERS_TABLE => 'u',
-                    ],
+					],
 					'WHERE'		=> 'user_id = ' . (int) $checked_user['user_id'],
-                ];
+				];
 				$sql = $this->db->sql_build_query('SELECT', $sql_array);
 				$result = $this->db->sql_query($sql);
 				$user_row = $this->db->sql_fetchrow($result);
@@ -255,7 +255,7 @@ class points_transfer
 					'message'		 	=> $message_parser->message,
 					'bbcode_bitfield' 	=> $message_parser->bbcode_bitfield,
 					'bbcode_uid'		=> $message_parser->bbcode_uid,
-                ];
+				];
 
 				submit_pm('post', $pm_subject, $pm_data, false);
 			}
@@ -265,7 +265,7 @@ class points_transfer
 
 			$this->template->assign_vars([
 				'U_ACTION'					=> $this->u_action,
-            ]);
+			]);
 		}
 
 		$username_full = get_username_string('full', $checked_user['user_id'], $checked_user['username'], $checked_user['user_colour']);
@@ -277,7 +277,7 @@ class points_transfer
 			'TRANSFER_FEE'					=> $transfer_fee,
 			'U_TRANSFER_NAME'				=> sprintf($this->user->lang['TRANSFER_TO_NAME'], $username_full, $this->config['points_name']),
 			'S_ALLOW_SEND_PM'				=> $this->auth->acl_get('u_sendpm'),
-        ]);
+		]);
 
 		// Generate the page
 		page_header(sprintf($this->user->lang['TRANSFER_TITLE'], $this->config['points_name']));
@@ -285,7 +285,7 @@ class points_transfer
 		// Generate the page template
 		$this->template->set_filenames([
 			'body' => 'points/points_transfer.html',
-        ]);
+		]);
 
 		page_footer();
 	}

@@ -196,9 +196,9 @@ class main
 			'SELECT'	=> '*',
 			'FROM'		=> [
 				USERS_TABLE => 'u',
-            ],
+			],
 			'WHERE'		=> 'u.user_id = ' . (int) $check_user,
-        ];
+		];
 		$sql = $this->db->sql_build_query('SELECT', $sql_array);
 		$result = $this->db->sql_query($sql);
 		$checked_user = $this->db->sql_fetchrow($result);
@@ -219,7 +219,7 @@ class main
 		$this->template->assign_block_vars('navlinks', [
 			'U_VIEW_FORUM'	=> $this->helper->route('dmzx_ultimatepoints_controller'),
 			'FORUM_NAME'	=> sprintf($this->user->lang['POINTS_TITLE_MAIN'], $this->config['points_name']),
-        ]);
+		]);
 
 		$this->template->assign_vars(array_change_key_case($checked_user, CASE_UPPER));
 
@@ -233,7 +233,7 @@ class main
 			'U_USE_LOTTERY'		=> $this->auth->acl_get('u_use_lottery'),
 			'U_USE_BANK'		=> $this->auth->acl_get('u_use_bank'),
 			'U_USE_ROBBERY'		=> $this->auth->acl_get('u_use_robbery'),
-        ]));
+		]));
 
 		$this->template->assign_var('ULTIMATEPOINTS_FOOTER_VIEW', true);
 

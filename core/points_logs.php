@@ -130,7 +130,7 @@ class points_logs
 		$this->template->assign_block_vars('navlinks', [
 			'U_VIEW_FORUM'	=> $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'logs']),
 			'FORUM_NAME'	=> sprintf($this->user->lang['LOGS_TITLE'], $this->config['points_name']),
-        ]);
+		]);
 
 		// Preparing the sort order
 		$start 			= $this->request->variable('start', 0);
@@ -155,17 +155,17 @@ class points_logs
 			2			=> $this->user->lang['LOGS_SENT'],
 			3			=> $this->user->lang['LOGS_ROBBERY_WON'],
 			4			=> $this->user->lang['LOGS_ROBBERY_LOST'],
-        ];
+		];
 
 		// Grab the total amount of logs for this user
 		$sql_array = [
 			'SELECT'	=> 'COUNT(*) AS total',
 			'FROM'		=> [
 				$this->points_log_table => 'l',
-            ],
+			],
 			'WHERE'		=> 'point_send = ' . (int) $this->user->data['user_id'] . '
 				OR point_recv = ' . (int) $this->user->data['user_id'],
-        ];
+		];
 		$sql = $this->db->sql_build_query('SELECT', $sql_array);
 		$result = $this->db->sql_query($sql);
 		$max = (int) $this->db->sql_fetchfield('total');
@@ -175,11 +175,11 @@ class points_logs
 			'SELECT'	=> '*',
 			'FROM'		=> [
 				$this->points_log_table => 'l',
-            ],
+			],
 			'WHERE'		=> 'point_send = ' . (int) $this->user->data['user_id'] . '
 				OR point_recv = ' . (int) $this->user->data['user_id'],
 			'ORDER_BY'	=> $sql_sort_order,
-        ];
+		];
 		$sql = $this->db->sql_build_query('SELECT', $sql_array);
 		$result = $this->db->sql_query_limit($sql, $number, $start);
 
@@ -194,9 +194,9 @@ class points_logs
 						'SELECT'	=> '*',
 						'FROM'		=> [
 							USERS_TABLE => 'u',
-                        ],
+						],
 						'WHERE'		=> 'user_id = ' . (int) $transfer_user,
-                    ];
+					];
 					$sql = $this->db->sql_build_query('SELECT', $sql_array);
 					$result1 = $this->db->sql_query($sql);
 					$opponent = $this->db->sql_fetchrow($result1);
@@ -229,9 +229,9 @@ class points_logs
 						'SELECT'	=> '*',
 						'FROM'		=> [
 							USERS_TABLE => 'u',
-                        ],
+						],
 						'WHERE'		=> 'user_id = ' . (int) $transfer_user,
-                    ];
+					];
 					$sql = $this->db->sql_build_query('SELECT', $sql_array);
 					$result1 = $this->db->sql_query($sql);
 					$opponent = $this->db->sql_fetchrow($result1);
@@ -262,7 +262,7 @@ class points_logs
 				'ROW'		=>	$rows,
 				'WHO'		=>	$who,
 				'TO'		=>	$to,
-            ]);
+			]);
 		}
 		$this->db->sql_freeresult($result);
 
@@ -288,7 +288,7 @@ class points_logs
 			'U_USE_LOTTERY'		=> $this->auth->acl_get('u_use_lottery'),
 			'U_USE_BANK'		=> $this->auth->acl_get('u_use_bank'),
 			'U_USE_ROBBERY'		=> $this->auth->acl_get('u_use_robbery'),
-        ]);
+		]);
 
 		// Generate the page header
 		page_header(sprintf($this->user->lang['LOGS_TITLE'], $checked_user['username']));
@@ -296,7 +296,7 @@ class points_logs
 		// Generate the page template
 		$this->template->set_filenames([
 			'body' => 'points/points_logs.html',
-        ]);
+		]);
 
 		page_footer();
 	}

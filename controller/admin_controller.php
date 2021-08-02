@@ -130,7 +130,7 @@ class admin_controller
 
 		$this->template->assign_vars([
 			'BASE'		=> $this->u_action,
-        ]);
+		]);
 
 		if ($this->request->is_set_post('submit'))
 		{
@@ -160,7 +160,7 @@ class admin_controller
 				'points_bonus_min'				=> round($this->request->variable('points_bonus_min', 0.00),2),
 				'points_bonus_max'				=> round($this->request->variable('points_bonus_max', 0.00),2),
 				'points_per_warn'				=> round($this->request->variable('points_per_warn', 0.00),2),
-            ];
+			];
 
 			// Check if number_show_per_page is at least 5
 			$per_page_check = $this->request->variable('number_show_per_page', 0);
@@ -209,7 +209,7 @@ class admin_controller
 				'TRANSFER_FEE'					=> $points_values['transfer_fee'],
 				'POINTS_ENABLE'					=> ($this->config['points_enable']) ? true : false,
 				'ULTIMATEPOINTS_VERSION'		=> $this->config['ultimate_points_version'],
-            ]);
+			]);
 		}
 
 		// Delete all userlogs
@@ -245,7 +245,7 @@ class admin_controller
 			{
 				$s_hidden_fields = build_hidden_fields([
 					'action_points_logs'		=> true,
-                ]);
+				]);
 
 				// Display mode
 				confirm_box(false, $this->user->lang['RESYNC_POINTSLOGS_CONFIRM'], $s_hidden_fields);
@@ -275,7 +275,7 @@ class admin_controller
 			{
 				$s_hidden_fields = build_hidden_fields([
 					'action_points'		=> true,
-                ]);
+				]);
 
 				// Display mode
 				confirm_box(false, $this->user->lang['RESYNC_POINTS_CONFIRM'], $s_hidden_fields);
@@ -294,9 +294,9 @@ class admin_controller
 			'SELECT'	=> 'group_id, group_name, group_type',
 			'FROM'		=> [
 				GROUPS_TABLE => 'g',
-            ],
+			],
 			'ORDER_BY'	=> 'group_name',
-        ];
+		];
 		$sql = $this->db->sql_build_query('SELECT', $sql_array);
 		$result = $this->db->sql_query($sql);
 		$total_groups = $this->db->sql_affectedrows($result);
@@ -306,7 +306,7 @@ class admin_controller
 			'U_SMILIES'			=> append_sid("{$this->root_path}posting.{$this->php_ext}", 'mode=smilies'),
 			'S_GROUP_OPTIONS'	=> group_select_options($total_groups),
 			'U_ACTION'			=> $this->u_action
-        ]);
+		]);
 
 		// Update the points
 		if ($group_transfer)
@@ -320,9 +320,9 @@ class admin_controller
 				'SELECT'	=> 'group_type, group_name',
 				'FROM'		=> [
 					GROUPS_TABLE => 'g',
-                ],
+				],
 				'WHERE'	=> 'group_id = ' . (int) $group_id,
-            ];
+			];
 			$sql = $this->db->sql_build_query('SELECT', $sql_array);
 			$result = $this->db->sql_query($sql);
 			$row = $this->db->sql_fetchrow($result);
@@ -340,10 +340,10 @@ class admin_controller
 				'SELECT'	=> 'user_id',
 				'FROM'		=> [
 					USER_GROUP_TABLE => 'g',
-                ],
+				],
 				'WHERE'	=> 'user_pending <> ' . true . '
 					AND group_id = ' . (int) $group_id,
-            ];
+			];
 			$sql = $this->db->sql_build_query('SELECT', $sql_array);
 			$result = $this->db->sql_query($sql);
 
@@ -399,10 +399,10 @@ class admin_controller
 							'SELECT'	=> 'user_id, group_id',
 							'FROM'		=> [
 								USER_GROUP_TABLE => 'g',
-                            ],
+							],
 							'WHERE'	=> 'user_pending <> ' . true . '
 								AND group_id = ' . (int) $group_id,
-                        ];
+						];
 						$sql = $this->db->sql_build_query('SELECT', $sql_array);
 						$result = $this->db->sql_query($sql);
 						$group_to = [];
@@ -435,7 +435,7 @@ class admin_controller
 							'message'		 	=> $message_parser->message,
 							'bbcode_bitfield' 	=> $message_parser->bbcode_bitfield,
 							'bbcode_uid'		=> $message_parser->bbcode_uid,
-                        ];
+						];
 						submit_pm('post', $pm_subject, $pm_data, false);
 
 						$this->db->sql_freeresult($result);
@@ -461,7 +461,7 @@ class admin_controller
 			'S_POINTS_ACTIVATED'			=> ($this->config['points_enable']) ? true : false,
 			'TRANSFER_MCHAT_ENABLE'			=> $this->config['transfer_mchat_enable'],
 			'U_ACTION'						=> $this->u_action
-        ]);
+		]);
 	}
 
 	protected function set_options()
@@ -505,7 +505,7 @@ class admin_controller
 
 		$this->template->assign_vars([
 			'BASE'		=> $this->u_action,
-        ]);
+		]);
 
 		$lottery_data = $errors = [];
 
@@ -588,9 +588,9 @@ class admin_controller
 				'SELECT'	=> 'user_id',
 				'FROM'		=> [
 					USERS_TABLE => 'u',
-                ],
+				],
 				'WHERE'		=> 'user_id = ' . (int) $lottery_pm_from,
-            ];
+			];
 			$sql = $this->db->sql_build_query('SELECT', $sql_array);
 			$result = $this->db->sql_query($sql);
 			$id_exist = $this->db->sql_fetchfield('user_id');
@@ -659,7 +659,7 @@ class admin_controller
 			{
 				$s_hidden_fields = build_hidden_fields([
 					'action_lottery_history'		=> true,
-                ]);
+				]);
 
 				// Display mode
 				confirm_box(false, $this->user->lang['RESYNC_LOTTERY_HISTORY_CONFIRM'], $s_hidden_fields);
@@ -689,7 +689,7 @@ class admin_controller
 			'POINTS_ICON_MAINICON'			=> $this->config['points_icon_mainicon'],
 			'POINTS_ICON_LOTTERYICON'		=> $this->config['points_icon_lotteryicon'],
 			'U_ACTION'						=> $this->u_action
-        ]);
+		]);
 	}
 
 	public function display_bank()
@@ -707,7 +707,7 @@ class admin_controller
 
 		$this->template->assign_vars([
 			'BASE'		=> $this->u_action,
-        ]);
+		]);
 
 		$bank_data = $errors = [];
 
@@ -783,7 +783,7 @@ class admin_controller
 			'POINTS_ICON_BANKICON'		=> $this->config['points_icon_bankicon'],
 			'POINTS_ICON_MAINICON'		=> $this->config['points_icon_mainicon'],
 			'U_ACTION'					=> $this->u_action
-        ]);
+		]);
 	}
 
 	public function display_robbery()
@@ -801,7 +801,7 @@ class admin_controller
 
 		$this->template->assign_vars([
 			'BASE'		=> $this->u_action,
-        ]);
+		]);
 
 		$robbery_data = $errors = [];
 
@@ -894,7 +894,7 @@ class admin_controller
 			'S_ROBBERY'					=> true,
 			'POINTS_ICON_MAINICON'		=> $this->config['points_icon_mainicon'],
 			'U_ACTION'					=> $this->u_action
-        ]);
+		]);
 	}
 
 	public function display_forumpoints()
@@ -916,7 +916,7 @@ class admin_controller
 
 		$this->template->assign_vars([
 			'BASE'		=> $this->u_action,
-        ]);
+		]);
 
 		$forum_data = $errors = [];
 
@@ -950,7 +950,7 @@ class admin_controller
 					'forum_cost'		=> $forum_cost,
 					'forum_cost_topic'	=> $forum_cost_t,
 					'forum_cost_post'	=> $forum_cost_p
-                ];
+				];
 
 				$sql = 'UPDATE ' . FORUMS_TABLE . ' SET ' . $this->db->sql_build_array('UPDATE', $data);
 				$this->db->sql_query($sql);
@@ -972,7 +972,7 @@ class admin_controller
 					'mode'					=> $mode,
 					'action'				=> $action,
 					'action_point_values'	=> true,
-                ]);
+				]);
 				confirm_box(false, 'FORUM_POINT_UPDATE', $s_hidden_fields);
 			}
 		}
@@ -988,7 +988,7 @@ class admin_controller
 			'S_FORUMPOINTS'				=> true,
 			'POINTS_ICON_MAINICON'		=> $this->config['points_icon_mainicon'],
 			'U_ACTION'					=> $this->u_action
-        ]);
+		]);
 	}
 
 	/**

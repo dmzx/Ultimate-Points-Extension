@@ -15,7 +15,7 @@ class ultimatepoints_1_2_0 extends \phpbb\db\migration\migration
 	{
 		return [
 			'\dmzx\ultimatepoints\migrations\ultimatepoints_1_1_9',
-        ];
+		];
 	}
 
 	public function update_data()
@@ -29,6 +29,6 @@ class ultimatepoints_1_2_0 extends \phpbb\db\migration\migration
 			['config.add', ['points_enable', 1]],
 			['config.add', ['points_icon_bankicon', 'fa-money']],
 			['config.add', ['points_icon_lotteryicon', 'fa-ticket']],
-        ];
+		];
 	}
 }

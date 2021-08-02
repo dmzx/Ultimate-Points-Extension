@@ -15,7 +15,7 @@ class ultimatepoints_1_2_2 extends \phpbb\db\migration\migration
 	{
 		return [
 			'\dmzx\ultimatepoints\migrations\ultimatepoints_1_2_1',
-        ];
+		];
 	}
 
 	public function update_data()
@@ -25,6 +25,6 @@ class ultimatepoints_1_2_2 extends \phpbb\db\migration\migration
 			['config.add', ['lottery_mchat_enable', 0]],
 			['config.add', ['robbery_mchat_enable', 0]],
 			['config.add', ['transfer_mchat_enable', 0]],
-        ];
+		];
 	}
 }

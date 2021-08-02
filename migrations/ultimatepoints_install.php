@@ -48,22 +48,22 @@ class ultimatepoints_install extends \phpbb\db\migration\migration
 				'acp',
 				'ACP_CAT_DOT_MODS',
 				'ACP_POINTS'
-            ]],
+			]],
 			['module.add', [
 				'acp',
 				'ACP_POINTS',
 				[
 					'module_basename'	=> '\dmzx\ultimatepoints\acp\acp_ultimatepoints_module',
 					'modes' 			=> ['points', 'forumpoints', 'bank', 'lottery', 'robbery'],
-                ],
-            ]],
+				],
+			]],
 
 			// UCP module
 			['module.add', [
 				'ucp',
 				0,
 				'UCP_ULTIMATEPOINTS_TITLE'
-            ]],
+			]],
 			['module.add', [
 				'ucp',
 				'UCP_ULTIMATEPOINTS_TITLE',
@@ -71,17 +71,17 @@ class ultimatepoints_install extends \phpbb\db\migration\migration
 					'module_basename'	=> '\dmzx\ultimatepoints\ucp\ucp_ultimatepoints_module',
 					'auth'				=> 'ext_dmzx/ultimatepoints',
 					'modes'				=> ['lottery', 'bank', 'robbery', 'transfer'],
-                ],
-            ]],
+				],
+			]],
 			// Insert sample data
 			['custom', [
 				[&$this, 'insert_sample_data']
-            ]],
+			]],
 			// Insert config data
 			['custom', [
 				[&$this, 'insert_config_data']
-            ]],
-        ];
+			]],
+		];
 	}
 
 	public function update_schema()
@@ -97,17 +97,17 @@ class ultimatepoints_install extends \phpbb\db\migration\migration
 						'totaldeposit'	=> ['DECIMAL:20', 0.00],
 						'opentime'		=> ['UINT:10', 0],
 						'fees'			=> ['CHAR:5', 'on'],
-                    ],
+					],
 					'PRIMARY_KEY'	=> 'id',
-                ],
+				],
 
 				$this->table_prefix . 'points_config'	=> [
 					'COLUMNS'	=> [
 						'config_name'		=> ['VCHAR', ''],
 						'config_value'		=> ['VCHAR_UNI', ''],
-                    ],
+					],
 					'PRIMARY_KEY'	=> 'config_name',
-                ],
+				],
 
 				$this->table_prefix . 'points_log'	=> [
 					'COLUMNS'	=> [
@@ -120,9 +120,9 @@ class ultimatepoints_install extends \phpbb\db\migration\migration
 						'point_comment'	=> ['MTEXT_UNI', ''],
 						'point_type'	=> ['UINT:11', null, ''],
 						'point_date'	=> ['UINT:11', null, ''],
-                    ],
+					],
 					'PRIMARY_KEY'	=> 'id',
-                ],
+				],
 
 				$this->table_prefix . 'points_lottery_history'	=> [
 					'COLUMNS'	=> [
@@ -131,17 +131,17 @@ class ultimatepoints_install extends \phpbb\db\migration\migration
 						'user_name'	=> ['VCHAR', ''],
 						'time'		=> ['UINT:11', 0],
 						'amount'	=> ['DECIMAL:20', 0.00],
-                    ],
+					],
 					'PRIMARY_KEY'	=> 'id',
-                ],
+				],
 
 				$this->table_prefix . 'points_lottery_tickets'	=> [
 					'COLUMNS'	=> [
 						'ticket_id'	=> ['UINT:11', null, 'auto_increment'],
 						'user_id'	=> ['UINT:11', 0],
-                    ],
+					],
 					'PRIMARY_KEY'	=> 'ticket_id',
-                ],
+				],
 
 				$this->table_prefix . 'points_values'	=> [
 					'COLUMNS'	=> [
@@ -191,13 +191,13 @@ class ultimatepoints_install extends \phpbb\db\migration\migration
 						'forum_cost'					=> ['DECIMAL:10', 0.00],
 						'forum_cost_topic' 				=> ['DECIMAL:10', 0.00],
 						'forum_cost_post' 				=> ['DECIMAL:10', 0.00],
-                    ],
-                ],
-            ],
+					],
+				],
+			],
 			'add_columns'	=> [
 				$this->table_prefix . 'users' => [
 					'user_points' 					=> ['DECIMAL:20', 0.00],
-                ],
+				],
 
 				$this->table_prefix . 'posts' => [
 					'points_received'				=> ['DECIMAL:20', 0.00],
@@ -205,7 +205,7 @@ class ultimatepoints_install extends \phpbb\db\migration\migration
 					'points_attachment_received'	=> ['DECIMAL:20', 0.00],
 					'points_topic_received'			=> ['DECIMAL:20', 0.00],
 					'points_post_received'			=> ['DECIMAL:20', 0.00],
-                ],
+				],
 
 				$this->table_prefix . 'forums' => [
 					'forum_perpost' 				=> ['DECIMAL:10', 5.00],
@@ -214,9 +214,9 @@ class ultimatepoints_install extends \phpbb\db\migration\migration
 					'forum_cost'					=> ['DECIMAL:10', 0.00],
 					'forum_cost_topic'				=> ['DECIMAL:10', 0.00],
 					'forum_cost_post'				=> ['DECIMAL:10', 0.00],
-                ],
-            ],
-        ];
+				],
+			],
+		];
 	}
 
 	public function revert_schema()
@@ -229,11 +229,11 @@ class ultimatepoints_install extends \phpbb\db\migration\migration
 				$this->table_prefix . 'points_lottery_history',
 				$this->table_prefix . 'points_lottery_tickets',
 				$this->table_prefix . 'points_values',
-            ],
+			],
 			'drop_columns' => [
 				$this->table_prefix . 'users'	=> [
 					'user_points',
-                ],
+				],
 
 				$this->table_prefix . 'posts'	=> [
 					'points_received',
@@ -241,7 +241,7 @@ class ultimatepoints_install extends \phpbb\db\migration\migration
 					'points_attachment_received',
 					'points_topic_received',
 					'points_post_received',
-                ],
+				],
 
 				$this->table_prefix . 'forums'	=> [
 					'forum_perpost',
@@ -250,9 +250,9 @@ class ultimatepoints_install extends \phpbb\db\migration\migration
 					'forum_cost',
 					'forum_cost_topic',
 					'forum_cost_post',
-                ],
-            ],
-        ];
+				],
+			],
+		];
 	}
 
 	public function insert_sample_data()
@@ -297,8 +297,8 @@ class ultimatepoints_install extends \phpbb\db\migration\migration
 					'bank_cost' => '0',
 					'bank_name' => 'BANK NAME',
 					'lottery_name' => 'LOTTERY NAME',
-                ],
-            ];
+				],
+			];
 		}
 
 		// Insert sample data
@@ -314,64 +314,64 @@ class ultimatepoints_install extends \phpbb\db\migration\migration
 				[
 					'config_name' 	=> 'transfer_enable',
 					'config_value'	=> '1',
-                ],
+				],
 				[
 					'config_name' 	=> 'transfer_pm_enable',
 					'config_value'	=> '1',
-                ],
+				],
 				[
 					'config_name' 	=> 'comments_enable',
 					'config_value'	=> '1',
-                ],
+				],
 				[
 					'config_name' 	=> 'logs_enable',
 					'config_value'	=> '1',
-                ],
+				],
 				[
 					'config_name' 	=> 'images_topic_enable',
 					'config_value'	=> '1',
-                ],
+				],
 				[
 					'config_name' 	=> 'images_memberlist_enable',
 					'config_value'	=> '1',
-                ],
+				],
 				[
 					'config_name' 	=> 'lottery_enable',
 					'config_value'	=> '1',
-                ],
+				],
 				[
 					'config_name' 	=> 'bank_enable',
 					'config_value'	=> '1',
-                ],
+				],
 				[
 					'config_name' 	=> 'robbery_enable',
 					'config_value'	=> '1',
-                ],
+				],
 				[
 					'config_name' 	=> 'points_disablemsg',
 					'config_value'	=> 'Ultimate Points is currently disabled!',
-                ],
+				],
 				[
 					'config_name' 	=> 'stats_enable',
 					'config_value'	=> '1',
-                ],
+				],
 				[
 					'config_name' 	=> 'lottery_multi_ticket_enable',
 					'config_value'	=> '1',
-                ],
+				],
 				[
 					'config_name' 	=> 'robbery_notify',
 					'config_value'	=> '1',
-                ],
+				],
 				[
 					'config_name' 	=> 'display_lottery_stats',
 					'config_value'	=> '1',
-                ],
+				],
 				[
 					'config_name' 	=> 'uplist_enable',
 					'config_value'	=> '1',
-                ],
-            ];
+				],
+			];
 		}
 		// Insert sample data
 		$this->db->sql_multi_insert($this->table_prefix . 'points_config', $config_data);

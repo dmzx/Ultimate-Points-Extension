@@ -140,7 +140,7 @@ class points_transfer_user
 		$this->template->assign_block_vars('navlinks', [
 			'U_VIEW_FORUM'	=> $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'transfer_user']),
 			'FORUM_NAME'	=>	sprintf($this->user->lang['TRANSFER_TITLE'], $this->config['points_name']),
-        ]);
+		]);
 
 		if ($this->request->is_set_post('submit'))
 		{
@@ -160,9 +160,9 @@ class points_transfer_user
 				'SELECT'	=> '*',
 				'FROM'		=> [
 					USERS_TABLE => 'u',
-                ],
+				],
 				'WHERE'		=> 'username_clean = "' . $this->db->sql_escape(utf8_clean_string($username)) . '"',
-            ];
+			];
 			$sql = $this->db->sql_build_query('SELECT', $sql_array);
 			$result = $this->db->sql_query($sql);
 			$transfer_user = $this->db->sql_fetchrow($result);
@@ -179,9 +179,9 @@ class points_transfer_user
 				'SELECT'	=> 'user_points',
 				'FROM'		=> [
 					USERS_TABLE => 'u',
-                ],
+				],
 				'WHERE'		=> 'user_id = ' . (int) $transfer_user['user_id'],
-            ];
+			];
 			$sql = $this->db->sql_build_query('SELECT', $sql_array);
 			$result = $this->db->sql_query($sql);
 			$transfer_user_old_points = (int) $this->db->sql_fetchfield('user_points');
@@ -230,7 +230,7 @@ class points_transfer_user
 				'point_comment'	=> $text,
 				'point_type'	=> '1',
 				'point_date'	=> $current_time,
-                ]);
+				]);
 			$this->db->sql_query($sql);
 
 			// Update mChat with good transfer
@@ -270,7 +270,7 @@ class points_transfer_user
 					'message'		 	=> $message_parser->message,
 					'bbcode_bitfield' 	=> $message_parser->bbcode_bitfield,
 					'bbcode_uid'		=> $message_parser->bbcode_uid,
-                ];
+				];
 
 				submit_pm('post', $pm_subject, $pm_data, false);
 			}
@@ -280,9 +280,9 @@ class points_transfer_user
 				'SELECT'	=> 'username',
 				'FROM'		=> [
 					USERS_TABLE => 'u',
-                ],
+				],
 				'WHERE'		=> 'user_id = ' . (int) $transfer_user['user_id'],
-            ];
+			];
 			$sql = $this->db->sql_build_query('SELECT', $sql_array);
 
 			$result = $this->db->sql_query($sql);
@@ -295,7 +295,7 @@ class points_transfer_user
 
 			$this->template->assign_vars([
 				'U_ACTION'				=> $this->u_action,
-            ]);
+			]);
 		}
 
 		$this->template->assign_vars([
@@ -319,7 +319,7 @@ class points_transfer_user
 			'U_USE_BANK'				=> $this->auth->acl_get('u_use_bank'),
 			'U_USE_ROBBERY'				=> $this->auth->acl_get('u_use_robbery'),
 			'S_ALLOW_SEND_PM'			=> $this->auth->acl_get('u_sendpm'),
-        ]);
+		]);
 
 		// Generate the page
 		page_header(sprintf($this->user->lang['TRANSFER_TITLE'], $this->config['points_name']));
@@ -327,7 +327,7 @@ class points_transfer_user
 		// Generate the page template
 		$this->template->set_filenames([
 			'body' => 'points/points_transfer_user.html',
-        ]);
+		]);
 
 		page_footer();
 	}

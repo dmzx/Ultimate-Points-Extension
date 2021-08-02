@@ -21,28 +21,28 @@ class acp_ultimatepoints_info
 					'title' => 'ACP_POINTS_INDEX_TITLE',
 					'auth' 	=> 'ext_dmzx/ultimatepoints && acl_a_board',
 					'cat' 	=> ['ACP_POINTS'],
-                ],
+				],
 				'forumpoints'	=> [
 					'title' => 'ACP_POINTS_FORUM_TITLE',
 					'auth' 	=> 'ext_dmzx/ultimatepoints && acl_a_board',
 					'cat' 	=> ['ACP_POINTS'],
-                ],
+				],
 				'bank'		=> [
 					'title' => 'ACP_POINTS_BANK_TITLE',
 					'auth' 	=> 'ext_dmzx/ultimatepoints && acl_a_board',
 					'cat' 	=> ['ACP_POINTS'],
-                ],
+				],
 				'lottery'	=> [
 					'title' => 'ACP_POINTS_LOTTERY_TITLE',
 					'auth' 	=> 'ext_dmzx/ultimatepoints && acl_a_board',
 					'cat' 	=> ['ACP_POINTS'],
-                ],
+				],
 				'robbery'	=> [
 					'title' => 'ACP_POINTS_ROBBERY_TITLE',
 					'auth' 	=> 'ext_dmzx/ultimatepoints && acl_a_board',
 					'cat' 	=> ['ACP_POINTS'],
-                ],
-            ],
-        ];
+				],
+			],
+		];
 	}
 }
