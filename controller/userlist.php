@@ -56,7 +56,7 @@ class userlist
 	/**
 	* Constructor
 	*
-	* @var functions_points	    $functions_points
+	* @var functions_points		$functions_points
 	* @param template		 	$template
 	* @param user				$user
 	* @param driver_interface	$db

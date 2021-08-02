@@ -279,7 +279,6 @@ function addquote(post_id, username, l_wrote)
 		}
 	}
 
-
 }
 
 function split_lines(text)
@@ -342,7 +341,6 @@ function mozWrap(txtarea, open, close)
 	txtarea.selectionEnd = selEnd + open.length;
 	txtarea.focus();
 	txtarea.scrollTop = scrollTop;
-
 
 }
 

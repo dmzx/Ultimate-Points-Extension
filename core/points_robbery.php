@@ -88,21 +88,21 @@ class points_robbery
 	*
 	*/
 	public function __construct(
-        functions_points $functions_points,
-        auth             $auth,
-        template         $template,
-        user             $user,
-        driver_interface $db,
-        request          $request,
-        config           $config,
-        helper           $helper,
-        manager          $notification_manager,
-        Container        $phpbb_container,
-        $php_ext,
-        $root_path,
-        $points_config_table,
-        $points_values_table,
-        $points_log_table
+		functions_points $functions_points,
+		auth			 $auth,
+		template		 $template,
+		user			 $user,
+		driver_interface $db,
+		request			$request,
+		config			$config,
+		helper			$helper,
+		manager			$notification_manager,
+		Container		$phpbb_container,
+		$php_ext,
+		$root_path,
+		$points_config_table,
+		$points_values_table,
+		$points_log_table
 	)
 	{
 		$this->functions_points					= $functions_points;

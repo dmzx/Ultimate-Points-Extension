@@ -71,16 +71,16 @@ class points_points_edit
 	*/
 	public function __construct(
 		functions_points $functions_points,
-		auth             $auth,
-		template         $template,
-		user             $user,
+		auth			 $auth,
+		template		 $template,
+		user			 $user,
 		driver_interface $db,
-		config           $config,
-		helper           $helper,
-		log              $log,
-		request          $request,
-        $php_ext,
-        $root_path
+		config			$config,
+		helper			$helper,
+		log				$log,
+		request			$request,
+		$php_ext,
+		$root_path
 	)
 	{
 		$this->functions_points		= $functions_points;

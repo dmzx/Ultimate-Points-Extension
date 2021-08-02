@@ -82,16 +82,16 @@ class points_logs
 	*/
 	public function __construct(
 		functions_points $functions_points,
-		auth             $auth,
-		template         $template,
-		user             $user,
+		auth			 $auth,
+		template		 $template,
+		user			 $user,
 		driver_interface $db,
-		request          $request,
-		config           $config,
-		helper           $helper,
-		pagination       $pagination,
-        $php_ext,
-        $root_path,
+		request			$request,
+		config			$config,
+		helper			$helper,
+		pagination		$pagination,
+		$php_ext,
+		$root_path,
 		$points_log_table,
 		$points_values_table
 	)

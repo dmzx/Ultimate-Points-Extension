@@ -77,16 +77,16 @@ class points_main
 	*/
 	public function __construct(
 		functions_points $functions_points,
-		auth             $auth,
-		template         $template,
-		user             $user,
+		auth			 $auth,
+		template		 $template,
+		user			 $user,
 		driver_interface $db,
-		config           $config,
-		helper           $helper,
-        $root_path,
-        $points_bank_table,
-        $points_values_table,
-        $points_log_table,
+		config			$config,
+		helper			$helper,
+		$root_path,
+		$points_bank_table,
+		$points_values_table,
+		$points_log_table,
 		$points_lottery_tickets_table,
 		$points_lottery_history_table
 	)

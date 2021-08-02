@@ -76,14 +76,14 @@ class listener implements EventSubscriberInterface
 	/**
 	* Constructor
 	*
-	* @var functions_points	    $functions_points
+	* @var functions_points		$functions_points
 	* @param user				$user
 	* @param template			$template
 	* @param driver_interface	$db
 	* @param config				$config
 	* @param auth				$auth
 	* @param helper				$helper
-	* @param service		    $cache
+	* @param service			$cache
 	* @param request		 	$request
 	* @param string				$root_path
 	* @param string				$php_ext

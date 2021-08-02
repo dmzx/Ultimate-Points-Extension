@@ -90,22 +90,22 @@ class points_lottery
 	*
 	*/
 	public function __construct(
-        functions_points $functions_points,
-        auth             $auth,
-        template         $template,
-        user             $user,
-        driver_interface $db,
-        request          $request,
-        config           $config,
-        helper           $helper,
-        pagination       $pagination,
-        Container        $phpbb_container,
-        $php_ext,
-        $root_path,
-        $points_config_table,
-        $points_values_table,
-        $points_lottery_history_table,
-        $points_lottery_tickets_table
+		functions_points $functions_points,
+		auth			 $auth,
+		template		 $template,
+		user			 $user,
+		driver_interface $db,
+		request			$request,
+		config			$config,
+		helper			$helper,
+		pagination		$pagination,
+		Container		$phpbb_container,
+		$php_ext,
+		$root_path,
+		$points_config_table,
+		$points_values_table,
+		$points_lottery_history_table,
+		$points_lottery_tickets_table
 	)
 	{
 		$this->functions_points					= $functions_points;

@@ -83,20 +83,20 @@ class points_transfer
 	*
 	*/
 	public function __construct(
-        functions_points $functions_points,
-        auth             $auth,
-        template         $template,
-        user             $user,
-        driver_interface $db,
-        request          $request,
-        config           $config,
-        helper           $helper,
-        Container        $phpbb_container,
-        $php_ext,
-        $root_path,
-        $points_log_table,
-        $points_config_table,
-        $points_values_table
+		functions_points $functions_points,
+		auth			 $auth,
+		template		 $template,
+		user			 $user,
+		driver_interface $db,
+		request			$request,
+		config			$config,
+		helper			$helper,
+		Container		$phpbb_container,
+		$php_ext,
+		$root_path,
+		$points_log_table,
+		$points_config_table,
+		$points_values_table
 	)
 	{
 		$this->functions_points					= $functions_points;

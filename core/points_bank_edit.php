@@ -84,16 +84,16 @@ class points_bank_edit
 	*/
 	public function __construct(
 		functions_points $functions_points,
-		auth             $auth,
-		template         $template,
-		user             $user,
+		auth			 $auth,
+		template		 $template,
+		user			 $user,
 		driver_interface $db,
-		request          $request,
-		config           $config,
-		helper           $helper,
-		service          $cache,
-		log              $log,
-        $php_ext,
+		request			$request,
+		config			$config,
+		helper			$helper,
+		service			$cache,
+		log				$log,
+		$php_ext,
 		$root_path,
 		$points_bank_table
 	)

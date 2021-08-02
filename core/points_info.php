@@ -64,14 +64,14 @@ class points_info
 	*/
 	public function __construct(
 		functions_points $functions_points,
-		auth             $auth,
+		auth			 $auth,
 		driver_interface $db,
-		template         $template,
-		user             $user,
-		config           $config,
-		helper           $helper,
-        $root_path,
-        $points_values_table
+		template		 $template,
+		user			 $user,
+		config			$config,
+		helper			$helper,
+		$root_path,
+		$points_values_table
 	)
 	{
 		$this->functions_points		= $functions_points;
