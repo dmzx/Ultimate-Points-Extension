@@ -193,7 +193,7 @@ class points_robbery_user
 			}
 
 			// Check, if user tries to rob himself
-			if ($this->user->data['user_id'] == (int)$u_id)
+			if ($this->user->data['user_id'] == (int) $u_id)
 			{
 				$message = $this->user->lang['ROBBERY_SELF'] . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'robbery_user', 'user_id' => $user_id]) . '">&laquo; ' . $this->user->lang['BACK_TO_PREV'] . '</a>';
 				trigger_error($message);
@@ -298,7 +298,7 @@ class points_robbery_user
 					$this->notification_manager->add_notifications('dmzx.ultimatepoints.notification.type.points', $data);
 				}
 
-				$message = $this->user->lang['ROBBERY_SUCCESFUL'] . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'robbery_user', 'user_id' => (int)$user_id]) . '">&laquo; ' . $this->user->lang['BACK_TO_PREV'] . '</a>';
+				$message = $this->user->lang['ROBBERY_SUCCESFUL'] . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'robbery_user', 'user_id' => $user_id]) . '">&laquo; ' . $this->user->lang['BACK_TO_PREV'] . '</a>';
 				trigger_error($message);
 			} // If robbery failed and notify user
 			else

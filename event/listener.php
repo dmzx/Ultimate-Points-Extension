@@ -852,7 +852,7 @@ class listener implements EventSubscriberInterface
 				// We grab previously received points amount
 				$sql = 'SELECT points_topic_received
 					FROM ' . POSTS_TABLE . '
-					WHERE post_id = ' . (int)$post_id;
+					WHERE post_id = ' . (int) $post_id;
 				$result = $this->db->sql_query($sql);
 				$prev_points = $this->db->sql_fetchfield('points_topic_received');
 				$this->db->sql_freeresult($result);
@@ -934,16 +934,16 @@ class listener implements EventSubscriberInterface
 			$user_points = $this->db->sql_fetchfield('user_points');
 			$this->db->sql_freeresult($result);
 
-			if ($mode == 'post' && $forum['forum_cost_topic'] > 0 && $user_points < $forum['forum_cost_topic'] && $this->auth->acl_get('f_pay_topic', (int)$event['forum_id']))
+			if ($mode == 'post' && $forum['forum_cost_topic'] > 0 && $user_points < $forum['forum_cost_topic'] && $this->auth->acl_get('f_pay_topic', (int) $event['forum_id']))
 			{
 				$message = sprintf($this->user->lang['POINTS_INSUFFICIENT_TOPIC'], $forum['forum_cost_topic'], $this->config['points_name']);
-				$message .= '<br /><br />' . $this->user->lang('RETURN_FORUM', '<a href="' . append_sid("{$this->root_path}viewforum.{$this->php_ext}", 'f=' . (int)$event['forum_id']) . '">', '</a>');
+				$message .= '<br /><br />' . $this->user->lang('RETURN_FORUM', '<a href="' . append_sid("{$this->root_path}viewforum.{$this->php_ext}", 'f=' . (int) $event['forum_id']) . '">', '</a>');
 				trigger_error($message);
 			}
 			else if (($mode == 'reply' || $mode == 'quote') && $forum['forum_cost_post'] > 0 && $user_points < $forum['forum_cost_post'] && $this->auth->acl_get('f_pay_post', (int)$event['forum_id']))
 			{
 				$message = sprintf($this->user->lang['POINTS_INSUFFICIENT_POST'], $forum['forum_cost_post'], $this->config['points_name']);
-				$message .= '<br /><br />' . $this->user->lang('RETURN_FORUM', '<a href="' . append_sid("{$this->root_path}viewforum.{$this->php_ext}", 'f=' . (int)$event['forum_id']) . '">', '</a>');
+				$message .= '<br /><br />' . $this->user->lang('RETURN_FORUM', '<a href="' . append_sid("{$this->root_path}viewforum.{$this->php_ext}", 'f=' . (int) $event['forum_id']) . '">', '</a>');
 				trigger_error($message);
 			}
 		}

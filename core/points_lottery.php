@@ -341,7 +341,7 @@ class points_lottery
 				];
 				$sql = $this->db->sql_build_query('SELECT', $sql_array);
 				$result = $this->db->sql_query($sql);
-				$total_entries = (int)$this->db->sql_fetchfield('total_entries');
+				$total_entries = (int) $this->db->sql_fetchfield('total_entries');
 				$this->db->sql_freeresult($result);
 
 				$sql_array = [
@@ -357,7 +357,8 @@ class points_lottery
 					],
 					'ORDER_BY' => 'time DESC',
 				];
-			} else
+			}
+			else
 			{
 				$sql_array = [
 					'SELECT' => 'COUNT(id) AS total_entries',

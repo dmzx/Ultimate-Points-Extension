@@ -177,7 +177,7 @@ class points_logs
 		];
 		$sql = $this->db->sql_build_query('SELECT', $sql_array);
 		$result = $this->db->sql_query($sql);
-		$max = (int)$this->db->sql_fetchfield('total');
+		$max = (int) $this->db->sql_fetchfield('total');
 
 		// Grab the actual logs based on all account movements
 		$sql_array = [
