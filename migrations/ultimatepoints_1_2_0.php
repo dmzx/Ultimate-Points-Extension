@@ -13,22 +13,22 @@ class ultimatepoints_1_2_0 extends \phpbb\db\migration\migration
 {
 	static public function depends_on()
 	{
-		return array(
+		return [
 			'\dmzx\ultimatepoints\migrations\ultimatepoints_1_1_9',
-		);
+        ];
 	}
 
 	public function update_data()
 	{
-		return array(
-			array('config.update', array('ultimate_points_version', '1.2.0')),
-			array('config.add', array('points_icon_mainicon', 'fa-university')),
-			array('config.add', array('points_icon_uplist', 'fa-users')),
-			array('config.add', array('points_name_uplist', 'UP List')),
-			array('config.add', array('points_name', 'Points')),
-			array('config.add', array('points_enable', 1)),
-			array('config.add', array('points_icon_bankicon', 'fa-money')),
-			array('config.add', array('points_icon_lotteryicon', 'fa-ticket')),
-		);
+		return [
+			['config.update', ['ultimate_points_version', '1.2.0']],
+			['config.add', ['points_icon_mainicon', 'fa-university']],
+			['config.add', ['points_icon_uplist', 'fa-users']],
+			['config.add', ['points_name_uplist', 'UP List']],
+			['config.add', ['points_name', 'Points']],
+			['config.add', ['points_enable', 1]],
+			['config.add', ['points_icon_bankicon', 'fa-money']],
+			['config.add', ['points_icon_lotteryicon', 'fa-ticket']],
+        ];
 	}
 }

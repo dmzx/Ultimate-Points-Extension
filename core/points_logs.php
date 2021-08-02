@@ -127,10 +127,10 @@ class points_logs
 		}
 
 		// Add part to bar
-		$this->template->assign_block_vars('navlinks', array(
-			'U_VIEW_FORUM'	=> $this->helper->route('dmzx_ultimatepoints_controller', array('mode' => 'logs')),
+		$this->template->assign_block_vars('navlinks', [
+			'U_VIEW_FORUM'	=> $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'logs']),
 			'FORUM_NAME'	=> sprintf($this->user->lang['LOGS_TITLE'], $this->config['points_name']),
-		));
+        ]);
 
 		// Preparing the sort order
 		$start 			= $this->request->variable('start', 0);
@@ -139,47 +139,47 @@ class points_logs
 		$sort_days		= $this->request->variable('st', 0);
 		$sort_key		= $this->request->variable('sk', 'date');
 		$sort_dir		= $this->request->variable('sd', 'd');
-		$limit_days 	= array(0 => $this->user->lang['ALL_POSTS'], 1 => $this->user->lang['1_DAY'], 7 => $this->user->lang['7_DAYS'], 14 => $this->user->lang['2_WEEKS'], 30 => $this->user->lang['1_MONTH'], 90 => $this->user->lang['3_MONTHS'], 180 => $this->user->lang['6_MONTHS'], 365 => $this->user->lang['1_YEAR']);
+		$limit_days 	= [0 => $this->user->lang['ALL_POSTS'], 1 => $this->user->lang['1_DAY'], 7 => $this->user->lang['7_DAYS'], 14 => $this->user->lang['2_WEEKS'], 30 => $this->user->lang['1_MONTH'], 90 => $this->user->lang['3_MONTHS'], 180 => $this->user->lang['6_MONTHS'], 365 => $this->user->lang['1_YEAR']];
 
-		$sort_by_text	= array('date' => $this->user->lang['LOGS_SORT_DATE'], 'to' => $this->user->lang['LOGS_SORT_TONAME'], 'from' => $this->user->lang['LOGS_SORT_FROMNAME'], 'comment' => $this->user->lang['LOGS_SORT_COMMENT']);
-		$sort_by_sql 	= array('date' => 'point_date', 'to' => 'point_recv', 'from' => 'point_send', 'comment' => 'point_comment');
+		$sort_by_text	= ['date' => $this->user->lang['LOGS_SORT_DATE'], 'to' => $this->user->lang['LOGS_SORT_TONAME'], 'from' => $this->user->lang['LOGS_SORT_FROMNAME'], 'comment' => $this->user->lang['LOGS_SORT_COMMENT']];
+		$sort_by_sql 	= ['date' => 'point_date', 'to' => 'point_recv', 'from' => 'point_send', 'comment' => 'point_comment'];
 
 		$s_limit_days = $s_sort_key = $s_sort_dir = $u_sort_param = '';
 		gen_sort_selects($limit_days, $sort_by_text, $sort_days, $sort_key, $sort_dir, $s_limit_days, $s_sort_key, $s_sort_dir, $u_sort_param);
 		$sql_sort_order = $sort_by_sql[$sort_key] . ' ' . (($sort_dir == 'd') ? 'DESC' : 'ASC');
 
 		// The different log types
-		$types	=	array(
+		$types	=	[
 			0			=> '--',
 			1			=> $this->user->lang['LOGS_RECV'],
 			2			=> $this->user->lang['LOGS_SENT'],
 			3			=> $this->user->lang['LOGS_ROBBERY_WON'],
 			4			=> $this->user->lang['LOGS_ROBBERY_LOST'],
-		);
+        ];
 
 		// Grab the total amount of logs for this user
-		$sql_array = array(
+		$sql_array = [
 			'SELECT'	=> 'COUNT(*) AS total',
-			'FROM'		=> array(
+			'FROM'		=> [
 				$this->points_log_table => 'l',
-			),
+            ],
 			'WHERE'		=> 'point_send = ' . (int) $this->user->data['user_id'] . '
 				OR point_recv = ' . (int) $this->user->data['user_id'],
-		);
+        ];
 		$sql = $this->db->sql_build_query('SELECT', $sql_array);
 		$result = $this->db->sql_query($sql);
 		$max = (int) $this->db->sql_fetchfield('total');
 
 		// Grab the actual logs based on all account movements
-		$sql_array = array(
+		$sql_array = [
 			'SELECT'	=> '*',
-			'FROM'		=> array(
+			'FROM'		=> [
 				$this->points_log_table => 'l',
-			),
+            ],
 			'WHERE'		=> 'point_send = ' . (int) $this->user->data['user_id'] . '
 				OR point_recv = ' . (int) $this->user->data['user_id'],
 			'ORDER_BY'	=> $sql_sort_order,
-		);
+        ];
 		$sql = $this->db->sql_build_query('SELECT', $sql_array);
 		$result = $this->db->sql_query_limit($sql, $number, $start);
 
@@ -190,13 +190,13 @@ class points_logs
 			{
 				case 1: //Transfer
 					$transfer_user = ($row['point_send'] == $checked_user['user_id']) ? $row['point_recv'] : $row['point_send'];
-					$sql_array = array(
+					$sql_array = [
 						'SELECT'	=> '*',
-						'FROM'		=> array(
+						'FROM'		=> [
 							USERS_TABLE => 'u',
-						),
+                        ],
 						'WHERE'		=> 'user_id = ' . (int) $transfer_user,
-					);
+                    ];
 					$sql = $this->db->sql_build_query('SELECT', $sql_array);
 					$result1 = $this->db->sql_query($sql);
 					$opponent = $this->db->sql_fetchrow($result1);
@@ -225,13 +225,13 @@ class points_logs
 
 				case 3: //Robbery
 					$transfer_user = ($row['point_send'] == $checked_user['user_id']) ? $row['point_recv'] : $row['point_send'];
-					$sql_array = array(
+					$sql_array = [
 						'SELECT'	=> '*',
-						'FROM'		=> array(
+						'FROM'		=> [
 							USERS_TABLE => 'u',
-						),
+                        ],
 						'WHERE'		=> 'user_id = ' . (int) $transfer_user,
-					);
+                    ];
 					$sql = $this->db->sql_build_query('SELECT', $sql_array);
 					$result1 = $this->db->sql_query($sql);
 					$opponent = $this->db->sql_fetchrow($result1);
@@ -255,48 +255,48 @@ class points_logs
 			}
 
 			// Add the items to the template
-			$this->template->assign_block_vars('logs', array(
+			$this->template->assign_block_vars('logs', [
 				'DATE'		=>	$this->user->format_date($row['point_date']),
 				'COMMENT'	=>	nl2br($row['point_comment']),
 				'TYPE'		=>	$types[$rows],
 				'ROW'		=>	$rows,
 				'WHO'		=>	$who,
 				'TO'		=>	$to,
-			));
+            ]);
 		}
 		$this->db->sql_freeresult($result);
 
 		//Start pagination
-		$this->pagination->generate_template_pagination($this->helper->route('dmzx_ultimatepoints_controller', array('mode' => 'logs', 'sk' => $sort_key, 'sd' => $sort_dir)), 'pagination', 'start', $max, $number, $start);
+		$this->pagination->generate_template_pagination($this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'logs', 'sk' => $sort_key, 'sd' => $sort_dir]), 'pagination', 'start', $max, $number, $start);
 
 		// Generate the page template
-		$this->template->assign_vars(array(
+		$this->template->assign_vars([
 			'PAGINATION'		=> $this->user->lang('POINTS_LOG_COUNT', $max),
 			'LOTTERY_NAME'		=> $points_values['lottery_name'],
 			'BANK_NAME'			=> $points_values['bank_name'],
-			'S_LOGS_ACTION' 	=> $this->helper->route('dmzx_ultimatepoints_controller', array('mode' => 'logs')),
+			'S_LOGS_ACTION' 	=> $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'logs']),
 			'S_SELECT_SORT_DIR'	=> $s_sort_dir,
 			'S_SELECT_SORT_KEY'	=> $s_sort_key,
-			'U_TRANSFER_USER'	=> $this->helper->route('dmzx_ultimatepoints_controller', array('mode' => 'transfer_user')),
-			'U_LOGS'			=> $this->helper->route('dmzx_ultimatepoints_controller', array('mode' => 'logs')),
-			'U_LOTTERY'			=> $this->helper->route('dmzx_ultimatepoints_controller', array('mode' => 'lottery')),
-			'U_BANK'			=> $this->helper->route('dmzx_ultimatepoints_controller', array('mode' => 'bank')),
-			'U_ROBBERY'			=> $this->helper->route('dmzx_ultimatepoints_controller', array('mode' => 'robbery')),
-			'U_INFO'			=> $this->helper->route('dmzx_ultimatepoints_controller', array('mode' => 'info')),
+			'U_TRANSFER_USER'	=> $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'transfer_user']),
+			'U_LOGS'			=> $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'logs']),
+			'U_LOTTERY'			=> $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'lottery']),
+			'U_BANK'			=> $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'bank']),
+			'U_ROBBERY'			=> $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'robbery']),
+			'U_INFO'			=> $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'info']),
 			'U_USE_TRANSFER'	=> $this->auth->acl_get('u_use_transfer'),
 			'U_USE_LOGS'		=> $this->auth->acl_get('u_use_logs'),
 			'U_USE_LOTTERY'		=> $this->auth->acl_get('u_use_lottery'),
 			'U_USE_BANK'		=> $this->auth->acl_get('u_use_bank'),
 			'U_USE_ROBBERY'		=> $this->auth->acl_get('u_use_robbery'),
-		));
+        ]);
 
 		// Generate the page header
 		page_header(sprintf($this->user->lang['LOGS_TITLE'], $checked_user['username']));
 
 		// Generate the page template
-		$this->template->set_filenames(array(
+		$this->template->set_filenames([
 			'body' => 'points/points_logs.html',
-		));
+        ]);
 
 		page_footer();
 	}

@@ -110,13 +110,13 @@ class points_points_edit
 
 		if (empty($u_id))
 		{
-			$message = $this->user->lang['EDIT_NO_ID_SPECIFIED'] . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', array('mode' => 'points_edit')) . '">&laquo; ' . $this->user->lang['BACK_TO_PREV'] . '</a>';
+			$message = $this->user->lang['EDIT_NO_ID_SPECIFIED'] . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'points_edit']) . '">&laquo; ' . $this->user->lang['BACK_TO_PREV'] . '</a>';
 			trigger_error($message);
 		}
 
 		if ($adm_points != false && ($this->auth->acl_get('a_') || $this->auth->acl_get('m_chg_points')))
 		{
-			$this->template->assign_block_vars('administer_points', array());
+			$this->template->assign_block_vars('administer_points', []);
 
 			if ($this->request->is_set_post('submit'))
 			{
@@ -143,47 +143,47 @@ class points_points_edit
 					$this->functions_points->substract_points($u_id, $new_points);
 				}
 
-				$sql_array = array(
+				$sql_array = [
 					'SELECT'	=> 'user_id, username, user_points, user_colour',
-					'FROM'		=> array(
+					'FROM'		=> [
 						USERS_TABLE => 'u',
-					),
+                    ],
 					'WHERE'		=> 'user_id = ' . (int) $u_id,
-				);
+                ];
 				$sql = $this->db->sql_build_query('SELECT', $sql_array);
 				$result = $this->db->sql_query($sql);
 				$points_user = $this->db->sql_fetchrow($result);
 
 				// Add logs
-				$this->log->add('admin', $this->user->data['user_id'], $this->user->ip, 'LOG_MOD_POINTS', false, array($points_user['username']));
+				$this->log->add('admin', $this->user->data['user_id'], $this->user->ip, 'LOG_MOD_POINTS', false, [$points_user['username']]);
 				$message = ($post_id) ? sprintf($this->user->lang['EDIT_P_RETURN_POST'], '<a href="'. append_sid("{$this->root_path}viewtopic.{$this->php_ext}", "p=" . $post_id) . '">', '</a>') : sprintf($this->user->lang['EDIT_P_RETURN_INDEX'], '<a href="' . append_sid("{$this->root_path}index.{$this->php_ext}") . '">', '</a>');
 				trigger_error((sprintf($this->user->lang['EDIT_POINTS_SET'], $this->config['points_name'])) . $message);
 			}
 			else
 			{
-				$sql_array = array(
+				$sql_array = [
 					'SELECT'	=> 'user_id, username, user_points, user_colour',
-					'FROM'		=> array(
+					'FROM'		=> [
 						USERS_TABLE => 'u',
-					),
+                    ],
 					'WHERE'		=> 'user_id = ' . (int) $u_id,
-				);
+                ];
 				$sql = $this->db->sql_build_query('SELECT', $sql_array);
 				$result = $this->db->sql_query($sql);
 				$row = $this->db->sql_fetchrow($result);
 
 				if (empty($u_id))
 				{
-					$message = $this->user->lang['EDIT_USER_NOT_EXIST'] . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', array('mode' => 'points_edit')) . '">&laquo; ' . $this->user->lang['BACK_TO_PREV'] . '</a>';
+					$message = $this->user->lang['EDIT_USER_NOT_EXIST'] . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'points_edit']) . '">&laquo; ' . $this->user->lang['BACK_TO_PREV'] . '</a>';
 					trigger_error($message);
 				}
 
-				$hidden_fields = build_hidden_fields(array(
+				$hidden_fields = build_hidden_fields([
 					'user_id'	=> $u_id,
 					'post_id'	=> $post_id,
-				));
+                ]);
 
-				$this->template->assign_vars(array(
+				$this->template->assign_vars([
 					'USER_NAME'				=> get_username_string('full', $u_id, $row['username'], $row['user_colour']),
 					'POINTS_OF_USER'		=> sprintf($this->functions_points->number_format_points($row['user_points'])),
 					'POINTS_NAME'			=> $this->config['points_name'],
@@ -191,10 +191,10 @@ class points_points_edit
 					'L_POINTS_MODIFY'		=> sprintf($this->user->lang['EDIT_POINTS_MODIFY'], $this->config['points_name']),
 					'L_P_POINTS_TITLE'		=> sprintf($this->user->lang['EDIT_P_POINTS_TITLE'], $this->config['points_name']),
 					'L_USERNAME'			=> $this->user->lang['USERNAME'],
-					'S_ACTION'				=> $this->helper->route('dmzx_ultimatepoints_controller', array('mode' => 'points_edit', 'adm_points' => '1')),
+					'S_ACTION'				=> $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'points_edit', 'adm_points' => '1']),
 					'S_HIDDEN_FIELDS'		=> $hidden_fields,
 					'U_USER_LINK'			=> append_sid("{$this->root_path}memberlist.{$this->php_ext}", "mode=viewprofile&amp;u=" . $u_id),
-				));
+                ]);
 			}
 		}
 
@@ -202,9 +202,9 @@ class points_points_edit
 		page_header($this->user->lang['EDIT_POINTS_ADMIN']);
 
 		// Generate the page template
-		$this->template->set_filenames(array(
+		$this->template->set_filenames([
 			'body'	=> 'points/points_points_edit.html'
-		));
+        ]);
 
 		page_footer();
 	}

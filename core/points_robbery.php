@@ -139,10 +139,10 @@ class points_robbery
 		}
 
 		// Add part to bar
-		$this->template->assign_block_vars('navlinks', array(
-			'U_VIEW_FORUM'	=> $this->helper->route('dmzx_ultimatepoints_controller', array('mode' => 'robbery')),
+		$this->template->assign_block_vars('navlinks', [
+			'U_VIEW_FORUM'	=> $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'robbery']),
 			'FORUM_NAME'	=> sprintf($this->user->lang['POINTS_ROBBERY'], $this->config['points_name']),
-		));
+        ]);
 
 		// Read out cash of current user
 		$pointsa = $this->user->data['user_points'];
@@ -163,21 +163,21 @@ class points_robbery
 
 			if ($attacked_amount <= 0)
 			{
-				$message = $this->user->lang['ROBBERY_TOO_SMALL_AMOUNT'] . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', array('mode' => 'robbery')) . '">&laquo; ' . $this->user->lang['BACK_TO_PREV'] . '</a>';
+				$message = $this->user->lang['ROBBERY_TOO_SMALL_AMOUNT'] . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'robbery']) . '">&laquo; ' . $this->user->lang['BACK_TO_PREV'] . '</a>';
 				trigger_error($message);
 			}
 
 			// Check, if user has entered the name of the user to be robbed
 			if (empty($username))
 			{
-				$message = $this->user->lang['ROBBERY_NO_ID_SPECIFIED'] . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', array('mode' => 'robbery')) . '">&laquo; ' . $this->user->lang['BACK_TO_PREV'] . '</a>';
+				$message = $this->user->lang['ROBBERY_NO_ID_SPECIFIED'] . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'robbery']) . '">&laquo; ' . $this->user->lang['BACK_TO_PREV'] . '</a>';
 				trigger_error($message);
 			}
 
 			// Check, if user tries to rob himself
 			if ($this->user->data['username_clean'] == utf8_clean_string($username))
 			{
-				$message = $this->user->lang['ROBBERY_SELF'] . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', array('mode' => 'robbery')) . '">&laquo; ' . $this->user->lang['BACK_TO_PREV'] . '</a>';
+				$message = $this->user->lang['ROBBERY_SELF'] . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'robbery']) . '">&laquo; ' . $this->user->lang['BACK_TO_PREV'] . '</a>';
 				trigger_error($message);
 			}
 
@@ -186,19 +186,19 @@ class points_robbery
 			{
 				if ($this->user->data['user_points'] < ($attacked_amount/100*$points_values['robbery_loose']))
 				{
-					$message = $this->user->lang['ROBBERY_TO_MUCH'] . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', array('mode' => 'robbery')) . '">&laquo; ' . $this->user->lang['BACK_TO_PREV'] . '</a>';
+					$message = $this->user->lang['ROBBERY_TO_MUCH'] . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'robbery']) . '">&laquo; ' . $this->user->lang['BACK_TO_PREV'] . '</a>';
 					trigger_error($message);
 				}
 			}
 
 			// Select the user_id of user to be robbed
-			$sql_array = array(
+			$sql_array = [
 				'SELECT'	=> 'user_id',
-				'FROM'		=> array(
+				'FROM'		=> [
 					USERS_TABLE => 'u',
-				),
+                ],
 				'WHERE'		=> 'username_clean = "' . $this->db->sql_escape(utf8_clean_string($username)) . '"',
-			);
+            ];
 			$sql = $this->db->sql_build_query('SELECT', $sql_array);
 			$result = $this->db->sql_query($sql);
 			$user_id = (int) $this->db->sql_fetchfield('user_id');
@@ -207,18 +207,18 @@ class points_robbery
 			// If no matching user id is found
 			if (!$user_id)
 			{
-				$message = $this->user->lang['POINTS_NO_USER'] . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', array('mode' => 'robbery')) . '">&laquo; ' . $this->user->lang['BACK_TO_PREV'] . '</a>';
+				$message = $this->user->lang['POINTS_NO_USER'] . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'robbery']) . '">&laquo; ' . $this->user->lang['BACK_TO_PREV'] . '</a>';
 				trigger_error($message);
 			}
 
 			// If the robbed user doesn't have enough cash
-			$sql_array = array(
+			$sql_array = [
 				'SELECT'	=> 'user_points',
-				'FROM'		=> array(
+				'FROM'		=> [
 					USERS_TABLE => 'u',
-				),
+                ],
 				'WHERE'		=> 'user_id = ' . (int) $user_id,
-			);
+            ];
 			$sql = $this->db->sql_build_query('SELECT', $sql_array);
 			$result = $this->db->sql_query($sql);
 			$pointsa = $this->db->sql_fetchfield('user_points');
@@ -226,7 +226,7 @@ class points_robbery
 
 			if ($attacked_amount > $pointsa)
 			{
-				$message = $this->user->lang['ROBBERY_TO_MUCH_FROM_USER'] . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', array('mode' => 'robbery')) . '">&laquo; ' . $this->user->lang['BACK_TO_PREV'] . '</a>';
+				$message = $this->user->lang['ROBBERY_TO_MUCH_FROM_USER'] . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'robbery']) . '">&laquo; ' . $this->user->lang['BACK_TO_PREV'] . '</a>';
 				trigger_error($message);
 			}
 
@@ -235,7 +235,7 @@ class points_robbery
 			{
 				if ($attacked_amount > ($pointsa/100*$points_values['robbery_max_rob']))
 				{
-					$message = sprintf($this->user->lang['ROBBERY_MAX_ROB'], $points_values['robbery_max_rob']) . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', array('mode' => 'robbery')) . '">&laquo; ' . $this->user->lang['BACK_TO_PREV'] . '</a>';
+					$message = sprintf($this->user->lang['ROBBERY_MAX_ROB'], $points_values['robbery_max_rob']) . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'robbery']) . '">&laquo; ' . $this->user->lang['BACK_TO_PREV'] . '</a>';
 					trigger_error($message);
 				}
 			}
@@ -254,7 +254,7 @@ class points_robbery
 				$this->functions_points->substract_points($user_id, $attacked_amount);
 
 				// Add robbery to the log
-				$sql = 'INSERT INTO ' . $this->points_log_table . ' ' . $this->db->sql_build_array('INSERT', array(
+				$sql = 'INSERT INTO ' . $this->points_log_table . ' ' . $this->db->sql_build_array('INSERT', [
 					'point_send'		=> (int) $this->user->data['user_id'],
 					'point_recv'		=> $user_id,
 					'point_amount'		=> $attacked_amount,
@@ -263,7 +263,7 @@ class points_robbery
 					'point_comment'		=> '',
 					'point_type'		=> '3',
 					'point_date'		=> time(),
-				));
+                    ]);
 				$this->db->sql_query($sql);
 
 				if ($points_config['robbery_notify'])
@@ -272,13 +272,13 @@ class points_robbery
 					$this->config->increment('points_notification_id', 1);
 
 					// Store the notification data we will use in an array
-					$data = array(
+					$data = [
 						'points_notify_id'		=> (int) $this->config['points_notification_id'],
 						'points_notify_msg'		=> sprintf($this->user->lang['NOTIFICATION_ROBBERY_SUCCES'], $attacked_amount, $this->config['points_name']),
 						'sender'				=> (int) $this->user->data['user_id'],
 						'receiver'				=> (int) $user_id,
 						'mode'					=> 'robbery',
-					);
+                    ];
 
 					// Update mChat with good robbery
 					if ($this->phpbb_container->has('dmzx.mchat.settings') && $this->config['robbery_mchat_enable'])
@@ -293,7 +293,7 @@ class points_robbery
 					$this->notification_manager->add_notifications('dmzx.ultimatepoints.notification.type.points', $data);
 				}
 
-				$message = $this->user->lang['ROBBERY_SUCCESFUL'] . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', array('mode' => 'robbery')) . '">&laquo; ' . $this->user->lang['BACK_TO_PREV'] . '</a>';
+				$message = $this->user->lang['ROBBERY_SUCCESFUL'] . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'robbery']) . '">&laquo; ' . $this->user->lang['BACK_TO_PREV'] . '</a>';
 				trigger_error($message);
 			}
 			// If robbery failed and notify user
@@ -310,13 +310,13 @@ class points_robbery
 						$this->config->increment('points_notification_id', 1);
 
 						// Store the notification data we will use in an array
-						$data = array(
+						$data = [
 							'points_notify_id'		=> (int) $this->config['points_notification_id'],
 							'points_notify_msg'		=> $this->user->lang['NOTIFICATION_ROBBERY_FAILED'],
 							'sender'				=> (int) $this->user->data['user_id'],
 							'receiver'				=> (int) $user_id,
 							'mode'					=> 'robbery',
-						);
+                        ];
 
 						// Update mChat with robbery fail
 						if ($this->phpbb_container->has('dmzx.mchat.settings') && $this->config['robbery_mchat_enable'])
@@ -331,19 +331,19 @@ class points_robbery
 						$this->notification_manager->add_notifications('dmzx.ultimatepoints.notification.type.points', $data);
 					}
 
-					$message = $this->user->lang['ROBBERY_BAD'] . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', array('mode' => 'robbery')) . '">&laquo; ' . $this->user->lang['BACK_TO_PREV'] . '</a>';
+					$message = $this->user->lang['ROBBERY_BAD'] . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'robbery']) . '">&laquo; ' . $this->user->lang['BACK_TO_PREV'] . '</a>';
 					trigger_error($message);
 				}
 			}
 
-			$this->template->assign_vars(array(
+			$this->template->assign_vars([
 				'USER_NAME'				=> get_username_string('full', $checked_user['user_id'], $points_config['username'], $points_config['user_colour']),
 				'U_ACTION'				=> $this->u_action,
 				'S_HIDDEN_FIELDS'		=> $hidden_fields,
-			));
+            ]);
 		}
 
-		$this->template->assign_vars(array(
+		$this->template->assign_vars([
 			'USER_POINTS'			=> sprintf($this->functions_points->number_format_points($pointsa)),
 			'POINTS_NAME'			=> $this->config['points_name'],
 			'LOTTERY_NAME'			=> $points_values['lottery_name'],
@@ -351,26 +351,26 @@ class points_robbery
 			'L_ROBBERY_CHANCE'		=> sprintf($this->user->lang['ROBBERY_CHANCE'], ($this->functions_points->number_format_points($points_values['robbery_max_rob'])), ($this->functions_points->number_format_points($points_values['robbery_chance']))),
 			'L_ROBBERY_AMOUNTLOSE'	=> sprintf($this->user->lang['ROBBERY_AMOUNTLOSE'], ($this->functions_points->number_format_points($points_values['robbery_loose']))),
 			'U_FIND_USERNAME'		=> append_sid("{$this->root_path}memberlist.{$this->php_ext}", "mode=searchuser&amp;form=post&amp;field=username"),
-			'U_TRANSFER_USER'		=> $this->helper->route('dmzx_ultimatepoints_controller', array('mode' => 'transfer_user')),
-			'U_LOGS'				=> $this->helper->route('dmzx_ultimatepoints_controller', array('mode' => 'logs')),
-			'U_LOTTERY'				=> $this->helper->route('dmzx_ultimatepoints_controller', array('mode' => 'lottery')),
-			'U_BANK'				=> $this->helper->route('dmzx_ultimatepoints_controller', array('mode' => 'bank')),
-			'U_ROBBERY'				=> $this->helper->route('dmzx_ultimatepoints_controller', array('mode' => 'robbery')),
-			'U_INFO'				=> $this->helper->route('dmzx_ultimatepoints_controller', array('mode' => 'info')),
+			'U_TRANSFER_USER'		=> $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'transfer_user']),
+			'U_LOGS'				=> $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'logs']),
+			'U_LOTTERY'				=> $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'lottery']),
+			'U_BANK'				=> $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'bank']),
+			'U_ROBBERY'				=> $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'robbery']),
+			'U_INFO'				=> $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'info']),
 			'U_USE_TRANSFER'		=> $this->auth->acl_get('u_use_transfer'),
 			'U_USE_LOGS'			=> $this->auth->acl_get('u_use_logs'),
 			'U_USE_LOTTERY'			=> $this->auth->acl_get('u_use_lottery'),
 			'U_USE_BANK'			=> $this->auth->acl_get('u_use_bank'),
 			'U_USE_ROBBERY'			=> $this->auth->acl_get('u_use_robbery'),
-		));
+        ]);
 
 		// Generate the page
 		page_header($this->user->lang['POINTS_ROBBERY']);
 
 		// Generate the page template
-		$this->template->set_filenames(array(
+		$this->template->set_filenames([
 			'body'	=> 'points/points_robbery.html'
-		));
+        ]);
 
 		page_footer();
 	}

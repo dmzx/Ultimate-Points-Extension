@@ -109,13 +109,13 @@ class points_main
 		$points_config = $this->functions_points->points_all_configs();
 
 		// Select user's bank holding
-		$sql_array = array(
+		$sql_array = [
 			'SELECT'	=> '*',
-			'FROM'		=> array(
+			'FROM'		=> [
 				$this->points_bank_table => 'b',
-			),
+            ],
 			'WHERE'		=> 'user_id = ' . (int) $this->user->data['user_id'],
-		);
+        ];
 		$sql = $this->db->sql_build_query('SELECT', $sql_array);
 		$result = $this->db->sql_query($sql);
 		$row = $this->db->sql_fetchrow($result);
@@ -126,13 +126,13 @@ class points_main
 
 		if ($this->user->data['user_id'] != ANONYMOUS)
 		{
-			$sql_array = array(
+			$sql_array = [
 				'SELECT'	=> 'COUNT(ticket_id) AS num_tickets',
-				'FROM'		=> array(
+				'FROM'		=> [
 					$this->points_lottery_tickets_table => 't',
-				),
+                ],
 				'WHERE'		=> 'user_id = ' . (int) $this->user->data['user_id'],
-			);
+            ];
 			$sql = $this->db->sql_build_query('SELECT', $sql_array);
 			$result = $this->db->sql_query($sql);
 			$viewer_total_tickets = (int) $this->db->sql_fetchfield('num_tickets');
@@ -147,67 +147,67 @@ class points_main
 		// Generate some language stuff, dependig on the fact, if user has a bank account or not
 		if ((is_array($row) && $row['user_id'] != $this->user->data['user_id']) || (is_array($row) && $row['holding'] < 1))
 		{
-			$this->template->assign_vars(array(
+			$this->template->assign_vars([
 				'L_MAIN_ON_HAND'				=>	sprintf($this->user->lang['MAIN_ON_HAND'], $this->functions_points->number_format_points($checked_user['user_points']), $this->config['points_name']),
 				'L_MAIN_HELLO_USERNAME'			=>	sprintf($this->user->lang['MAIN_HELLO_USERNAME'], $user_name),
 				'L_MAIN_LOTTERY_TICKETS'		=>	sprintf($this->user->lang['MAIN_LOTTERY_TICKETS'], $viewer_total_tickets),
-			));
+            ]);
 		}
 		else
 		{
-			$this->template->assign_vars(array(
+			$this->template->assign_vars([
 				'L_MAIN_ON_HAND'				=>	$this->auth->acl_get('u_use_points') ? sprintf($this->user->lang['MAIN_ON_HAND'], $this->functions_points->number_format_points($checked_user['user_points']), $this->config['points_name']) : '',
 				'L_MAIN_HELLO_USERNAME'			=>	sprintf($this->user->lang['MAIN_HELLO_USERNAME'], $user_name),
 				'L_MAIN_LOTTERY_TICKETS'		=>	$this->auth->acl_get('u_use_lottery') ? sprintf($this->user->lang['MAIN_LOTTERY_TICKETS'], $viewer_total_tickets) : '',
-			));
+            ]);
 
 			if ($this->auth->acl_get('u_use_bank'))
 			{
-				$this->template->assign_block_vars('has_bank_account', array(
+				$this->template->assign_block_vars('has_bank_account', [
 					'L_MAIN_BANK_HAVE'	=>	sprintf($this->user->lang['MAIN_BANK_HAVE'], $this->functions_points->number_format_points(is_array($row) && $row['holding']), $this->config['points_name']),
-				));
+                ]);
 			}
 		}
 
 		// Generate richest users
 		$limit = $points_values['number_show_top_points'];
-		$sql_array = array(
+		$sql_array = [
 			'SELECT'	=> 'user_id, username, user_colour, user_points',
-			'FROM'		=> array(
+			'FROM'		=> [
 				USERS_TABLE => 'u',
-			),
+            ],
 			'WHERE'		=> 'user_points > 0',
 			'ORDER_BY'	=> 'user_points DESC, username_clean ASC'
-		);
+        ];
 		$sql = $this->db->sql_build_query('SELECT', $sql_array);
 		$result = $this->db->sql_query_limit($sql, $limit);
 
 		while ($row = $this->db->sql_fetchrow($result))
 		{
-			$this->template->assign_block_vars('points', array(
+			$this->template->assign_block_vars('points', [
 				'USERNAME'	=> get_username_string('full', $row['user_id'], $row['username'], $row['user_colour']),
 				'POINT'		=> sprintf($this->functions_points->number_format_points($row['user_points'])),
-			));
+            ]);
 		}
 		$this->db->sql_freeresult($result);
 
 		// Richest Banker
-		$sql_array = array(
+		$sql_array = [
 			'SELECT'	=> 'b.user_id, b.holding, u.user_id, u.username, u.user_colour',
 
-			'FROM'		=> array(
+			'FROM'		=> [
 				$this->points_bank_table	=> 'b',
-			),
+            ],
 
-			'LEFT_JOIN' => array(
-				array(
-					'FROM'	=> array(USERS_TABLE => 'u'),
+			'LEFT_JOIN' => [
+				[
+					'FROM'	=> [USERS_TABLE => 'u'],
 					'ON'	=> 'u.user_id = b.user_id',
-				)
-			),
+                ]
+            ],
 
 			'ORDER_BY'	=> 'b.holding DESC',
-		);
+        ];
 
 		// Build the query...
 		$sql = $this->db->sql_build_query('SELECT', $sql_array);
@@ -222,33 +222,33 @@ class points_main
 
 			if ($rb_row['holding'] != 0.00) // Empty bank accounts
 			{
-				$this->template->assign_block_vars('richest_banker', array(
+				$this->template->assign_block_vars('richest_banker', [
 					'USER'		=> $rb_username,
 					'HOLDING'	=> $rb_row['holding'],
-				));
+                ]);
 			}
 		}
 		$this->db->sql_freeresult($result); // Free the results
 
 		// Most Donations Given
-		$sql_array = array(
+		$sql_array = [
 			'SELECT'	=> 'lt.point_send, u.user_id, u.username, u.user_colour, SUM(lt.point_amount) AS total_donated',
 
-			'FROM'		=> array(
+			'FROM'		=> [
 				$this->points_log_table		=> 'lt',
-			),
+            ],
 
-			'LEFT_JOIN' => array(
-				array(
-					'FROM'	=> array(USERS_TABLE => 'u'),
+			'LEFT_JOIN' => [
+				[
+					'FROM'	=> [USERS_TABLE => 'u'],
 					'ON'	=> 'u.user_id = lt.point_send',
-				)
-			),
+                ]
+            ],
 
 			'GROUP_BY'	=> 'lt.point_send',
 
 			'ORDER_BY'	=> 'total_donated DESC',
-		);
+        ];
 
 		// Build the query...
 		$sql = $this->db->sql_build_query('SELECT', $sql_array);
@@ -261,32 +261,32 @@ class points_main
 		{
 			$md_username = get_username_string('full', $md_row['user_id'], $md_row['username'], $md_row['user_colour']);
 
-			$this->template->assign_block_vars('most_donated', array(
+			$this->template->assign_block_vars('most_donated', [
 				'USER'		=> $md_username,
 				'DONATED'	=> $md_row['total_donated'],
-			));
+            ]);
 		}
 		$this->db->sql_freeresult($result); // Free the results
 
 		// Most Lotteries Won
-		$sql_array = array(
+		$sql_array = [
 			'SELECT'	=> 'lh.user_id, COUNT(lh.id) AS total_won, SUM(lh.amount) AS total_prize, u.user_id, u.username, u.user_colour',
 
-			'FROM'		=> array(
+			'FROM'		=> [
 				$this->points_lottery_history_table	=> 'lh',
-			),
+            ],
 
-			'LEFT_JOIN' => array(
-				array(
-					'FROM'	=> array(USERS_TABLE => 'u'),
+			'LEFT_JOIN' => [
+				[
+					'FROM'	=> [USERS_TABLE => 'u'],
 					'ON'	=> 'u.user_id = lh.user_id',
-				)
-			),
+                ]
+            ],
 
 			'GROUP_BY'	=> 'lh.user_id',
 
 			'ORDER_BY'	=> 'total_won DESC',
-		);
+        ];
 
 		// Build the query...
 		$sql = $this->db->sql_build_query('SELECT', $sql_array);
@@ -301,25 +301,25 @@ class points_main
 			{
 				$lw_username = get_username_string('full', $lw_row['user_id'], $lw_row['username'], $lw_row['user_colour']);
 
-				$this->template->assign_block_vars('lotteries_won', array(
+				$this->template->assign_block_vars('lotteries_won', [
 					'USER'			=> $lw_username,
 					'TOTAL_WON'		=> $lw_row['total_won'],
 					'TOTAL_PRIZE'	=> $lw_row['total_prize'],
-				));
+                ]);
 			}
 		}
 		$this->db->sql_freeresult($result); // Free the results
 
-		$this->template->assign_vars(array(
+		$this->template->assign_vars([
 			'LOTTERY_NAME'				=> $points_values['lottery_name'],
 			'BANK_NAME'					=> $points_values['bank_name'],
 			'S_DISPLAY_INDEX'			=> ($points_values['number_show_top_points'] > 0) ? true : false,
-			'U_TRANSFER_USER'			=> $this->helper->route('dmzx_ultimatepoints_controller', array('mode' => 'transfer_user')),
-			'U_LOGS'					=> $this->helper->route('dmzx_ultimatepoints_controller', array('mode' => 'logs')),
-			'U_LOTTERY'					=> $this->helper->route('dmzx_ultimatepoints_controller', array('mode' => 'lottery')),
-			'U_BANK'					=> $this->helper->route('dmzx_ultimatepoints_controller', array('mode' => 'bank')),
-			'U_ROBBERY'					=> $this->helper->route('dmzx_ultimatepoints_controller', array('mode' => 'robbery')),
-			'U_INFO'					=> $this->helper->route('dmzx_ultimatepoints_controller', array('mode' => 'info')),
+			'U_TRANSFER_USER'			=> $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'transfer_user']),
+			'U_LOGS'					=> $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'logs']),
+			'U_LOTTERY'					=> $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'lottery']),
+			'U_BANK'					=> $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'bank']),
+			'U_ROBBERY'					=> $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'robbery']),
+			'U_INFO'					=> $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'info']),
 			'U_USE_TRANSFER'			=> $this->auth->acl_get('u_use_transfer'),
 			'U_USE_LOGS'				=> $this->auth->acl_get('u_use_logs'),
 			'U_USE_LOTTERY'				=> $this->auth->acl_get('u_use_lottery'),
@@ -328,12 +328,12 @@ class points_main
 			'S_BANK_ENABLE'				=> ($points_config['bank_enable']) ? true : false,
 			'S_LOTTERY_INFO'			=> ($points_config['lottery_enable']) ? true : false,
 			'POINTS_MOST_RICH_USERS'	=> sprintf($this->user->lang['POINTS_MOST_RICH_USERS'], $points_values['number_show_top_points']),
-		));
+        ]);
 
 		// Generate the page template
-		$this->template->set_filenames(array(
+		$this->template->set_filenames([
 			'body' => 'points/points_main.html',
-		));
+        ]);
 
 		page_footer();
 	}

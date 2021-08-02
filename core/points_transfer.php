@@ -144,10 +144,10 @@ class points_transfer
 		}
 
 		// Add part to bar
-		$this->template->assign_block_vars('navlinks', array(
-			'U_VIEW_FORUM'	=> $this->helper->route('dmzx_ultimatepoints_controller', array('mode' => 'transfer_user')),
+		$this->template->assign_block_vars('navlinks', [
+			'U_VIEW_FORUM'	=> $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'transfer_user']),
 			'FORUM_NAME'	=> sprintf($this->user->lang['TRANSFER_TITLE'], $this->config['points_name']),
-		));
+        ]);
 
 		if ($this->request->is_set_post('submit'))
 		{
@@ -163,21 +163,21 @@ class points_transfer
 			// Check, if the sender has enough cash
 			if ($this->user->data['user_points'] < $am)
 			{
-				$message = sprintf($this->user->lang['TRANSFER_REASON_MINPOINTS'], $this->config['points_name']) . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', array('mode' => 'transfer_user')) . '">&laquo; ' . $this->user->lang['BACK_TO_PREV'] . '</a>';
+				$message = sprintf($this->user->lang['TRANSFER_REASON_MINPOINTS'], $this->config['points_name']) . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'transfer_user']) . '">&laquo; ' . $this->user->lang['BACK_TO_PREV'] . '</a>';
 				trigger_error($message);
 			}
 
 			// Check, if the amount is 0 or below
 			if ($am <= 0)
 			{
-				$message = sprintf($this->user->lang['TRANSFER_REASON_UNDERZERO'], $this->config['points_name']) . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', array('mode' => 'transfer_user')) . '">&laquo; ' . $this->user->lang['BACK_TO_PREV'] . '</a>';
+				$message = sprintf($this->user->lang['TRANSFER_REASON_UNDERZERO'], $this->config['points_name']) . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'transfer_user']) . '">&laquo; ' . $this->user->lang['BACK_TO_PREV'] . '</a>';
 				trigger_error($message);
 			}
 
 			// Check, if the user is trying to send to himself
 			if ($this->user->data['user_id'] == $checked_user['user_id'])
 			{
-				$message = sprintf($this->user->lang['TRANSFER_REASON_YOURSELF'], $this->config['points_name']) . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', array('mode' => 'transfer_user')) . '">&laquo; ' . $this->user->lang['BACK_TO_PREV'] . '</a>';
+				$message = sprintf($this->user->lang['TRANSFER_REASON_YOURSELF'], $this->config['points_name']) . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'transfer_user']) . '">&laquo; ' . $this->user->lang['BACK_TO_PREV'] . '</a>';
 				trigger_error($message);
 			}
 
@@ -194,7 +194,7 @@ class points_transfer
 			// Add transfer information to the log
 			$text = $message;
 
-			$sql = 'INSERT INTO ' . $this->points_log_table . ' ' . $this->db->sql_build_array('INSERT', array(
+			$sql = 'INSERT INTO ' . $this->points_log_table . ' ' . $this->db->sql_build_array('INSERT', [
 				'point_send'	=> (int) $this->user->data['user_id'],
 				'point_recv'	=> (int) $checked_user['user_id'],
 				'point_amount'	=> $am,
@@ -203,7 +203,7 @@ class points_transfer
 				'point_comment'	=> $text,
 				'point_type'	=> '1',
 				'point_date'	=> $current_time,
-			));
+                ]);
 			$this->db->sql_query($sql);
 
 			// Update mChat with good transfer
@@ -219,13 +219,13 @@ class points_transfer
 			if (!$points_config['transfer_pm_enable'] == 0 && $checked_user['user_allow_pm'] == 1)
 			{
 				// Select the user data for the PM
-				$sql_array = array(
+				$sql_array = [
 					'SELECT'	=> '*',
-					'FROM'		=> array(
+					'FROM'		=> [
 						USERS_TABLE => 'u',
-					),
+                    ],
 					'WHERE'		=> 'user_id = ' . (int) $checked_user['user_id'],
-				);
+                ];
 				$sql = $this->db->sql_build_query('SELECT', $sql_array);
 				$result = $this->db->sql_query($sql);
 				$user_row = $this->db->sql_fetchrow($result);
@@ -242,8 +242,8 @@ class points_transfer
 				$message_parser->message = $pm_text;
 				$message_parser->parse(true, true, true, false, false, true, true);
 
-				$pm_data = array(
-					'address_list'		=> array ('u' => array($checked_user['user_id'] => 'to')),
+				$pm_data = [
+					'address_list'		=> ['u' => [$checked_user['user_id'] => 'to']],
 					'from_user_id'		=> $this->user->data['user_id'],
 					'from_username'		=> $this->user->data['username'],
 					'icon_id'			=> 0,
@@ -255,7 +255,7 @@ class points_transfer
 					'message'		 	=> $message_parser->message,
 					'bbcode_bitfield' 	=> $message_parser->bbcode_bitfield,
 					'bbcode_uid'		=> $message_parser->bbcode_uid,
-				);
+                ];
 
 				submit_pm('post', $pm_subject, $pm_data, false);
 			}
@@ -263,29 +263,29 @@ class points_transfer
 			$message = sprintf($this->user->lang['TRANSFER_REASON_TRANSUCC'], $this->functions_points->number_format_points($am), $this->config['points_name'], $checked_user['username']) . '<br /><br />' . (($post_id) ? sprintf($this->user->lang['EDIT_P_RETURN_POST'], '<a href="' . append_sid("{$this->root_path}viewtopic.{$this->php_ext}", "p=" . $post_id) . '">', '</a>') : sprintf($this->user->lang['EDIT_P_RETURN_INDEX'], '<a href="' . append_sid("{$this->root_path}index.{$this->php_ext}") . '">', '</a>'));
 			trigger_error($message);
 
-			$this->template->assign_vars(array(
+			$this->template->assign_vars([
 				'U_ACTION'					=> $this->u_action,
-			));
+            ]);
 		}
 
 		$username_full = get_username_string('full', $checked_user['user_id'], $checked_user['username'], $checked_user['user_colour']);
 
-		$this->template->assign_vars(array(
+		$this->template->assign_vars([
 			'L_TRANSFER_DESCRIPTION'		=> sprintf($this->user->lang['TRANSFER_DESCRIPTION'], $this->config['points_name']),
 			'POINTS_NAME'					=> $this->config['points_name'],
 			'POINTS_COMMENTS'				=> ($points_config['comments_enable']) ? true : false,
 			'TRANSFER_FEE'					=> $transfer_fee,
 			'U_TRANSFER_NAME'				=> sprintf($this->user->lang['TRANSFER_TO_NAME'], $username_full, $this->config['points_name']),
 			'S_ALLOW_SEND_PM'				=> $this->auth->acl_get('u_sendpm'),
-		));
+        ]);
 
 		// Generate the page
 		page_header(sprintf($this->user->lang['TRANSFER_TITLE'], $this->config['points_name']));
 
 		// Generate the page template
-		$this->template->set_filenames(array(
+		$this->template->set_filenames([
 			'body' => 'points/points_transfer.html',
-		));
+        ]);
 
 		page_footer();
 	}

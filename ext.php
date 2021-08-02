@@ -23,9 +23,9 @@ class ext extends \phpbb\extension\base
 		return version_compare($config['version'], '3.2.0', '>=');
 	}
 
-	protected static $notification_types = array(
+	protected static $notification_types = [
 			'dmzx.ultimatepoints.notification.type.points',
-	);
+    ];
 
 	/**
 	 * Enable our notifications.

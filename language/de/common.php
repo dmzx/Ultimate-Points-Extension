@@ -18,7 +18,7 @@ if (!defined('IN_PHPBB'))
 
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+	$lang = [];
 }
 
 // DEVELOPERS PLEASE NOTE
@@ -37,7 +37,7 @@ if (empty($lang) || !is_array($lang))
 // ‚ ‘ ’ « » „ “ ” …
 //
 
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'BANK_ACCOUNT_OPENING'				=> 'Eröffne ein Konto',
 	'BANK_ACCOUNT_OPENED'				=> '%1$s-Konto eröffnet auf',
 	'BANK_ACTIONS'						=> 'Aktionen',
@@ -218,10 +218,10 @@ $lang = array_merge($lang, array(
 	'POINTS_INSUFFICIENT_TOPIC'			=> 'Du hast nicht genug %2$s um ein neues Thema in diesem Forum zu erstellen. Die Kosten, um eine Thema in diesem Forum zu erstellen, betragen <strong>%1$s %2$s</strong>.',
 	'POINTS_LOCKED'						=> 'Gesperrt',
 	'POINTS_LOGS'						=> 'Logs',
-	'POINTS_LOG_COUNT'	=> array(
+	'POINTS_LOG_COUNT'	=> [
 		1 => '%d Eintrag',
 		2 => '%d Einträge',
-	),
+    ],
 	'POINTS_LIST_DISABLE'				=> 'Ultimate Points Liste deaktiviert',
 	'POINTS_LIST_NO_USER'				=> 'Keine Benutzer mit Punkten',
 	'POINTS_LIST_USER'					=> '1 Benutzer',
@@ -323,4 +323,4 @@ $lang = array_merge($lang, array(
 
 	'WARN_USER_POINTS'					=> 'Zusätzlich haben wir von deinem Konto %1$s %2$s abgezogen!',
 	'WARN_MOD_POINTS'					=> 'Zusätzlich wurden %1$s %2$s von %3$s’s Konto abgezogen!',
-));
+]);

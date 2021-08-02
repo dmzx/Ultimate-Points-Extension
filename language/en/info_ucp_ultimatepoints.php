@@ -14,7 +14,7 @@ if (!defined('IN_PHPBB'))
 
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+	$lang = [];
 }
 
 // DEVELOPERS PLEASE NOTE
@@ -32,7 +32,7 @@ if (empty($lang) || !is_array($lang))
 // Some characters for use
 // ’ » “ ” …
 
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'UCP_ULTIMATEPOINTS_TITLE'			=> 'Ultimate Points',
 	'UCP_ULTIMATEPOINTS_EXPLAIN'		=> 'Your statistics'
-));
+]);

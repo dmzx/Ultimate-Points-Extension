@@ -192,13 +192,13 @@ class main
 		$check_user = $this->request->variable('i', 0);
 		$check_user = ($check_user == 0) ? $this->user->data['user_id'] : $check_user;
 
-		$sql_array = array(
+		$sql_array = [
 			'SELECT'	=> '*',
-			'FROM'		=> array(
+			'FROM'		=> [
 				USERS_TABLE => 'u',
-			),
+            ],
 			'WHERE'		=> 'u.user_id = ' . (int) $check_user,
-		);
+        ];
 		$sql = $this->db->sql_build_query('SELECT', $sql_array);
 		$result = $this->db->sql_query($sql);
 		$checked_user = $this->db->sql_fetchrow($result);
@@ -216,14 +216,14 @@ class main
 		}
 
 		// Add the base entry into the Nav Bar at top
-		$this->template->assign_block_vars('navlinks', array(
+		$this->template->assign_block_vars('navlinks', [
 			'U_VIEW_FORUM'	=> $this->helper->route('dmzx_ultimatepoints_controller'),
 			'FORUM_NAME'	=> sprintf($this->user->lang['POINTS_TITLE_MAIN'], $this->config['points_name']),
-		));
+        ]);
 
 		$this->template->assign_vars(array_change_key_case($checked_user, CASE_UPPER));
 
-		$this->template->assign_vars(array_merge(array_change_key_case($points_config, CASE_UPPER), array(
+		$this->template->assign_vars(array_merge(array_change_key_case($points_config, CASE_UPPER), [
 			'USER_POINTS'		=> $this->functions_points->number_format_points ($this->user->data['user_points']),
 			'U_USE_POINTS'		=> $this->auth->acl_get('u_use_points'),
 			'U_CHG_POINTS'		=> $this->auth->acl_get('m_chg_points'),
@@ -233,7 +233,7 @@ class main
 			'U_USE_LOTTERY'		=> $this->auth->acl_get('u_use_lottery'),
 			'U_USE_BANK'		=> $this->auth->acl_get('u_use_bank'),
 			'U_USE_ROBBERY'		=> $this->auth->acl_get('u_use_robbery'),
-		)));
+        ]));
 
 		$this->template->assign_var('ULTIMATEPOINTS_FOOTER_VIEW', true);
 

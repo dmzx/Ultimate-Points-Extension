@@ -86,10 +86,10 @@ class points_info
 		$points_values = $this->functions_points->points_all_values();
 
 		// Add part to bar
-		$this->template->assign_block_vars('navlinks', array(
-			'U_VIEW_FORUM'	=> $this->helper->route('dmzx_ultimatepoints_controller', array('mode' => 'info')),
+		$this->template->assign_block_vars('navlinks', [
+			'U_VIEW_FORUM'	=> $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'info']),
 			'FORUM_NAME'	=> sprintf($this->user->lang['POINTS_INFO'], $this->config['points_name']),
-		));
+        ]);
 
 		// Read out all the need values
 		$info_attach 							= ($points_values['points_per_attach'] == 0) ? sprintf($this->user->lang['INFO_NO_POINTS'], $this->config['points_name']) :	sprintf($this->functions_points->number_format_points($points_values['points_per_attach']) . '&nbsp;' . $this->config['points_name']);
@@ -110,7 +110,7 @@ class points_info
 		$info_points_forum_cost_topic			= ($points_values['forum_cost_topic'] == 0) ? sprintf($this->user->lang['INFO_NO_COST'], $this->config['points_name']) : sprintf($this->functions_points->number_format_points($points_values['forum_cost_topic']) . '&nbsp;' . $this->config['points_name']);
 		$info_points_forum_cost_post 			= ($points_values['forum_cost_post'] == 0) ? sprintf($this->user->lang['INFO_NO_COST'], $this->config['points_name']) : sprintf($this->functions_points->number_format_points($points_values['forum_cost_post']) . '&nbsp;' . $this->config['points_name']);
 
-		$this->template->assign_vars(array(
+		$this->template->assign_vars([
 			'USER_POINTS'						=> sprintf($this->functions_points->number_format_points($this->user->data['user_points'])),
 			'POINTS_NAME'						=> $this->config['points_name'],
 			'LOTTERY_NAME'						=> $points_values['lottery_name'],
@@ -152,26 +152,26 @@ class points_info
 			'INFO_FORUM_COST_TOPIC'				=> sprintf($this->user->lang['INFO_FORUM_COST_TOPIC'], $this->config['points_name']),
 			'INFO_FORUM_COST_POST'				=> sprintf($this->user->lang['INFO_FORUM_COST_POST'], $this->config['points_name']),
 
-			'U_TRANSFER_USER'					=> $this->helper->route('dmzx_ultimatepoints_controller', array('mode' => 'transfer_user')),
-			'U_LOGS'							=> $this->helper->route('dmzx_ultimatepoints_controller', array('mode' => 'logs')),
-			'U_LOTTERY'							=> $this->helper->route('dmzx_ultimatepoints_controller', array('mode' => 'lottery')),
-			'U_BANK'							=> $this->helper->route('dmzx_ultimatepoints_controller', array('mode' => 'bank')),
-			'U_ROBBERY'							=> $this->helper->route('dmzx_ultimatepoints_controller', array('mode' => 'robbery')),
-			'U_INFO'							=> $this->helper->route('dmzx_ultimatepoints_controller', array('mode' => 'info')),
+			'U_TRANSFER_USER'					=> $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'transfer_user']),
+			'U_LOGS'							=> $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'logs']),
+			'U_LOTTERY'							=> $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'lottery']),
+			'U_BANK'							=> $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'bank']),
+			'U_ROBBERY'							=> $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'robbery']),
+			'U_INFO'							=> $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'info']),
 			'U_USE_TRANSFER'					=> $this->auth->acl_get('u_use_transfer'),
 			'U_USE_LOGS'						=> $this->auth->acl_get('u_use_logs'),
 			'U_USE_LOTTERY'						=> $this->auth->acl_get('u_use_lottery'),
 			'U_USE_BANK'						=> $this->auth->acl_get('u_use_bank'),
 			'U_USE_ROBBERY'						=> $this->auth->acl_get('u_use_robbery'),
-		));
+        ]);
 
 		// Generate the page
 		page_header($this->user->lang['POINTS_INFO']);
 
 		// Generate the page template
-		$this->template->set_filenames(array(
+		$this->template->set_filenames([
 			'body'	=> 'points/points_info.html'
-		));
+        ]);
 
 		page_footer();
 	}

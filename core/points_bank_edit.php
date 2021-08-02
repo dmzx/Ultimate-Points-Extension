@@ -123,7 +123,7 @@ class points_bank_edit
 
 		if (empty($u_id))
 		{
-			$message = $this->user->lang['EDIT_NO_ID_SPECIFIED'] . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', array('mode' => 'bank_edit')) . '">&laquo; ' . $this->user->lang['BACK_TO_PREV'] . '</a>';
+			$message = $this->user->lang['EDIT_NO_ID_SPECIFIED'] . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'bank_edit']) . '">&laquo; ' . $this->user->lang['BACK_TO_PREV'] . '</a>';
 			trigger_error($message);
 		}
 
@@ -132,7 +132,7 @@ class points_bank_edit
 
 		if ($adm_points != false && ($this->auth->acl_get('a_') || $this->auth->acl_get('m_chg_bank')))
 		{
-			$this->template->assign_block_vars('administer_bank', array());
+			$this->template->assign_block_vars('administer_bank', []);
 
 			if ($this->request->is_set_post('submit'))
 			{
@@ -145,58 +145,58 @@ class points_bank_edit
 
 				$this->functions_points->set_bank($u_id, $new_points);
 
-				$sql_array = array(
+				$sql_array = [
 					'SELECT'	=> 'user_id, username, user_points, user_colour',
-					'FROM'		=> array(
+					'FROM'		=> [
 						USERS_TABLE => 'u',
-					),
+                    ],
 					'WHERE'		=> 'user_id = ' . (int) $u_id,
-				);
+                ];
 				$sql = $this->db->sql_build_query('SELECT', $sql_array);
 				$result = $this->db->sql_query($sql);
 				$points_user = $this->db->sql_fetchrow($result);
 
 				// Add logs
-				$this->log->add('admin', $this->user->data['user_id'], $this->user->ip, 'LOG_MOD_BANK', false, array($points_user['username']));
+				$this->log->add('admin', $this->user->data['user_id'], $this->user->ip, 'LOG_MOD_BANK', false, [$points_user['username']]);
 				$message = ($post_id) ? sprintf($this->user->lang['EDIT_P_RETURN_POST'], '<a href="'. append_sid("{$this->root_path}viewtopic.{$this->php_ext}", "p=" . $post_id) . '">', '</a>') : sprintf($this->user->lang['EDIT_P_RETURN_INDEX'], '<a href="' . append_sid("{$this->root_path}index.{$this->php_ext}") . '">', '</a>');
 				trigger_error((sprintf($this->user->lang['EDIT_POINTS_SET'], $this->config['points_name'])) . $message);
 			}
 			else
 			{
-				$sql_array = array(
+				$sql_array = [
 					'SELECT'	=> 'u.user_id, u.username, u.user_points, u.user_colour, b.holding',
 
-					'FROM'		=> array(
+					'FROM'		=> [
 						USERS_TABLE	=> 'u',
-					),
+                    ],
 
-					'LEFT_JOIN'	=> array(
-						array(
-							'FROM'	=> array($this->points_bank_table => 'b'),
+					'LEFT_JOIN'	=> [
+						[
+							'FROM'	=> [$this->points_bank_table => 'b'],
 							'ON'	=> 'u.user_id = b.user_id'
-						),
-					),
+                        ],
+                    ],
 
 					'WHERE'		=> 'u.user_id = ' . (int) $u_id,
-				);
+                ];
 				$sql = $this->db->sql_build_query('SELECT', $sql_array);
 				$result = $this->db->sql_query($sql);
 				$row = $this->db->sql_fetchrow($result);
 
 				if (empty($u_id))
 				{
-					$message = $this->user->lang['EDIT_USER_NOT_EXIST'] . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', array('mode' => 'bank_edit')) . '">&laquo; ' . $this->user->lang['BACK_TO_PREV'] . '</a>';
+					$message = $this->user->lang['EDIT_USER_NOT_EXIST'] . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'bank_edit']) . '">&laquo; ' . $this->user->lang['BACK_TO_PREV'] . '</a>';
 					trigger_error($message);
 				}
 
-				$hidden_fields = build_hidden_fields(array(
+				$hidden_fields = build_hidden_fields([
 					'user_id'	=> $u_id,
 					'post_id'	=> $post_id,
-				));
+                ]);
 
 				$points_values = $this->cache->get('points_values');
 
-				$this->template->assign_vars(array(
+				$this->template->assign_vars([
 					'USER_NAME'			=> get_username_string('full', $u_id, $row['username'], $row['user_colour']),
 					'BANK_POINTS'		=> sprintf($this->functions_points->number_format_points($row['holding'])),
 					'BANK_BALANCE'		=> sprintf($this->user->lang['BANK_BALANCE'], $points_values['bank_name']),
@@ -207,18 +207,18 @@ class points_bank_edit
 					'L_USERNAME'		=> $this->user->lang['USERNAME'],
 					'L_SET_AMOUNT'		=> $this->user->lang['EDIT_SET_AMOUNT'],
 					'U_USER_LINK'		=> append_sid("{$this->root_path}memberlist.{$this->php_ext}", "mode=viewprofile&amp;u=" . $u_id),
-					'S_ACTION'			=> $this->helper->route('dmzx_ultimatepoints_controller', array('mode' => 'bank_edit', 'adm_points' => '1')),
+					'S_ACTION'			=> $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'bank_edit', 'adm_points' => '1']),
 					'S_HIDDEN_FIELDS'	=> $hidden_fields,
-				));
+                ]);
 			}
 		}
 		// Generate the page
 		page_header($this->user->lang['EDIT_POINTS_ADMIN']);
 
 		// Generate the page template
-		$this->template->set_filenames(array(
+		$this->template->set_filenames([
 			'body'	=> 'points/points_bank_edit.html'
-		));
+        ]);
 
 		page_footer();
 	}

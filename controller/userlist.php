@@ -113,11 +113,11 @@ class userlist
 
 		while ($row = $this->db->sql_fetchrow($result))
 		{
-			$this->template->assign_block_vars('ultimatelist', array(
+			$this->template->assign_block_vars('ultimatelist', [
 				'USERNAME'	=> get_username_string('full', $row['user_id'], $row['username'], $row['user_colour']),
 				'AVATAR'	=> phpbb_get_user_avatar($row),
 				'POINT'		=> sprintf($this->functions_points->number_format_points($row['user_points'])),
-			));
+            ]);
 		}
 		$this->db->sql_freeresult($result);
 
@@ -132,19 +132,19 @@ class userlist
 		$pagination_url = $this->helper->route('dmzx_ultimatepoints_list_controller');
 		$this->pagination->generate_template_pagination($pagination_url, 'pagination', 'start', $ultimatepoints_total, $limit, $start);
 
-		$this->template->assign_vars(array(
+		$this->template->assign_vars([
 			'TOTAL_ULTIMATEPOINTS_LIST'		=> ($ultimatepoints_total == 1) ? $this->user->lang['POINTS_LIST_USER'] : sprintf($this->user->lang['POINTS_LIST_USERS'], $ultimatepoints_total),
 			'POINTS_LIST_TOTAL'				=> $this->config['points_name_uplist'],
 			'POINTS_LINK'					=> $this->config['points_name'],
 			'ULTIMATEPOINTS_FOOTER_VIEW'	=> true,
-		));
+        ]);
 
 		// Output the page
 		page_header($this->config['points_name_uplist']);
 
-		$this->template->set_filenames(array(
+		$this->template->set_filenames([
 			'body' => 'points/points_list.html'
-		));
+        ]);
 
 		page_footer();
 	}

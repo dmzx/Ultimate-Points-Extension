@@ -15,7 +15,7 @@ if (!defined('IN_PHPBB'))
 
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+	$lang = [];
 }
 
 // DEVELOPERS PLEASE NOTE
@@ -33,7 +33,7 @@ if (empty($lang) || !is_array($lang))
 // Some characters for use
 // ‚ ‘ ’ « » „ “ ” …
 
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'ACL_CAT_POINTS'		=> 'Ultimate Points',
 	'ACL_U_USE_POINTS'		=> 'Kann Ultimate Points benutzen',
 	'ACL_U_USE_ROBBERY'		=> 'Kann Diebstahlmodul benutzen',
@@ -47,4 +47,4 @@ $lang = array_merge($lang, array(
 	'ACL_M_CHG_POINTS'		=> 'Kann Benutzerpunkte ändern',
 	'ACL_M_CHG_BANK'		=> 'Kann Bankguthaben der Benutzer ändern',
 	'ACL_A_POINTS'			=> 'Kann Ultimate Points administrieren',
-));
+]);

@@ -17,7 +17,7 @@ if (!defined('IN_PHPBB'))
 
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+	$lang = [];
 }
 
 // DEVELOPERS PLEASE NOTE
@@ -37,7 +37,7 @@ if (empty($lang) || !is_array($lang))
 //
 
 // Merge the following language entries into the lang array
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'ACP_POINTS'						=> 'Ultimate Points',
 	'ACP_POINTS_BANK_EXPLAIN'			=> 'Here you can alter the settings for the Bank module.',
 	'ACP_POINTS_BANK_TITLE'				=> 'Bank Settings',
@@ -259,4 +259,4 @@ $lang = array_merge($lang, array(
 	'UPLIST_ENABLE_EXPLAIN'				=> 'Allow users to use Ultimate Points List.',
 	'USER_POINTS'						=> 'User Points',
 	'USER_POINTS_EXPLAIN'				=> 'Amount of points the user owns.',
-));
+]);

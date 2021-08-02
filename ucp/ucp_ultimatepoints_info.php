@@ -13,31 +13,31 @@ class ucp_ultimatepoints_info
 {
 	function module()
 	{
-		return array(
+		return [
 			'filename'		=> '\dmzx\ultimatepoints\ucp\ucp_ultimatepoints_module',
 			'title'			=> 'UCP_ULTIMATEPOINTS_TITLE',
-			'modes'			=> array(
-				'lottery'	=> array(
+			'modes'			=> [
+				'lottery'	=> [
 					'title'	=> 'LOTTERY_TITLE_MAIN',
 					'auth'	=> 'ext_dmzx/ultimatepoints',
-					'cat'	=> array('UCP_MAIN'),
-				),
-				'bank'		=> array(
+					'cat'	=> ['UCP_MAIN'],
+                ],
+				'bank'		=> [
 					'title'	=> 'BANK_TITLE_MAIN',
 					'auth'	=> 'ext_dmzx/ultimatepoints',
-					'cat'	=> array('UCP_MAIN'),
-				),
-				'robbery'	=> array(
+					'cat'	=> ['UCP_MAIN'],
+                ],
+				'robbery'	=> [
 					'title'	=> 'POINTS_ROBBERY',
 					'auth'	=> 'ext_dmzx/ultimatepoints',
-					'cat'	=> array('UCP_MAIN'),
-				),
-				'transfer'	=> array(
+					'cat'	=> ['UCP_MAIN'],
+                ],
+				'transfer'	=> [
 					'title'	=> 'POINTS_TRANSFER_RECIEVED',
 					'auth'	=> 'ext_dmzx/ultimatepoints',
-					'cat'	=> array('UCP_MAIN'),
-				),
-			),
-		);
+					'cat'	=> ['UCP_MAIN'],
+                ],
+            ],
+        ];
 	}
 }

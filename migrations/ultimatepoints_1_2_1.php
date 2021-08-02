@@ -13,15 +13,15 @@ class ultimatepoints_1_2_1 extends \phpbb\db\migration\migration
 {
 	static public function depends_on()
 	{
-		return array(
+		return [
 			'\dmzx\ultimatepoints\migrations\ultimatepoints_1_2_0',
-		);
+        ];
 	}
 
 	public function update_data()
 	{
-		return array(
-			array('config.update', array('ultimate_points_version', '1.2.1')),
-		);
+		return [
+			['config.update', ['ultimate_points_version', '1.2.1']],
+        ];
 	}
 }
