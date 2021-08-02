@@ -1,8 +1,8 @@
 imports:
-    - { resource: tables.yml }
+    - { resource: 'tables.yml' }
 services:
     dmzx.ultimatepoints.listener:
-        class: dmzx\ultimatepoints\event\listener
+        class: 'dmzx\ultimatepoints\event\listener'
         arguments:
             - '@dmzx.ultimatepoints.core.functions.points'
             - '@user'
@@ -20,10 +20,10 @@ services:
             - '%dmzx.ultimatepoints.table.points.values%'
             - '@?files.factory'
         tags:
-            - { name: event.listener }
+            - { name: 'event.listener' }
 
     dmzx.ultimatepoints.controller:
-        class: dmzx\ultimatepoints\controller\main
+        class: 'dmzx\ultimatepoints\controller\main'
         arguments:
             - '@dmzx.ultimatepoints.core.functions.points'
             - '@dmzx.ultimatepoints.core.points.main'
@@ -50,7 +50,7 @@ services:
             - '%dmzx.ultimatepoints.table.points.values%'
 
     dmzx.ultimatepoints.list.controller:
-        class: dmzx\ultimatepoints\controller\userlist
+        class: 'dmzx\ultimatepoints\controller\userlist'
         arguments:
             - '@dmzx.ultimatepoints.core.functions.points'
             - '@template'
@@ -64,7 +64,7 @@ services:
             - '%dmzx.ultimatepoints.table.points.values%'
 
     dmzx.ultimatepoints.admin.controller:
-        class: dmzx\ultimatepoints\controller\admin_controller
+        class: 'dmzx\ultimatepoints\controller\admin_controller'
         arguments:
             - '@dmzx.ultimatepoints.core.functions.points'
             - '@template'
@@ -83,7 +83,7 @@ services:
             - '%dmzx.ultimatepoints.table.points.lottery.history%'
 
     dmzx.ultimatepoints.notification.type.points:
-        class: dmzx\ultimatepoints\notification\points
+        class: 'dmzx\ultimatepoints\notification\points'
         shared: false # service MUST not be shared for this to work!
         parent: notification.type.base
         calls:
@@ -93,7 +93,7 @@ services:
             - { name: notification.type }
 
     dmzx.ultimatepoints.core.functions.points:
-        class: dmzx\ultimatepoints\core\functions_points
+        class: 'dmzx\ultimatepoints\core\functions_points'
         arguments:
             - '@template'
             - '@user'
@@ -115,7 +115,7 @@ services:
             - '%dmzx.ultimatepoints.table.points.values%'
 
     dmzx.ultimatepoints.core.points.main:
-        class: dmzx\ultimatepoints\core\points_main
+        class: 'dmzx\ultimatepoints\core\points_main'
         arguments:
             - '@dmzx.ultimatepoints.core.functions.points'
             - '@auth'
@@ -132,7 +132,7 @@ services:
             - '%dmzx.ultimatepoints.table.points.lottery.history%'
 
     dmzx.ultimatepoints.core.points.info:
-        class: dmzx\ultimatepoints\core\points_info
+        class: 'dmzx\ultimatepoints\core\points_info'
         arguments:
             - '@dmzx.ultimatepoints.core.functions.points'
             - '@auth'
@@ -145,7 +145,7 @@ services:
             - '%dmzx.ultimatepoints.table.points.values%'
 
     dmzx.ultimatepoints.core.points.transfer.user:
-        class: dmzx\ultimatepoints\core\points_transfer_user
+        class: 'dmzx\ultimatepoints\core\points_transfer_user'
         arguments:
             - '@dmzx.ultimatepoints.core.functions.points'
             - '@auth'
@@ -163,7 +163,7 @@ services:
             - '%dmzx.ultimatepoints.table.points.values%'
 
     dmzx.ultimatepoints.core.points.bank:
-        class: dmzx\ultimatepoints\core\points_bank
+        class: 'dmzx\ultimatepoints\core\points_bank'
         arguments:
             - '@dmzx.ultimatepoints.core.functions.points'
             - '@auth'
@@ -182,7 +182,7 @@ services:
             - '%dmzx.ultimatepoints.table.points.values%'
 
     dmzx.ultimatepoints.core.points.logs:
-        class: dmzx\ultimatepoints\core\points_logs
+        class: 'dmzx\ultimatepoints\core\points_logs'
         arguments:
             - '@dmzx.ultimatepoints.core.functions.points'
             - '@auth'
@@ -199,7 +199,7 @@ services:
             - '%dmzx.ultimatepoints.table.points.values%'
 
     dmzx.ultimatepoints.core.points.bank.edit:
-        class: dmzx\ultimatepoints\core\points_bank_edit
+        class: 'dmzx\ultimatepoints\core\points_bank_edit'
         arguments:
             - '@dmzx.ultimatepoints.core.functions.points'
             - '@auth'
@@ -216,7 +216,7 @@ services:
             - '%dmzx.ultimatepoints.table.points.bank%'
 
     dmzx.ultimatepoints.core.points.lottery:
-        class: dmzx\ultimatepoints\core\points_lottery
+        class: 'dmzx\ultimatepoints\core\points_lottery'
         arguments:
             - '@dmzx.ultimatepoints.core.functions.points'
             - '@auth'
@@ -236,7 +236,7 @@ services:
             - '%dmzx.ultimatepoints.table.points.lottery.tickets%'
 
     dmzx.ultimatepoints.core.points.points.edit:
-        class: dmzx\ultimatepoints\core\points_points_edit
+        class: 'dmzx\ultimatepoints\core\points_points_edit'
         arguments:
             - '@dmzx.ultimatepoints.core.functions.points'
             - '@auth'
@@ -251,7 +251,7 @@ services:
             - '%core.root_path%'
 
     dmzx.ultimatepoints.core.points.robbery:
-        class: dmzx\ultimatepoints\core\points_robbery
+        class: 'dmzx\ultimatepoints\core\points_robbery'
         arguments:
             - '@dmzx.ultimatepoints.core.functions.points'
             - '@auth'
@@ -269,7 +269,7 @@ services:
             - '%dmzx.ultimatepoints.table.points.values%'
             - '%dmzx.ultimatepoints.table.points.log%'
     dmzx.ultimatepoints.core.points.robbery.user:
-        class: dmzx\ultimatepoints\core\points_robbery_user
+        class: 'dmzx\ultimatepoints\core\points_robbery_user'
         arguments:
             - '@dmzx.ultimatepoints.core.functions.points'
             - '@auth'
@@ -287,7 +287,7 @@ services:
             - '%dmzx.ultimatepoints.table.points.values%'
             - '%dmzx.ultimatepoints.table.points.log%'
     dmzx.ultimatepoints.core.points.transfer:
-        class: dmzx\ultimatepoints\core\points_transfer
+        class: 'dmzx\ultimatepoints\core\points_transfer'
         arguments:
             - '@dmzx.ultimatepoints.core.functions.points'
             - '@auth'
