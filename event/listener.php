@@ -195,6 +195,7 @@ class listener implements EventSubscriberInterface
 			$b_row = $this->db->sql_fetchrow($result);
 			$bankholdings = ($b_row['total_holding']) ? $b_row['total_holding'] : 0;
 			$bankusers = $b_row['total_users'];
+			$this->db->sql_freeresult($result);
 
 			// Create richest users - cash and bank
 			$limit = $points_values['number_show_top_points'];
@@ -231,7 +232,6 @@ class listener implements EventSubscriberInterface
 					$rich_users_sort[$index] = $total_points;
 				}
 			}
-
 			$this->db->sql_freeresult($result);
 
 			// Sort by points desc
@@ -275,6 +275,7 @@ class listener implements EventSubscriberInterface
 			$b_row = $this->db->sql_fetchrow($result);
 			$totalpoints = ($b_row['total_points']) ? $b_row['total_points'] : 0;
 			$lottery_time = $this->user->format_date(($points_values['lottery_last_draw_time'] + $points_values['lottery_draw_period']), false, true);
+			$this->db->sql_freeresult($result);
 
 			// Run Lottery
 			if ($points_values['lottery_draw_period'] != 0 && $points_values['lottery_last_draw_time'] + $points_values['lottery_draw_period'] - time() < 0)
@@ -307,10 +308,12 @@ class listener implements EventSubscriberInterface
 			if ($row == null)
 			{
 				$username_colored = $this->user->lang['LOTTERY_NO_WINNER'];
-			} else
+			}
+			else
 			{
 				$username_colored = get_username_string('full', $row['user_id'], $row['username'], $row['user_colour']);
 			}
+			$this->db->sql_freeresult($result);
 
 			$this->template->assign_vars([
 				'TOTAL_BANK_USER' => sprintf($this->user->lang['POINTS_BUPOINTS_TOTAL'], $points_values['bank_name'], $bankusers),
@@ -344,6 +347,7 @@ class listener implements EventSubscriberInterface
 			WHERE user_id = ' . (int) $user_id;
 		$result = $this->db->sql_query($sql);
 		$holding = $this->db->sql_fetchfield('holding');
+		$this->db->sql_freeresult($result);
 
 		$this->template->assign_vars([
 			'USER_PROF_POINTS' => $this->functions_points->number_format_points($user_points),
@@ -389,9 +393,8 @@ class listener implements EventSubscriberInterface
 
 	public function parse_attachments_modify_template_data($event)
 	{
-		$block_array = $event['block_array'];
 		$forum_id = $event['forum_id'];
-		$display_cat = (int) $event['display_cat'];
+		$display_cat = $event['display_cat'];
 
 		$sql = 'SELECT forum_cost
 			FROM ' . FORUMS_TABLE . '
@@ -400,7 +403,7 @@ class listener implements EventSubscriberInterface
 		$forum_cost = $this->db->sql_fetchfield('forum_cost');
 		$this->db->sql_freeresult($result);
 
-		if ($forum_cost > 0 && $this->auth->acl_get('f_pay_attachment', (int) $forum_id) && $display_cat != 1)
+		if ($forum_cost > 0 && $this->auth->acl_get('f_pay_attachment', (int) $forum_id) && (int) $display_cat != 1)
 		{
 			$this->template->assign_vars([
 				'L_DOWNLOAD_COST' => $this->user->lang['POINTS_DOWNLOAD_COST'],
@@ -439,6 +442,7 @@ class listener implements EventSubscriberInterface
 			$bank_row = $this->db->sql_fetchrow($result);
 			$holding[$poster_id] = (!empty($bank_row['holding'])) ? !empty($bank_row['holding']) : '0';
 			$bank_row = '';
+			$this->db->sql_freeresult($result);
 		}
 
 		$has_account = true;
@@ -480,12 +484,9 @@ class listener implements EventSubscriberInterface
 	public function viewtopic_modify_post_row($event)
 	{
 		$row = $event['row'];
-		$user_poster_data = $event['user_poster_data'];
 		$post_row = $event['post_row'];
-		$post_id = (int) $row['post_id'];
 		$poster_id = (int) $event['poster_id'];
 		$points_config = $this->cache->get('points_config');
-		$points_values = $this->cache->get('points_values');
 
 		$post_row = array_merge($post_row, [
 			'POSTER_POINTS' => $this->functions_points->number_format_points($row['points']),
@@ -734,7 +735,6 @@ class listener implements EventSubscriberInterface
 	// Here come's the real stuff, points incrementation!
 	public function submit_post_end($event)
 	{
-		$points_config = $this->cache->get('points_config');
 		$points_values = $this->cache->get('points_values');
 
 		if ($this->config['points_enable'])
@@ -743,7 +743,6 @@ class listener implements EventSubscriberInterface
 			$mode = $event['mode'];
 			$poll = $event['poll'];
 			$post_id = $data['post_id'];
-			$topic_id = (int) $data['topic_id'];
 			$forum_id = $data['forum_id'];
 			$user_id = $this->user->data['user_id'];
 
