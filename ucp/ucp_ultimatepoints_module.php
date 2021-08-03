@@ -67,7 +67,7 @@ class ucp_ultimatepoints_module
 			FROM ' . $this->points_lottery_history_table . ' p
 				LEFT JOIN ' . USERS_TABLE . ' u
 				ON p.user_name = u.username
-			WHERE p.user_id = ' . $user->data['user_id'] . '
+			WHERE p.user_id = ' . (int) $user->data['user_id'] . '
 			ORDER BY p.amount DESC';
 		$result = $db->sql_query($sql);
 
@@ -102,7 +102,7 @@ class ucp_ultimatepoints_module
 			FROM ' . $this->points_bank_table . ' b
 				LEFT JOIN ' . USERS_TABLE . ' u
 				ON b.user_id = u.user_id
-			WHERE b.user_id = ' . $user->data['user_id'] . '
+			WHERE b.user_id = ' . (int) $user->data['user_id'] . '
 			ORDER BY b.holding DESC';
 		$result = $db->sql_query($sql);
 
@@ -139,7 +139,7 @@ class ucp_ultimatepoints_module
 			FROM ' . $this->points_log_table . ' l
 				LEFT JOIN ' . USERS_TABLE . ' u
 				ON l.point_send = u.user_id
-			WHERE l.point_recv = ' . $user->data['user_id'] . '
+			WHERE l.point_recv = ' . (int) $user->data['user_id'] . '
 			AND l.point_type = 3
 			ORDER BY l.point_date DESC';
 		$result = $db->sql_query($sql);
@@ -173,7 +173,7 @@ class ucp_ultimatepoints_module
 			FROM ' . $this->points_log_table . ' l
 				LEFT JOIN ' . USERS_TABLE . ' u
 				ON l.point_send = u.user_id
-			WHERE l.point_recv = ' . $user->data['user_id'] . '
+			WHERE l.point_recv = ' . (int) $user->data['user_id'] . '
 			AND l.point_type = 1
 			ORDER BY l.point_date DESC';
 		$result = $db->sql_query($sql);

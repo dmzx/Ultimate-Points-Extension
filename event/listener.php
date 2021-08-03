@@ -564,9 +564,8 @@ class listener implements EventSubscriberInterface
 	// Check if people have to pay points for downloading attachments
 	public function download_file_send_to_browser_before($event)
 	{
-		$topic_id = (int) $event['attachment']['topic_id'];
+		$topic_id = $event['attachment']['topic_id'];
 		$display_cat = $event['display_cat'];
-		$points_values = $this->cache->get('points_values');
 
 		$sql_array = [
 			'SELECT' => 'f.forum_cost',
@@ -582,7 +581,7 @@ class listener implements EventSubscriberInterface
 				]
 			],
 
-			'WHERE' => 't.topic_id = ' . $topic_id,
+			'WHERE' => 't.topic_id = ' . (int) $topic_id,
 		];
 
 		$sql = $this->db->sql_build_query('SELECT', $sql_array);

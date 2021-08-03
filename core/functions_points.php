@@ -354,16 +354,16 @@ class functions_points
 		// Pay the users
 		$sql = 'UPDATE ' . $this->points_bank_table . '
 			SET holding = holding + round((holding / 100) * ' . $points_values['bank_interest'] . ')
-			WHERE holding < ' . $points_values['bank_interestcut'] . '
-				OR ' . $points_values['bank_interestcut'] . ' = 0';
+			WHERE holding < ' . (int) $points_values['bank_interestcut'] . '
+				OR ' . (int) $points_values['bank_interestcut'] . ' = 0';
 		$this->db->sql_query($sql);
 
 		// Maintain the bank costs
 		if ($points_values['bank_cost'] <> '0')
 		{
 			$sql = 'UPDATE ' . $this->points_bank_table . '
-				SET holding = holding - ' . $points_values['bank_cost'] . '
-				WHERE holding >= ' . $points_values['bank_cost'] . '';
+				SET holding = holding - ' . (int) $points_values['bank_cost'] . '
+				WHERE holding >= ' . (int) $points_values['bank_cost'] . '';
 			$this->db->sql_query($sql);
 		}
 	}
@@ -418,7 +418,7 @@ class functions_points
 		];
 		$sql = $this->db->sql_build_query('SELECT', $sql_array);
 		$result = $this->db->sql_query_limit($sql, 1);
-		$random_user_by_tickets = (int) $this->db->sql_fetchfield('user_id');
+		$random_user_by_tickets = $this->db->sql_fetchfield('user_id');
 		$this->db->sql_freeresult($result);
 
 		if ($total_tickets > 0)
@@ -438,7 +438,7 @@ class functions_points
 					'FROM' => [
 						USERS_TABLE => 'u',
 					],
-					'WHERE' => 'user_id = ' . $winning_number,
+					'WHERE' => 'user_id = ' . (int) $winning_number,
 				];
 				$sql = $this->db->sql_build_query('SELECT', $sql_array);
 				$result = $this->db->sql_query($sql);
@@ -457,7 +457,8 @@ class functions_points
 					$winner_notification = $this->number_format_points($points_values['lottery_jackpot']) . ' ' . ($this->config['points_name']) . ' ';
 					$winner_deposit = $this->user->lang['LOTTERY_PM_CASH_ENABLED'];
 					$amount_won = $points_values['lottery_jackpot'];
-				} else
+				}
+				else
 				{
 					$winner_notification = '';
 					$winner_deposit = '';
@@ -476,7 +477,7 @@ class functions_points
 						'FROM' => [
 							USERS_TABLE => 'u',
 						],
-						'WHERE' => 'user_id = ' . $points_values['lottery_pm_from'],
+						'WHERE' => 'user_id = ' . (int) $points_values['lottery_pm_from'],
 					];
 					$sql = $this->db->sql_build_query('SELECT', $sql_array);
 					$result = $this->db->sql_query($sql);

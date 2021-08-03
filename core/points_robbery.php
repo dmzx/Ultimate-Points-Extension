@@ -225,7 +225,7 @@ class points_robbery
 				'FROM' => [
 					USERS_TABLE => 'u',
 				],
-				'WHERE' => 'user_id = ' . $user_id,
+				'WHERE' => 'user_id = ' . (int) $user_id,
 			];
 			$sql = $this->db->sql_build_query('SELECT', $sql_array);
 			$result = $this->db->sql_query($sql);
