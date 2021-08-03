@@ -15,7 +15,6 @@ use phpbb\cache\service;
 use phpbb\config\config;
 use phpbb\controller\helper;
 use phpbb\db\driver\driver_interface;
-use phpbb\files\factory;
 use phpbb\request\request;
 use phpbb\template\template;
 use phpbb\user;
@@ -70,9 +69,6 @@ class listener implements EventSubscriberInterface
 
 	protected $points_values_table;
 
-	/** @var factory */
-	protected $files_factory;
-
 	/**
 	 * Constructor
 	 *
@@ -89,7 +85,6 @@ class listener implements EventSubscriberInterface
 	 * @param string $points_bank_table
 	 * @param string $points_config_table
 	 * @param string $points_values_table
-	 * @param factory $files_factory
 	 *
 	 * @var functions_points $functions_points
 	 */
@@ -107,8 +102,7 @@ class listener implements EventSubscriberInterface
 		$php_ext,
 		$points_bank_table,
 		$points_config_table,
-		$points_values_table,
-		factory $files_factory = null
+		$points_values_table
 	)
 	{
 		$this->functions_points = $functions_points;
@@ -125,7 +119,6 @@ class listener implements EventSubscriberInterface
 		$this->points_bank_table = $points_bank_table;
 		$this->points_config_table = $points_config_table;
 		$this->points_values_table = $points_values_table;
-		$this->files_factory = $files_factory;
 	}
 
 	static public function getSubscribedEvents()
@@ -540,7 +533,6 @@ class listener implements EventSubscriberInterface
 				'USE_BANK' => $this->auth->acl_get('u_use_bank'),
 				'S_LOTTERY_ENABLE' => $points_config['lottery_enable'],
 				'USE_LOTTERY' => $this->auth->acl_get('u_use_lottery'),
-				'PHPBB_IS_32' => ($this->files_factory !== null) ? true : false,
 			]);
 		}
 	}
