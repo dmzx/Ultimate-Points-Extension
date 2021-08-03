@@ -15,7 +15,7 @@ class ultimatepoints_install extends migration
 {
 	static public function depends_on()
 	{
-		return ['\phpbb\db\migration\data\v320\gold'];
+		return ['\phpbb\db\migration\data\v320\v320'];
 	}
 
 	public function update_data()

@@ -731,7 +731,8 @@ class listener implements EventSubscriberInterface
 			$event['sql_ary'] = array_merge($event['sql_ary'], [
 				'user_points' => $points_values['reg_points_bonus'],
 			]);
-		} else
+		}
+		else
 		{
 			$event['sql_ary'] = array_merge($event['sql_ary'], [
 				'user_points' => 0,
@@ -832,9 +833,9 @@ class listener implements EventSubscriberInterface
 				$this->functions_points->add_points_to_table($post_id, $total_points, 'topic', $total_attachments, $total_poll_options); // Add to the post table
 			} // If it's a new post
 			else if (($mode == 'reply' || $mode == 'quote') && $forum['forum_perpost'] > 0)
-			{
-				// We calculate the total points
-				$words_points = $post_word * $sizeof_msg;
+			    {
+			    // We calculate the total points
+                $words_points = $post_word * $sizeof_msg;
 				$chars_points = $post_char * $chars_msg;
 				$total_points = $words_points + $chars_points + $forum['forum_perpost'] + $points_attach;
 
@@ -843,7 +844,7 @@ class listener implements EventSubscriberInterface
 				$this->functions_points->add_points_to_table($post_id, $total_points, 'post', $total_attachments, 0); // Add to the post table
 			} // If it's a topic edit
 			else if (($mode == 'edit_topic' || $mode == 'edit_first_post') && $forum['forum_peredit'] > 0)
-			{
+			    {
 				// We calculate the total points
 				$words_points = $topic_word * $sizeof_msg;
 				$chars_points = $topic_char * $chars_msg;
@@ -940,7 +941,7 @@ class listener implements EventSubscriberInterface
 				$message .= '<br /><br />' . $this->user->lang('RETURN_FORUM', '<a href="' . append_sid("{$this->root_path}viewforum.{$this->php_ext}", 'f=' . (int) $event['forum_id']) . '">', '</a>');
 				trigger_error($message);
 			}
-			else if (($mode == 'reply' || $mode == 'quote') && $forum['forum_cost_post'] > 0 && $user_points < $forum['forum_cost_post'] && $this->auth->acl_get('f_pay_post', (int)$event['forum_id']))
+			else if (($mode == 'reply' || $mode == 'quote') && $forum['forum_cost_post'] > 0 && $user_points < $forum['forum_cost_post'] && $this->auth->acl_get('f_pay_post', (int) $event['forum_id']))
 			{
 				$message = sprintf($this->user->lang['POINTS_INSUFFICIENT_POST'], $forum['forum_cost_post'], $this->config['points_name']);
 				$message .= '<br /><br />' . $this->user->lang('RETURN_FORUM', '<a href="' . append_sid("{$this->root_path}viewforum.{$this->php_ext}", 'f=' . (int) $event['forum_id']) . '">', '</a>');
