@@ -833,9 +833,9 @@ class listener implements EventSubscriberInterface
 				$this->functions_points->add_points_to_table($post_id, $total_points, 'topic', $total_attachments, $total_poll_options); // Add to the post table
 			} // If it's a new post
 			else if (($mode == 'reply' || $mode == 'quote') && $forum['forum_perpost'] > 0)
-			    {
-			    // We calculate the total points
-                $words_points = $post_word * $sizeof_msg;
+				{
+				// We calculate the total points
+				$words_points = $post_word * $sizeof_msg;
 				$chars_points = $post_char * $chars_msg;
 				$total_points = $words_points + $chars_points + $forum['forum_perpost'] + $points_attach;
 
@@ -843,8 +843,7 @@ class listener implements EventSubscriberInterface
 				$this->functions_points->add_points($user_id, $total_points); // Add to the user
 				$this->functions_points->add_points_to_table($post_id, $total_points, 'post', $total_attachments, 0); // Add to the post table
 			} // If it's a topic edit
-			else if (($mode == 'edit_topic' || $mode == 'edit_first_post') && $forum['forum_peredit'] > 0)
-			    {
+			else if (($mode == 'edit_topic' || $mode == 'edit_first_post') && $forum['forum_peredit'] > 0) {
 				// We calculate the total points
 				$words_points = $topic_word * $sizeof_msg;
 				$chars_points = $topic_char * $chars_msg;
@@ -872,8 +871,7 @@ class listener implements EventSubscriberInterface
 					return; // "AM I NOT MERCIFUL??" - Caesar Commodus (Gladiator [2000])
 				}
 			} // If it's a post edit
-			else if (($mode == 'edit' || $mode == 'edit_last_post') && $forum['forum_peredit'] > 0)
-			{
+			else if (($mode == 'edit' || $mode == 'edit_last_post') && $forum['forum_peredit'] > 0) {
 				// We calculate the total points
 				$words_points = $post_word * $sizeof_msg;
 				$chars_points = $post_char * $chars_msg;
