@@ -20,6 +20,9 @@ class acp_ultimatepoints_module
 		// Get an instance of the admin controller
 		$admin_controller = $phpbb_container->get('dmzx.ultimatepoints.admin.controller');
 
+		// Add the ACP lang file
+		$user->add_lang_ext('dmzx/ultimatepoints', 'acp_ultimatepoints');
+
 		// Make the $u_action url available in the admin controller
 		$admin_controller->set_page_url($this->u_action);
 

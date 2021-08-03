@@ -192,7 +192,8 @@ class admin_controller
 			// Add logs
 			$this->log->add('admin', $this->user->data['user_id'], $this->user->data['user_ip'], 'LOG_MOD_POINTS_SETTINGS');
 			trigger_error($this->user->lang['POINTS_CONFIG_SUCCESS'] . adm_back_link($this->u_action));
-		} else
+		}
+		else
 		{
 			$this->template->assign_vars([
 				'POINTS_NAME' => $this->config['points_name'],
