@@ -242,7 +242,7 @@ class points_transfer_user
 			$this->db->sql_query($sql);
 
 			// Update mChat with good transfer
-			if ($this->phpbb_container->has('dmzx.mchat.settings') && $this->config['transfer_mchat_enable'])
+			if ($this->phpbb_container->has('dmzx.mchat.settings') || $this->config['transfer_mchat_enable'])
 			{
 				$message = $this->user->lang['TRANSFER_MCHAT_GOOD'];
 				$name = $this->config['points_name'];
