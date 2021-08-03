@@ -448,7 +448,8 @@ class admin_controller
 					}
 					$message = $this->user->lang['POINTS_GROUP_TRANSFER_PM_SUCCESS'] . adm_back_link($this->u_action);
 					trigger_error($message);
-				} else
+				}
+				else
 				{
 					$message = $this->user->lang['POINTS_GROUP_TRANSFER_SUCCESS'] . adm_back_link($this->u_action);
 					trigger_error($message);
@@ -493,10 +494,6 @@ class admin_controller
 
 	public function display_lottery()
 	{
-		// Grab some vars
-		$action = $this->request->variable('action', '');
-		$id = $this->request->variable('id', 0);
-
 		// Get all configs
 		$points_config = $this->functions_points->points_all_configs();
 
@@ -511,8 +508,6 @@ class admin_controller
 		$this->template->assign_vars([
 			'BASE' => $this->u_action,
 		]);
-
-		$lottery_data = $errors = [];
 
 		if ($this->request->is_set_post('submit'))
 		{
@@ -577,7 +572,8 @@ class admin_controller
 			if ($lottery_draw_period < 0)
 			{
 				trigger_error($this->user->lang['LOTTERY_DRAW_PERIOD_SHORT'] . adm_back_link($this->u_action), E_USER_WARNING);
-			} else
+			}
+			else
 			{
 				$this->functions_points->set_points_values('lottery_draw_period', $lottery_draw_period);
 			}
@@ -603,10 +599,12 @@ class admin_controller
 			if ($lottery_pm_from == 0)
 			{
 				$this->functions_points->set_points_values('lottery_pm_from', $lottery_pm_from);
-			} else if (empty($id_exist))
+			}
+			else if (empty($id_exist))
 			{
 				trigger_error($this->user->lang['NO_USER'] . adm_back_link($this->u_action), E_USER_WARNING);
-			} else
+			}
+			else
 			{
 				$this->functions_points->set_points_values('lottery_pm_from', $lottery_pm_from);
 			}
@@ -710,8 +708,6 @@ class admin_controller
 			'BASE' => $this->u_action,
 		]);
 
-		$bank_data = $errors = [];
-
 		if ($this->request->is_set_post('submit'))
 		{
 			if (!check_form_key('acp_points'))
@@ -803,8 +799,6 @@ class admin_controller
 		$this->template->assign_vars([
 			'BASE' => $this->u_action,
 		]);
-
-		$robbery_data = $errors = [];
 
 		if ($this->request->is_set_post('submit'))
 		{
@@ -919,8 +913,6 @@ class admin_controller
 			'BASE' => $this->u_action,
 		]);
 
-		$forum_data = $errors = [];
-
 		$set_point_values = $this->request->variable('action_point_values', '');
 
 		// Update forum points values
@@ -960,7 +952,8 @@ class admin_controller
 				$this->log->add('admin', $this->user->data['user_id'], $this->user->data['user_ip'], 'LOG_MOD_POINTS_FORUM');
 
 				trigger_error($this->user->lang['FORUM_POINT_SETTINGS_UPDATED'] . adm_back_link($this->u_action));
-			} else
+			}
+			else
 			{
 				$s_hidden_fields = build_hidden_fields([
 					'forum_topic' => $this->request->variable('forum_topic', 0.00),
