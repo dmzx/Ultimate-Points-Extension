@@ -198,7 +198,8 @@ class points_bank
 					'USER_NO_ACCOUNT' => sprintf($this->user->lang['BANK_USER_NO_ACCOUNT'], $points_values['bank_name']),
 					'OPEN_ACCOUNT' => sprintf($this->user->lang['BANK_OPEN_ACCOUNT'], '<a href="' . $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'bank', 'action' => 'createaccount']) . '" title="' . $this->user->lang['BANK_OPEN_ACCOUNT'] . '!">', '</a>')
 				]);
-			} else if ($this->user->data['user_id'] > 0 && $this->user->data['username'] != ANONYMOUS)
+			}
+			else if ($this->user->data['user_id'] > 0 && $this->user->data['username'] != ANONYMOUS)
 			{
 				$this->template->assign_block_vars('has_account', []);
 			}
@@ -314,11 +315,13 @@ class points_bank
 			{
 				$message = sprintf($this->user->lang['BANK_DEPOSIT_SMALL_AMOUNT'], $points_values['bank_min_deposit'], $this->config['points_name']) . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'bank']) . '">&laquo; ' . $this->user->lang['BACK_TO_PREV'] . '</a>';
 				trigger_error($message);
-			} else if ($deposit < 1)
+			}
+			else if ($deposit < 1)
 			{
 				$message = $this->user->lang['BANK_ERROR_DEPOSIT'] . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'bank']) . '">&laquo; ' . $this->user->lang['BACK_TO_PREV'] . '</a>';
 				trigger_error($message);
-			} else if ($deposit > $this->user->data['user_points'])
+			}
+			else if ($deposit > $this->user->data['user_points'])
 			{
 				$message = sprintf($this->user->lang['BANK_ERROR_NOT_ENOUGH_DEPOSIT'], $this->config['points_name']) . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'bank']) . '">&laquo; ' . $this->user->lang['BACK_TO_PREV'] . '</a>';
 				trigger_error($message);
@@ -335,7 +338,6 @@ class points_bank
 			];
 			$sql = $this->db->sql_build_query('SELECT', $sql_array);
 			$result = $this->db->sql_query($sql);
-
 			$user_bank = $this->db->sql_fetchrow($result);
 			$user_holding = $user_bank['holding'];
 			$user_totaldeposit = $user_bank['totaldeposit'];
@@ -416,7 +418,6 @@ class points_bank
 			];
 			$sql = $this->db->sql_build_query('SELECT', $sql_array);
 			$result = $this->db->sql_query($sql);
-
 			$user_bank = $this->db->sql_fetchrow($result);
 			$user_holding = $user_bank['holding'];
 			$user_totalwithdrew = $user_bank['totalwithdrew'];
