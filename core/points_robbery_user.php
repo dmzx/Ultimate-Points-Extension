@@ -155,10 +155,7 @@ class points_robbery_user
 		// Read out cash of current user
 		$pointsa = $this->user->data['user_points'];
 
-		$adm_points = $this->request->variable('adm_points', false);
 		$u_id = $this->request->variable('user_id', 0);
-		$post_id = $this->request->variable('post_id', 0);
-		$method = $this->request->variable('method', '');
 
 		// Check key
 		add_form_key('robbery_attack_user');
@@ -196,6 +193,13 @@ class points_robbery_user
 			if ($this->user->data['user_id'] == (int) $u_id)
 			{
 				$message = $this->user->lang['ROBBERY_SELF'] . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'robbery_user', 'user_id' => $user_id]) . '">&laquo; ' . $this->user->lang['BACK_TO_PREV'] . '</a>';
+				trigger_error($message);
+			}
+
+			// Check, if user tries to rob a guest?
+			if ($u_id == null)
+			{
+				$message = $this->user->lang['ROBBERY_GUEST'] . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller') . '">&laquo; ' . $this->user->lang['BACK_TO_PREV'] . '</a>';
 				trigger_error($message);
 			}
 
@@ -244,9 +248,6 @@ class points_robbery_user
 					trigger_error($message);
 				}
 			}
-
-			// Get some info about the robbed user
-			$user_namepoints = get_username_string('full', $checked_user['user_id'], $checked_user['username'], $checked_user['user_colour']);
 
 			// Genarate a random number
 			$rand_base = $points_values['robbery_chance'];
@@ -354,12 +355,19 @@ class points_robbery_user
 				USERS_TABLE => 'u',
 			],
 			'WHERE' => 'user_id = ' . (int) $u_id,
+
 		];
 		$sql = $this->db->sql_build_query('SELECT', $sql_array);
 		$result = $this->db->sql_query($sql);
 		$opponent = $this->db->sql_fetchrow($result);
 		$this->db->sql_freeresult($result);
 
+		// Check, if user tries to rob a guest or a unkown user_id?
+		if ($u_id == null || isset($opponent['user_id']) == null)
+		{
+			$message = $this->user->lang['ROBBERY_GUEST'] . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller') . '">&laquo; ' . $this->user->lang['BACK_TO_PREV'] . '</a>';
+			trigger_error($message);
+		}
 		$username_full = get_username_string('full', $opponent['user_id'], $opponent['username'], $opponent['user_colour']);
 
 		$this->template->assign_vars([

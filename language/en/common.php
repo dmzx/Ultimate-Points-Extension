@@ -256,6 +256,7 @@ $lang = array_merge($lang, [
 	'ROBBERY_DATE' => 'Robbed on date',
 	'ROBBERY_CHANCE' => 'Here you can try to rob another user. But you only can try to rob <strong>%1$s percent</strong> of the user’s current cash amount!<br /><br />Like in real life, crime isn’t really successful. Your chance to be successful with your robbery is <strong> %2$s percent</strong>.',
 	'ROBBERY_DISABLED' => 'The Robbery system is disabled',
+	'ROBBERY_GUEST' => 'You can’t rob a guest.',
 	'ROBBERY_MAX_ROB' => 'You cannot rob more than <strong>%1$s percent</strong> of the users cash amount at once!',
 	'ROBBERY_NO_ID_SPECIFIED' => 'You have not specified a username',
 	'ROBBERY_SELF' => 'You can’t rob yourself.',
