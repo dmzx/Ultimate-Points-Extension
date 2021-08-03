@@ -1,7 +1,7 @@
 name: Tests
 
 env:
-  EXTNAME: dmzx/Ultimate-Points-Extension-3.2.x-3.3.x # Your extension vendor/package name
+  EXTNAME: dmzx/Ultimate-Points-Extension # Your extension vendor/package name
   SNIFF: 1            # Run code sniffer on your code? 1 or 0
   IMAGE_ICC: 1        # Run icc profile sniffer on your images? 1 or 0
   EPV: 1              # Run EPV (Extension Pre Validator) on your code? 1 or 0
