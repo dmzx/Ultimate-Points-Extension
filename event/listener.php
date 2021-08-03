@@ -873,7 +873,7 @@ class listener implements EventSubscriberInterface
 				}
 			} // If it's a post edit
 			else if (($mode == 'edit' || $mode == 'edit_last_post') && $forum['forum_peredit'] > 0)
-				{
+			{
 				// We calculate the total points
 				$words_points = $post_word * $sizeof_msg;
 				$chars_points = $post_char * $chars_msg;
