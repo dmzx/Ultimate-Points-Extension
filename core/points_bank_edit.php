@@ -170,7 +170,8 @@ class points_bank_edit
 				$this->log->add('admin', $this->user->data['user_id'], $this->user->ip, 'LOG_MOD_BANK', false, [$points_user['username']]);
 				$message = ($post_id) ? sprintf($this->user->lang['EDIT_P_RETURN_POST'], '<a href="' . append_sid("{$this->root_path}viewtopic.{$this->php_ext}", "p=" . $post_id) . '">', '</a>') : sprintf($this->user->lang['EDIT_P_RETURN_INDEX'], '<a href="' . append_sid("{$this->root_path}index.{$this->php_ext}") . '">', '</a>');
 				trigger_error((sprintf($this->user->lang['EDIT_POINTS_SET'], $this->config['points_name'])) . $message);
-			} else
+			}
+			else
 			{
 				$sql_array = [
 					'SELECT' => 'u.user_id, u.username, u.user_points, u.user_colour, b.holding',
