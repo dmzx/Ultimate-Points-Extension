@@ -196,6 +196,8 @@ $lang = array_merge($lang, [
 	'NOTIFICATION_ROBBERY_FAILED' => 'tried to rob you, but failed!',
 	'NOTIFICATION_ROBBERY_SUCCES' => 'has robbed %1$s %2$s from you!',
 	'NOTIFICATION_POINTS_UCP' => 'Receive notification about points <em>(successful/failed robbery, bonus points, etc..)</em>',
+	'NOTIFICATION_TRANSFER_SUCCES' => 'has donated %1$s %2$s to you!',
+	'NOTIFICATION_LOTTERY_WINNER' => 'you won the lottery %1$s %2$s !',
 
 	'POINTS' => 'Points',
 	'POINTS_ATTACHMENT_MINI_POSTS' => 'You need more %1$s in order to download this attachment!',
@@ -204,8 +206,6 @@ $lang = array_merge($lang, [
 	'POINTS_BOT_GUEST' => '<strong>If you would have registered with us, you would be able to use this function!</strong>',
 	'POINTS_BUPOINTS_TOTAL' => '%1$s Accounts: %2$s',
 	'POINTS_CASH_ON_HAND' => 'Cash on hand',
-	'POINTS_COPYRIGHT' => 'Ultimate Points by <a href="http://die-muellers.org" onclick="window.open(this.href); return false">femu</a> &amp; <a href="http://www.spieleresidenz.de" onclick="window.open(this.href); return false">Wuerzi</a> v',
-	'POINTS_COPYRIGHTS' => '&copy; 2016 <a href="https://www.dmzx-web.net" onclick="window.open(this.href); return false">dmzx &amp; posey</a>',
 	'POINTS_DESCRIPTION' => 'Description',
 	'POINTS_DISABLED' => 'Ultimate Points is currently disabled.',
 	'POINTS_DONATE' => '[Donate]',
@@ -271,7 +271,7 @@ $lang = array_merge($lang, [
 	'ROBBERY_USER' => '[Start Robbery]',
 	'ROBBERY_TO_NAME' => 'You want to rob some <strong>%2$s</strong> from <strong>%1$s</strong>',
 	'ROBBERY_MCHAT_FAIL' => '%1$s wants to rob [b]%2$s %3$s[/b] from me but has failed :lol:',
-	'ROBBERY_MCHAT_GOOD' => '%1$s Has successfully robbed me of [b]%2$s %3$s[/b] :o',
+	'ROBBERY_MCHAT_GOOD' => '%1$s has successfully robbed me of [b]%2$s %3$s[/b] :o',
 
 	'TRANSFER_AMOUNTS' => 'Amount',
 	'TRANSFER_SET_USERNAMES' => 'Name of the members that donated to you!',

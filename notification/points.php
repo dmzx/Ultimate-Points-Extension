@@ -65,7 +65,7 @@ class points extends base
 
 	public function users_to_query()
 	{
-		return [];
+		return array($this->get_data('sender'));
 	}
 
 	public function get_avatar()
@@ -90,12 +90,15 @@ class points extends base
 
 	public function get_email_template()
 	{
-		return false;
+		return '@dmzx_ultimatepoints/ultimatepoints';
 	}
 
 	public function get_email_template_variables()
 	{
-		return [];
+		return [
+			'POINTS_NOTIFY_MSG'		=> $this->get_data('points_notify_msg'),
+			'USERNAME_WHO'			=> $this->user_loader->get_username($this->get_data('sender'), 'username', false, false, false),
+		];
 	}
 
 	public function create_insert_array($data, $pre_create_data = [])

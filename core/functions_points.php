@@ -532,6 +532,21 @@ class functions_points
 					$this->mchat_message($winner['user_id'], $points_values['lottery_jackpot'], $message, $name);
 				}
 
+				// Send out notification
+
+				// Increase our notification sent counter
+				$this->config->increment('points_notification_id', 1);
+
+				// Store the notification data we will use in an array
+				$data = [
+					'points_notify_id' => (int) $this->config['points_notification_id'],
+					'points_notify_msg' => sprintf($this->user->lang['NOTIFICATION_LOTTERY_WINNER'], $points_values['lottery_jackpot'], $this->config['points_name']),
+					'sender' => (int) $winner['user_id'],
+					'receiver' => (int) $winner['user_id'],
+					'mode' => 'lottery', // The mode where the notification sends the user to
+				];
+				$this->notification_manager->add_notifications('dmzx.ultimatepoints.notification.type.points', $data);
+
 				// Update winners total
 				$this->set_points_values('lottery_winners_total', $points_values['lottery_winners_total'] + 1);
 

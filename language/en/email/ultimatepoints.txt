@@ -1,0 +1,15 @@
+Subject: Ultimate Points - {{ SITENAME }}
+
+Hello {{ USERNAME }},
+
+{{ USERNAME_WHO }} {{ POINTS_NOTIFY_MSG }}
+
+{{ SITENAME }}
+
+----------------------------
+
+If you no longer wish to receive the Ultimate Points email, click on the following link:
+{{ U_NOTIFICATION_SETTINGS }}
+
+{{ EMAIL_SIG }}
+
