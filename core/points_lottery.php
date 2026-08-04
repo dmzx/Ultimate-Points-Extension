@@ -15,6 +15,7 @@ use phpbb\controller\helper;
 use phpbb\db\driver\driver_interface;
 use phpbb\pagination;
 use phpbb\request\request;
+use phpbb\language\language;
 use phpbb\template\template;
 use phpbb\user;
 use Symfony\Component\DependencyInjection\Container;
@@ -32,6 +33,9 @@ class points_lottery
 
 	/** @var user */
 	protected $user;
+
+	/** @var language */
+	protected $language;
 
 	/** @var driver_interface */
 	protected $db;
@@ -94,6 +98,7 @@ class points_lottery
 		auth $auth,
 		template $template,
 		user $user,
+		language $language,
 		driver_interface $db,
 		request	$request,
 		config $config,
@@ -112,6 +117,7 @@ class points_lottery
 		$this->auth = $auth;
 		$this->template = $template;
 		$this->user = $user;
+		$this->language = $language;
 		$this->db = $db;
 		$this->request = $request;
 		$this->config = $config;
@@ -144,14 +150,14 @@ class points_lottery
 		// Check, if lottery is enabled
 		if (!$points_config['lottery_enable'])
 		{
-			$message = $this->user->lang['LOTTERY_DISABLED'] . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller') . '">&laquo; ' . $this->user->lang['BACK_TO_PREV'] . '</a>';
+			$message = $this->language->lang('LOTTERY_DISABLED') . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller') . '">&laquo; ' . $this->language->lang('BACK_TO_PREV') . '</a>';
 			trigger_error($message);
 		}
 
 		// Check, if user is allowed to use the lottery
 		if (!$this->auth->acl_get('u_use_lottery'))
 		{
-			$message = $this->user->lang['NOT_AUTHORISED'] . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller') . '">&laquo; ' . $this->user->lang['BACK_TO_PREV'] . '</a>';
+			$message = $this->language->lang('NOT_AUTHORISED') . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller') . '">&laquo; ' . $this->language->lang('BACK_TO_PREV') . '</a>';
 			trigger_error($message);
 		}
 
@@ -163,7 +169,7 @@ class points_lottery
 
 		// Add lottery base amount in description
 		$this->template->assign_vars([
-			'L_LOTTERY_BASE_AMOUNT' => sprintf($this->user->lang['LOTTERY_DESCRIPTION'], sprintf($this->functions_points->number_format_points($points_values['lottery_base_amount'])), $this->config['points_name']),
+			'L_LOTTERY_BASE_AMOUNT' => sprintf($this->language->lang('LOTTERY_DESCRIPTION'), sprintf($this->functions_points->number_format_points($points_values['lottery_base_amount'])), $this->config['points_name']),
 		]);
 
 		// Recheck, if lottery was run, for those boards only having one user per day and which don't call the index page first
@@ -199,28 +205,28 @@ class points_lottery
 			// Check, if the user tries to buy more tickets than allowed
 			if ($total_tickets_bought > $points_values['lottery_max_tickets'])
 			{
-				$message = sprintf($this->user->lang['LOTTERY_MAX_TICKETS_REACH'], $points_values['lottery_max_tickets']) . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'lottery']) . '">&laquo; ' . $this->user->lang['BACK_TO_PREV'] . '</a>';
+				$message = sprintf($this->language->lang('LOTTERY_MAX_TICKETS_REACH'), $points_values['lottery_max_tickets']) . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'lottery']) . '">&laquo; ' . $this->language->lang('BACK_TO_PREV') . '</a>';
 				trigger_error($message);
 			}
 
 			// Check in user try to buy negative tickets
 			if ($total_tickets_bought <= 0)
 			{
-				$message = $this->user->lang['LOTTERY_NEGATIVE_TICKETS'] . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'lottery']) . '">&laquo; ' . $this->user->lang['BACK_TO_PREV'] . '</a>';
+				$message = $this->language->lang('LOTTERY_NEGATIVE_TICKETS') . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'lottery']) . '">&laquo; ' . $this->language->lang('BACK_TO_PREV') . '</a>';
 				trigger_error($message);
 			}
 
 			// Check, if the already bought tickets and the new request are higher than the max set number of tickets
 			if (($number_tickets + $total_tickets_bought) > $points_values['lottery_max_tickets'])
 			{
-				$message = sprintf($this->user->lang['LOTTERY_MAX_TICKETS_LEFT'], ($points_values['lottery_max_tickets'] - $number_tickets)) . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'lottery']) . '">&laquo; ' . $this->user->lang['BACK_TO_PREV'] . '</a>';
+				$message = sprintf($this->language->lang('LOTTERY_MAX_TICKETS_LEFT'), ($points_values['lottery_max_tickets'] - $number_tickets)) . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'lottery']) . '">&laquo; ' . $this->language->lang('BACK_TO_PREV') . '</a>';
 				trigger_error($message);
 			}
 
 			// Check, if the user sent an empty value
 			if (!$total_tickets_bought)
 			{
-				$message = $this->user->lang['LOTTERY_INVALID_INPUT'] . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'lottery']) . '">&laquo; ' . $this->user->lang['BACK_TO_PREV'] . '</a>';
+				$message = $this->language->lang('LOTTERY_INVALID_INPUT') . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'lottery']) . '">&laquo; ' . $this->language->lang('BACK_TO_PREV') . '</a>';
 				trigger_error($message);
 			}
 
@@ -243,7 +249,7 @@ class points_lottery
 				// Check, if the user has enough cash to buy tickets
 				if ($points_values['lottery_ticket_cost'] * $total_tickets_bought > $purchaser['user_points'])
 				{
-					$message = $this->user->lang['LOTTERY_LACK_FUNDS'] . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'lottery']) . '">&laquo; ' . $this->user->lang['BACK_TO_PREV'] . '</a>';
+					$message = $this->language->lang('LOTTERY_LACK_FUNDS') . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'lottery']) . '">&laquo; ' . $this->language->lang('BACK_TO_PREV') . '</a>';
 					trigger_error($message);
 				}
 			}
@@ -271,13 +277,13 @@ class points_lottery
 			// Update mChat with lottery ticket buy
 			if ($this->phpbb_container->has('dmzx.mchat.settings') && $this->config['lottery_mchat_enable'])
 			{
-				$message = $this->user->lang['LOTTERY_MCHAT_PURCHASE'];
+				$message = $this->language->lang('LOTTERY_MCHAT_PURCHASE');
 				$name = $points_values['lottery_name'];
 
 				$this->functions_points->mchat_message($this->user->data['user_id'], $total_tickets_bought, $message, $name);
 			}
 
-			$message = $this->user->lang['LOTTERY_TICKET_PURCHASED'] . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'lottery']) . '">&laquo; ' . $this->user->lang['BACK_TO_PREV'] . '</a>';
+			$message = $this->language->lang('LOTTERY_TICKET_PURCHASED') . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'lottery']) . '">&laquo; ' . $this->language->lang('BACK_TO_PREV') . '</a>';
 			trigger_error($message);
 
 			$this->template->assign_vars([
@@ -291,13 +297,13 @@ class points_lottery
 		if ($history_mode)
 		{
 			// If no one has ever won, why bother doing anything else?
-			if ($points_values['points_winners_total'] = 0)
+			if ($points_values['lottery_winners_total'] == 0)
 			{
-				$message = $this->user->lang['LOTTERY_NO_WINNERS'] . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'lottery']) . '">&laquo; ' . $this->user->lang['BACK_TO_PREV'] . '</a>';
+				$message = $this->language->lang('LOTTERY_NO_WINNERS') . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'lottery']) . '">&laquo; ' . $this->language->lang('BACK_TO_PREV') . '</a>';
 				trigger_error($message);
 			}
 
-			$total_wins = $points_values['points_winners_total'];
+			$total_wins = $points_values['lottery_winners_total'];
 
 			// Check, if no entries returned, only self search would turn up empty at this point
 			if ($history_mode == 'ego')
@@ -316,7 +322,7 @@ class points_lottery
 
 				if ($total_wins == 0)
 				{
-					$message = sprintf($this->user->lang['LOTTERY_NEVER_WON'], $points_values['lottery_name']) . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'lottery']) . '">&laquo; ' . $this->user->lang['BACK_TO_PREV'] . '</a>';
+					$message = sprintf($this->language->lang('LOTTERY_NEVER_WON'), $points_values['lottery_name']) . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'lottery']) . '">&laquo; ' . $this->language->lang('BACK_TO_PREV') . '</a>';
 					trigger_error($message);
 				}
 
@@ -327,6 +333,8 @@ class points_lottery
 					'U_LOTTERY' => $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'lottery']),
 					'U_BANK' => $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'bank']),
 					'U_ROBBERY' => $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'robbery']),
+					'U_BOUNTY' => $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'bounty']),
+					'U_DUEL' => $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'duel']),
 				]);
 			}
 
@@ -402,7 +410,7 @@ class points_lottery
 					$history_member = get_username_string('full', $row['user_id'], $row['username'], $row['user_colour']);
 				} else
 				{
-					$history_member = $this->user->lang['LOTTERY_NO_WINNER'];
+					$history_member = $this->language->lang('LOTTERY_NO_WINNER');
 				}
 
 				$this->template->assign_block_vars('history_row', [
@@ -424,6 +432,8 @@ class points_lottery
 					'U_LOTTERY' => $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'lottery']),
 					'U_BANK' => $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'bank']),
 					'U_ROBBERY' => $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'robbery']),
+					'U_BOUNTY' => $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'bounty']),
+					'U_DUEL' => $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'duel']),
 				]);
 			}
 
@@ -433,7 +443,7 @@ class points_lottery
 			// Viewing a history page
 			$this->template->assign_vars([
 				'CASH_NAME' => $this->config['points_name'],
-				'PAGINATION' => $this->user->lang('POINTS_LOG_COUNT', $total_entries),
+				'PAGINATION' => $this->language->lang('POINTS_LOG_COUNT', $total_entries),
 				'LOTTERY_NAME' => $points_values['lottery_name'],
 				'BANK_NAME' => $points_values['bank_name'],
 				'S_VIEW_HISTORY' => true,
@@ -444,6 +454,8 @@ class points_lottery
 				'U_LOTTERY' => $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'lottery']),
 				'U_BANK' => $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'bank']),
 				'U_ROBBERY' => $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'robbery']),
+				'U_BOUNTY' => $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'bounty']),
+				'U_DUEL' => $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'duel']),
 			]);
 
 		} else
@@ -480,7 +492,7 @@ class points_lottery
 
 			if ($row == null)
 			{
-				$username_colored = $this->user->lang['LOTTERY_NO_WINNER'];
+				$username_colored = $this->language->lang('LOTTERY_NO_WINNER');
 			} else
 			{
 				$username_colored = get_username_string('full', $row['user_id'], $row['username'], $row['user_colour']);
@@ -550,15 +562,19 @@ class points_lottery
 				'U_LOTTERY' => $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'lottery']),
 				'U_BANK' => $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'bank']),
 				'U_ROBBERY' => $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'robbery']),
+				'U_BOUNTY' => $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'bounty']),
+				'U_DUEL' => $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'duel']),
 				'U_INFO' => $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'info']),
 				'U_USE_TRANSFER' => $this->auth->acl_get('u_use_transfer'),
 				'U_USE_LOGS' => $this->auth->acl_get('u_use_logs'),
 				'U_USE_LOTTERY' => $this->auth->acl_get('u_use_lottery'),
 				'U_USE_BANK' => $this->auth->acl_get('u_use_bank'),
 				'U_USE_ROBBERY' => $this->auth->acl_get('u_use_robbery'),
+				'U_USE_BOUNTY' => $this->auth->acl_get('u_use_bounty'),
+				'U_USE_DUEL' => $this->auth->acl_get('u_use_duel'),
 				'USER_POINTS' => sprintf($this->functions_points->number_format_points($checked_user['user_points'])),
-				'LOTTERY_INFO' => sprintf($this->user->lang['LOTTERY_INFO'], $points_values['lottery_name']),
-				'LOTTERY_LAST_WINNER' => sprintf($this->user->lang['LOTTERY_LAST_WINNER'], $points_values['lottery_name']),
+				'LOTTERY_INFO' => sprintf($this->language->lang('LOTTERY_INFO'), $points_values['lottery_name']),
+				'LOTTERY_LAST_WINNER' => sprintf($this->language->lang('LOTTERY_LAST_WINNER'), $points_values['lottery_name']),
 			]);
 		}
 

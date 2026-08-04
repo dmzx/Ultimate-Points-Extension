@@ -16,6 +16,7 @@ use phpbb\controller\helper;
 use phpbb\db\driver\driver_interface;
 use phpbb\log\log;
 use phpbb\request\request;
+use phpbb\language\language;
 use phpbb\template\template;
 use phpbb\user;
 
@@ -32,6 +33,9 @@ class points_bank_edit
 
 	/** @var user */
 	protected $user;
+
+	/** @var language */
+	protected $language;
 
 	/** @var driver_interface */
 	protected $db;
@@ -87,6 +91,7 @@ class points_bank_edit
 		auth $auth,
 		template $template,
 		user $user,
+		language $language,
 		driver_interface $db,
 		request $request,
 		config $config,
@@ -102,6 +107,7 @@ class points_bank_edit
 		$this->auth = $auth;
 		$this->template = $template;
 		$this->user = $user;
+		$this->language = $language;
 		$this->db = $db;
 		$this->request = $request;
 		$this->config = $config;
@@ -124,7 +130,7 @@ class points_bank_edit
 			{
 				redirect(append_sid("{$this->root_path}index.{$this->php_ext}"));
 			}
-			login_box('', $this->user->lang['LOGIN_INFO']);
+			login_box('', $this->language->lang('LOGIN_INFO'));
 		}
 
 		$adm_points = $this->request->variable('adm_points', false);
@@ -133,7 +139,7 @@ class points_bank_edit
 
 		if (empty($u_id))
 		{
-			$message = $this->user->lang['EDIT_NO_ID_SPECIFIED'] . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'bank_edit']) . '">&laquo; ' . $this->user->lang['BACK_TO_PREV'] . '</a>';
+			$message = $this->language->lang('EDIT_NO_ID_SPECIFIED') . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'bank_edit']) . '">&laquo; ' . $this->language->lang('BACK_TO_PREV') . '</a>';
 			trigger_error($message);
 		}
 
@@ -168,8 +174,8 @@ class points_bank_edit
 
 				// Add logs
 				$this->log->add('admin', $this->user->data['user_id'], $this->user->ip, 'LOG_MOD_BANK', false, [$points_user['username']]);
-				$message = ($post_id) ? sprintf($this->user->lang['EDIT_P_RETURN_POST'], '<a href="' . append_sid("{$this->root_path}viewtopic.{$this->php_ext}", "p=" . $post_id) . '">', '</a>') : sprintf($this->user->lang['EDIT_P_RETURN_INDEX'], '<a href="' . append_sid("{$this->root_path}index.{$this->php_ext}") . '">', '</a>');
-				trigger_error((sprintf($this->user->lang['EDIT_POINTS_SET'], $this->config['points_name'])) . $message);
+				$message = ($post_id) ? sprintf($this->language->lang('EDIT_P_RETURN_POST'), '<a href="' . append_sid("{$this->root_path}viewtopic.{$this->php_ext}", "p=" . $post_id) . '">', '</a>') : sprintf($this->language->lang('EDIT_P_RETURN_INDEX'), '<a href="' . append_sid("{$this->root_path}index.{$this->php_ext}") . '">', '</a>');
+				trigger_error((sprintf($this->language->lang('EDIT_POINTS_SET'), $this->config['points_name'])) . $message);
 			}
 			else
 			{
@@ -195,7 +201,7 @@ class points_bank_edit
 
 				if (empty($u_id))
 				{
-					$message = $this->user->lang['EDIT_USER_NOT_EXIST'] . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'bank_edit']) . '">&laquo; ' . $this->user->lang['BACK_TO_PREV'] . '</a>';
+					$message = $this->language->lang('EDIT_USER_NOT_EXIST') . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'bank_edit']) . '">&laquo; ' . $this->language->lang('BACK_TO_PREV') . '</a>';
 					trigger_error($message);
 				}
 
@@ -209,13 +215,13 @@ class points_bank_edit
 				$this->template->assign_vars([
 					'USER_NAME' => get_username_string('full', $u_id, $row['username'], $row['user_colour']),
 					'BANK_POINTS' => sprintf($this->functions_points->number_format_points($row['holding'])),
-					'BANK_BALANCE' => sprintf($this->user->lang['BANK_BALANCE'], $points_values['bank_name']),
+					'BANK_BALANCE' => sprintf($this->language->lang('BANK_BALANCE'), $points_values['bank_name']),
 					'POINTS_NAME' => $this->config['points_name'],
 					'CURRENT_VALUE' => $row['holding'],
-					'L_POINTS_MODIFY' => sprintf($this->user->lang['EDIT_BANK_MODIFY'], $this->config['points_name']),
-					'L_P_BANK_TITLE' => sprintf($this->user->lang['EDIT_P_BANK_TITLE'], $this->config['points_name']),
-					'L_USERNAME' => $this->user->lang['USERNAME'],
-					'L_SET_AMOUNT' => $this->user->lang['EDIT_SET_AMOUNT'],
+					'L_POINTS_MODIFY' => sprintf($this->language->lang('EDIT_BANK_MODIFY'), $this->config['points_name']),
+					'L_P_BANK_TITLE' => sprintf($this->language->lang('EDIT_P_BANK_TITLE'), $this->config['points_name']),
+					'L_USERNAME' => $this->language->lang('USERNAME'),
+					'L_SET_AMOUNT' => $this->language->lang('EDIT_SET_AMOUNT'),
 					'U_USER_LINK' => append_sid("{$this->root_path}memberlist.{$this->php_ext}", "mode=viewprofile&amp;u=" . $u_id),
 					'S_ACTION' => $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'bank_edit', 'adm_points' => '1']),
 					'S_HIDDEN_FIELDS' => $hidden_fields,
@@ -223,7 +229,7 @@ class points_bank_edit
 			}
 		}
 		// Generate the page
-		page_header($this->user->lang['EDIT_POINTS_ADMIN']);
+		page_header($this->language->lang('EDIT_POINTS_ADMIN'));
 
 		// Generate the page template
 		$this->template->set_filenames([

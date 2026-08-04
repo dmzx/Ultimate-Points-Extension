@@ -195,4 +195,104 @@
 
 {% endif %}
 
+{% if S_BOUNTY_INFO %}
+
+<h2><i class="icon fa fa-list-check" aria-hidden="true"></i> {{ lang('POINTS_BOUNTY') }}</h2>
+
+<div class="panel">
+	<div class="inner">
+		<p>{{ lang('UCP_ULTIMATEPOINTS_EXPLAIN') }}</p>
+
+		<div class="notification_list">
+			{% if loops.ucp_ultimatepoints_bounty|length and S_BOUNTY_ENABLE %}
+			<ul class="topiclist">
+				<li class="header">
+					<dl>
+						<dt>
+							<div class="list-inner">{{ lang('BOUNTY_FIELD_TITLE') }}</div>
+						</dt>
+						<dd class="extra">{{ lang('BOUNTY_FIELD_REWARD') }}</dd>
+						<dd class="time"><span style="float:right;">{{ lang('BOUNTY_STATUS') }}</span></dd>
+					</dl>
+				</li>
+			</ul>
+			<ul class="topiclist cplist responsive-show-columns">
+				{% for ucp_ultimatepoints_bounty in loops.ucp_ultimatepoints_bounty %}
+				<li class="row{% if ucp_ultimatepoints_bounty.S_ROW_COUNT is odd %} bg1{% else %} bg2{% endif %}">
+					<dl>
+						<dt>
+							<div class="list-inner">
+								<div class="notifications">
+									<p class="notifications_title">{{ ucp_ultimatepoints_bounty.BOUNTY_TITLE }}</p>
+									<p class="notifications_time">{{ ucp_ultimatepoints_bounty.BOUNTY_ROLE }}{{ lang('COLON') }}
+										{{ ucp_ultimatepoints_bounty.BOUNTY_TIME }}</p>
+								</div>
+							</div>
+						</dt>
+						<dd class="extra">{{ ucp_ultimatepoints_bounty.BOUNTY_AMOUNT }}</dd>
+						<dd class="time"><span style="float:right;">{{ ucp_ultimatepoints_bounty.BOUNTY_STATUS }}</span>
+						</dd>
+					</dl>
+				</li>
+				{% endfor %}
+			</ul>
+			{% else %}
+			{% if S_BOUNTY_ENABLE %}{{ lang('NO_MESSAGES') }}{% else %}{{ lang('BOUNTY_DISABLED') }}{% endif %}
+			{% endif %}
+		</div>
+	</div>
+</div>
+
+{% endif %}
+
+{% if S_DUEL_INFO %}
+
+<h2><i class="icon fa fa-bolt" aria-hidden="true"></i> {{ lang('POINTS_DUEL') }}</h2>
+
+<div class="panel">
+	<div class="inner">
+		<p>{{ lang('UCP_ULTIMATEPOINTS_EXPLAIN') }}</p>
+
+		<div class="notification_list">
+			{% if loops.ucp_ultimatepoints_duel|length and S_DUEL_ENABLE %}
+			<ul class="topiclist">
+				<li class="header">
+					<dl>
+						<dt>
+							<div class="list-inner">{{ lang('DUEL_FIELD_WAGER') }}</div>
+						</dt>
+						<dd class="extra">{{ lang('DUEL_STATUS') }}</dd>
+						<dd class="time"><span style="float:right;">{{ lang('LOTTERY_DATE') }}</span></dd>
+					</dl>
+				</li>
+			</ul>
+			<ul class="topiclist cplist responsive-show-columns">
+				{% for ucp_ultimatepoints_duel in loops.ucp_ultimatepoints_duel %}
+				<li class="row{% if ucp_ultimatepoints_duel.S_ROW_COUNT is odd %} bg1{% else %} bg2{% endif %}">
+					<dl>
+						<dt>
+							<div class="list-inner">
+								<div class="notifications">
+									<p class="notifications_title">{{ ucp_ultimatepoints_duel.DUEL_AMOUNT }}</p>
+									<p class="notifications_time">{{ ucp_ultimatepoints_duel.DUEL_ROLE }}{{ lang('COLON') }}
+										{{ ucp_ultimatepoints_duel.DUEL_TIME }}</p>
+								</div>
+							</div>
+						</dt>
+						<dd class="extra">{{ ucp_ultimatepoints_duel.DUEL_RESULT }}</dd>
+						<dd class="time"><span style="float:right;">{{ ucp_ultimatepoints_duel.DUEL_STATUS }}</span>
+						</dd>
+					</dl>
+				</li>
+				{% endfor %}
+			</ul>
+			{% else %}
+			{% if S_DUEL_ENABLE %}{{ lang('NO_MESSAGES') }}{% else %}{{ lang('DUEL_DISABLED') }}{% endif %}
+			{% endif %}
+		</div>
+	</div>
+</div>
+
+{% endif %}
+
 {% INCLUDE 'ucp_footer.html' %}

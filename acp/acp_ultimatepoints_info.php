@@ -42,6 +42,16 @@ class acp_ultimatepoints_info
 					'auth' => 'ext_dmzx/ultimatepoints && acl_a_board',
 					'cat' => ['ACP_POINTS'],
 				],
+				'bounty' => [
+					'title' => 'ACP_POINTS_BOUNTY_TITLE',
+					'auth' => 'ext_dmzx/ultimatepoints && acl_a_board',
+					'cat' => ['ACP_POINTS'],
+				],
+				'duels' => [
+					'title' => 'ACP_POINTS_DUELS_TITLE',
+					'auth' => 'ext_dmzx/ultimatepoints && acl_a_board',
+					'cat' => ['ACP_POINTS'],
+				],
 			],
 		];
 	}

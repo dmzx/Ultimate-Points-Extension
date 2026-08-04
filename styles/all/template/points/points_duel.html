@@ -1,0 +1,193 @@
+{% INCLUDE 'overall_header.html' %}
+
+{% INCLUDECSS '@dmzx_ultimatepoints/ultimatepoints.css' %}
+
+<div id="tabs" class="tabs">
+	<ul>
+		<li class="tab"><a href="{{ U_POINTS }}">{{ lang('POINTS_OVERVIEW') }}</a></li>
+		<li class="tab"><a href="{{ U_INFO }}">{{ lang('POINTS_INFO') }}</a></li>
+		{% if TRANSFER_ENABLE and U_USE_TRANSFER %}
+		<li class="tab"><a href="{{ U_TRANSFER_USER }}">{{ lang('POINTS_TRANSFER') }}</a></li>
+		{% endif %}
+		{% if LOGS_ENABLE and U_USE_LOGS %}
+		<li class="tab"><a href="{{ U_LOGS }}">{{ lang('POINTS_LOGS') }}</a></li>
+		{% endif %}
+		{% if LOTTERY_ENABLE and U_USE_LOTTERY %}
+		<li class="tab"><a href="{{ U_LOTTERY }}">{{ LOTTERY_NAME }}</a></li>
+		{% endif %}
+		{% if BANK_ENABLE and U_USE_BANK %}
+		<li class="tab"><a href="{{ U_BANK }}">{{ BANK_NAME }}</a></li>
+		{% endif %}
+		{% if ROBBERY_ENABLE and U_USE_ROBBERY %}
+		<li class="tab"><a href="{{ U_ROBBERY }}">{{ lang('POINTS_ROBBERY') }}</a></li>
+		{% endif %}
+		{% if BOUNTY_ENABLE and U_USE_BOUNTY %}
+		<li class="tab"><a href="{{ U_BOUNTY }}">{{ lang('POINTS_BOUNTY') }}</a></li>
+		{% endif %}
+		{% if DUEL_ENABLE and U_USE_DUEL %}
+		<li class="tab activetab"><a href="{{ U_DUEL }}">{{ lang('POINTS_DUEL') }}</a></li>
+		{% endif %}
+	</ul>
+</div>
+
+<div class="panel bg3">
+	<div class="inner">
+
+		<div id="cp-menu">
+
+			<div class="cp-mini" style="min-height: 210px;">
+				<div class="inner">
+					<dl class="mini">
+						<dd><h3>{{ lang('POINTS_DESCRIPTION') }}</h3></dd>
+						<dd>{{ lang('DUEL_DESCRIPTION', POINTS_NAME) }}</dd>
+						<dd>{{ lang('DUEL_WAGER_RANGE_HINT', DUEL_MIN_WAGER, DUEL_MAX_WAGER, POINTS_NAME) }}</dd>
+					</dl>
+				</div>
+			</div>
+		</div>
+
+		<div id="cp-main" class="ucp-main">
+			<h2><i class="icon fa-bolt" aria-hidden="true"></i> {{ lang('POINTS_DUEL') }}</h2>
+
+			{% if S_USER_LOGGED_IN %}
+			<p>{{ lang('POINTS_CASH_ON_HAND') }}{{ lang('COLON') }}&nbsp;{{ USER_POINTS }} {{ POINTS_NAME }}</p>
+
+			<form id="duel_challenge" class="duel-challenge-form" action="{{ U_DUEL }}" method="post">
+				<div class="panel">
+					<div class="inner">
+						<h3>{{ lang('DUEL_CHALLENGE_NEW') }}</h3>
+						<fieldset>
+							<div class="duel-field">
+								<label for="duel_opponent"><strong>{{ lang('DUEL_FIELD_OPPONENT') }}{{ lang('COLON') }}</strong></label><br/>
+								<input type="text" id="duel_opponent" class="inputbox" name="opponent" maxlength="255" value=""/>
+								<a href="{{ U_FIND_USERNAME }}" onclick="popup(this.href, 500, 240, '_usersearch'); return false;">{{ lang('FIND_USERNAME') }}</a>
+							</div>
+							<div class="duel-field">
+								<label for="duel_wager"><strong>{{ lang('DUEL_FIELD_WAGER') }}{{ lang('COLON') }}</strong></label><br/>
+								<input type="text" id="duel_wager" class="inputbox autowidth" name="wager" maxlength="10" value=""/> {{ POINTS_NAME }}
+							</div>
+							<div class="duel-field">
+								<strong>{{ lang('DUEL_FIELD_RESOLUTION') }}{{ lang('COLON') }}</strong><br/>
+								<label><input type="radio" class="radio" name="resolution_type" value="0" {% if not S_DUEL_DEFAULT_ADMIN %}checked="checked"{% endif %}/> {{ lang('DUEL_RESOLUTION_COINFLIP') }}</label>
+								<label><input type="radio" class="radio" name="resolution_type" value="1" {% if S_DUEL_DEFAULT_ADMIN %}checked="checked"{% endif %}/> {{ lang('DUEL_RESOLUTION_ADMIN') }}</label>
+							</div>
+						</fieldset>
+						<fieldset class="submit-buttons">
+							<input type="hidden" name="action" value="challenge"/>
+							<input type="submit" name="submit" value="{{ lang('DUEL_CHALLENGE_BUTTON') }}" class="button1"/>
+							{{ S_FORM_TOKEN }}
+						</fieldset>
+					</div>
+				</div>
+			</form>
+
+			{% if duel_resolve_queue %}
+			<h3>{{ lang('DUEL_AWAITING_MOD') }}</h3>
+			<div class="duel-list">
+				{% for duel_resolve_queue in duel_resolve_queue %}
+				<div class="duel-row">
+					<div class="duel-row-main">
+						<div class="duel-row-title">{{ duel_resolve_queue.DUEL_CHALLENGER }} {{ lang('DUEL_VS') }} {{ duel_resolve_queue.DUEL_OPPONENT }}</div>
+						<div class="duel-row-meta">{{ duel_resolve_queue.DUEL_CREATED }}</div>
+					</div>
+					<div class="duel-row-side">
+						<div class="duel-wager">{{ duel_resolve_queue.DUEL_POT }} {{ POINTS_NAME }}</div>
+					</div>
+					<div class="duel-row-actions">
+						<form action="{{ U_DUEL }}" method="post" style="display:inline;">
+							<input type="hidden" name="duel_id" value="{{ duel_resolve_queue.DUEL_ID }}"/>
+							<select name="winner_id">
+								<option value="{{ duel_resolve_queue.CHALLENGER_ID }}">{{ duel_resolve_queue.DUEL_CHALLENGER }}</option>
+								<option value="{{ duel_resolve_queue.OPPONENT_ID }}">{{ duel_resolve_queue.DUEL_OPPONENT }}</option>
+							</select>
+							<input type="submit" name="duel_resolve" value="{{ lang('DUEL_RESOLVE_BUTTON') }}" class="button1"/>
+							{{ S_FORM_TOKEN }}
+						</form>
+					</div>
+				</div>
+				{% endfor %}
+			</div>
+			{% endif %}
+
+			<div class="duel-list">
+				{% if duel %}
+				{% for duel in duel %}
+				<div class="duel-row">
+					<div class="duel-row-main">
+						<div class="duel-row-title">{{ duel.DUEL_CHALLENGER }} {{ lang('DUEL_VS') }} {{ duel.DUEL_OPPONENT }}</div>
+						<div class="duel-row-meta">
+							{{ duel.DUEL_CREATED }}
+							{% if duel.S_DUEL_ADMIN_RESOLUTION %} &middot; {{ lang('DUEL_RESOLUTION_ADMIN') }}{% else %} &middot; {{ lang('DUEL_RESOLUTION_COINFLIP') }}{% endif %}
+						</div>
+					</div>
+					<div class="duel-row-side">
+						<div class="duel-wager">{{ duel.DUEL_WAGER }} {{ POINTS_NAME }}</div>
+						{% if duel.S_DUEL_PENDING %}
+						<span class="duel-status duel-status-pending">{{ lang('DUEL_STATUS_PENDING') }}</span>
+						{% elseif duel.S_DUEL_ACTIVE %}
+						<span class="duel-status duel-status-active">{{ lang('DUEL_STATUS_ACTIVE') }}</span>
+						{% endif %}
+					</div>
+					{% if duel.S_DUEL_CAN_ACCEPT or duel.S_DUEL_CAN_DECLINE or duel.S_DUEL_CAN_CANCEL %}
+					<div class="duel-row-actions">
+						{% if duel.S_DUEL_CAN_ACCEPT %}
+						<form action="{{ U_DUEL }}" method="post" style="display:inline;">
+							<input type="hidden" name="duel_id" value="{{ duel.DUEL_ID }}"/>
+							<input type="submit" name="duel_accept" value="{{ lang('DUEL_ACCEPT_BUTTON') }}" class="button1"/>
+							{{ S_FORM_TOKEN }}
+						</form>
+						{% endif %}
+						{% if duel.S_DUEL_CAN_DECLINE %}
+						<form action="{{ U_DUEL }}" method="post" style="display:inline;">
+							<input type="hidden" name="duel_id" value="{{ duel.DUEL_ID }}"/>
+							<input type="submit" name="duel_decline" value="{{ lang('DUEL_DECLINE_BUTTON') }}" class="button2"/>
+							{{ S_FORM_TOKEN }}
+						</form>
+						{% endif %}
+						{% if duel.S_DUEL_CAN_CANCEL %}
+						<form action="{{ U_DUEL }}" method="post" style="display:inline;">
+							<input type="hidden" name="duel_id" value="{{ duel.DUEL_ID }}"/>
+							<input type="submit" name="duel_cancel" value="{{ lang('DUEL_CANCEL_BUTTON') }}" class="button2"/>
+							{{ S_FORM_TOKEN }}
+						</form>
+						{% endif %}
+					</div>
+					{% elseif duel.S_DUEL_AWAITING_MOD %}
+					<div class="duel-row-actions">
+						<span class="duel-awaiting-mod">{{ lang('DUEL_AWAITING_MOD') }}</span>
+					</div>
+					{% endif %}
+				</div>
+				{% endfor %}
+				{% else %}
+				<p>{{ lang('DUEL_NO_OPEN') }}</p>
+				{% endif %}
+			</div>
+
+			{% if duel_completed %}
+			<h3>{{ lang('DUEL_HISTORY_TITLE') }}</h3>
+			<div class="duel-list">
+				{% for duel_completed in duel_completed %}
+				<div class="duel-row duel-completed">
+					<div class="duel-row-main">
+						<div class="duel-row-title">{{ duel_completed.DUEL_CHALLENGER }} {{ lang('DUEL_VS') }} {{ duel_completed.DUEL_OPPONENT }}</div>
+						<div class="duel-row-meta">{{ duel_completed.DUEL_CREATED }}</div>
+					</div>
+					<div class="duel-row-side">
+						<div class="duel-wager">{{ duel_completed.DUEL_OUTCOME }}</div>
+					</div>
+				</div>
+				{% endfor %}
+			</div>
+			{% else %}
+			<p>{{ lang('DUEL_NO_COMPLETED') }}</p>
+			{% endif %}
+
+			{% else %}
+			<p>{{ lang('POINTS_BOT_GUEST') }}</p>
+			{% endif %}
+		</div>
+	</div>
+</div>
+
+{% INCLUDE 'overall_footer.html' %}

@@ -12,6 +12,8 @@ namespace dmzx\ultimatepoints\controller;
 use dmzx\ultimatepoints\core\functions_points;
 use dmzx\ultimatepoints\core\points_bank;
 use dmzx\ultimatepoints\core\points_bank_edit;
+use dmzx\ultimatepoints\core\points_bounty;
+use dmzx\ultimatepoints\core\points_duel;
 use dmzx\ultimatepoints\core\points_info;
 use dmzx\ultimatepoints\core\points_logs;
 use dmzx\ultimatepoints\core\points_lottery;
@@ -26,6 +28,7 @@ use phpbb\config\config;
 use phpbb\controller\helper;
 use phpbb\db\driver\driver_interface;
 use phpbb\request\request;
+use phpbb\language\language;
 use phpbb\template\template;
 use phpbb\user;
 
@@ -67,11 +70,20 @@ class main
 	/** @var points_transfer */
 	protected $points_transfer;
 
+	/** @var points_bounty */
+	protected $points_bounty;
+
+	/** @var points_duel */
+	protected $points_duel;
+
 	/** @var template */
 	protected $template;
 
 	/** @var user */
 	protected $user;
+
+	/** @var language */
+	protected $language;
 
 	/** @var auth */
 	protected $auth;
@@ -130,6 +142,8 @@ class main
 	 * @var points_robbery $points_robbery
 	 * @var points_robbery_user $points_robbery_user
 	 * @var points_transfer $points_transfer
+	 * @var points_bounty $points_bounty
+	 * @var points_duel $points_duel
 	 */
 	public function __construct(
 		functions_points $functions_points,
@@ -144,8 +158,11 @@ class main
 		points_robbery $points_robbery,
 		points_robbery_user $points_robbery_user,
 		points_transfer $points_transfer,
+		points_bounty $points_bounty,
+		points_duel $points_duel,
 		template $template,
 		user $user,
+		language $language,
 		auth $auth,
 		driver_interface $db,
 		request $request,
@@ -169,8 +186,11 @@ class main
 		$this->points_robbery = $points_robbery;
 		$this->points_robbery_user = $points_robbery_user;
 		$this->points_transfer = $points_transfer;
+		$this->points_bounty = $points_bounty;
+		$this->points_duel = $points_duel;
 		$this->template = $template;
 		$this->user = $user;
+		$this->language = $language;
 		$this->auth = $auth;
 		$this->db = $db;
 		$this->request = $request;
@@ -238,7 +258,7 @@ class main
 		// Add the base entry into the Nav Bar at top
 		$this->template->assign_block_vars('navlinks', [
 			'U_VIEW_FORUM' => $this->helper->route('dmzx_ultimatepoints_controller'),
-			'FORUM_NAME' => sprintf($this->user->lang['POINTS_TITLE_MAIN'], $this->config['points_name']),
+			'FORUM_NAME' => sprintf($this->language->lang('POINTS_TITLE_MAIN'), $this->config['points_name']),
 		]);
 
 		$this->template->assign_vars(array_change_key_case($checked_user, CASE_UPPER));
@@ -253,6 +273,8 @@ class main
 			'U_USE_LOTTERY' => $this->auth->acl_get('u_use_lottery'),
 			'U_USE_BANK' => $this->auth->acl_get('u_use_bank'),
 			'U_USE_ROBBERY' => $this->auth->acl_get('u_use_robbery'),
+			'U_USE_BOUNTY' => $this->auth->acl_get('u_use_bounty'),
+			'U_USE_DUEL' => $this->auth->acl_get('u_use_duel'),
 		]));
 
 		$this->template->assign_var('ULTIMATEPOINTS_FOOTER_VIEW', true);
@@ -297,6 +319,14 @@ class main
 
 			case 'info':
 				$this->points_info->main();
+				break;
+
+			case 'bounty':
+				$this->points_bounty->main($checked_user);
+				break;
+
+			case 'duel':
+				$this->points_duel->main($checked_user);
 				break;
 
 			default:

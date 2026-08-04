@@ -15,6 +15,7 @@ use phpbb\controller\helper;
 use phpbb\db\driver\driver_interface;
 use phpbb\pagination;
 use phpbb\request\request;
+use phpbb\language\language;
 use phpbb\template\template;
 use phpbb\user;
 
@@ -31,6 +32,9 @@ class points_logs
 
 	/** @var user */
 	protected $user;
+
+	/** @var language */
+	protected $language;
 
 	/** @var driver_interface */
 	protected $db;
@@ -85,6 +89,7 @@ class points_logs
 		auth $auth,
 		template $template,
 		user $user,
+		language $language,
 		driver_interface $db,
 		request $request,
 		config $config,
@@ -100,6 +105,7 @@ class points_logs
 		$this->auth = $auth;
 		$this->template = $template;
 		$this->user = $user;
+		$this->language = $language;
 		$this->db = $db;
 		$this->request = $request;
 		$this->config = $config;
@@ -124,21 +130,21 @@ class points_logs
 		// Check, if logs are enabled
 		if (!$points_config['logs_enable'])
 		{
-			$message = $this->user->lang['LOGS_DISABLED'] . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller') . '">&laquo; ' . $this->user->lang['BACK_TO_PREV'] . '</a>';
+			$message = $this->language->lang('LOGS_DISABLED') . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller') . '">&laquo; ' . $this->language->lang('BACK_TO_PREV') . '</a>';
 			trigger_error($message);
 		}
 
 		// Check if user is allowed to use the logs
 		if (!$this->auth->acl_get('u_use_logs'))
 		{
-			$message = $this->user->lang['NOT_AUTHORISED'] . '<br /><br /><a href="' . append_sid("{$this->root_path}ultimatepoints") . '">&laquo; ' . $this->user->lang['BACK_TO_PREV'] . '</a>';
+			$message = $this->language->lang('NOT_AUTHORISED') . '<br /><br /><a href="' . append_sid("{$this->root_path}ultimatepoints") . '">&laquo; ' . $this->language->lang('BACK_TO_PREV') . '</a>';
 			trigger_error($message);
 		}
 
 		// Add part to bar
 		$this->template->assign_block_vars('navlinks', [
 			'U_VIEW_FORUM' => $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'logs']),
-			'FORUM_NAME' => sprintf($this->user->lang['LOGS_TITLE'], $this->config['points_name']),
+			'FORUM_NAME' => sprintf($this->language->lang('LOGS_TITLE'), $this->config['points_name']),
 		]);
 
 		// Preparing the sort order
@@ -148,9 +154,9 @@ class points_logs
 		$sort_days = $this->request->variable('st', 0);
 		$sort_key = $this->request->variable('sk', 'date');
 		$sort_dir = $this->request->variable('sd', 'd');
-		$limit_days = [0 => $this->user->lang['ALL_POSTS'], 1 => $this->user->lang['1_DAY'], 7 => $this->user->lang['7_DAYS'], 14 => $this->user->lang['2_WEEKS'], 30 => $this->user->lang['1_MONTH'], 90 => $this->user->lang['3_MONTHS'], 180 => $this->user->lang['6_MONTHS'], 365 => $this->user->lang['1_YEAR']];
+		$limit_days = [0 => $this->language->lang('ALL_POSTS'), 1 => $this->language->lang('1_DAY'), 7 => $this->language->lang('7_DAYS'), 14 => $this->language->lang('2_WEEKS'), 30 => $this->language->lang('1_MONTH'), 90 => $this->language->lang('3_MONTHS'), 180 => $this->language->lang('6_MONTHS'), 365 => $this->language->lang('1_YEAR')];
 
-		$sort_by_text = ['date' => $this->user->lang['LOGS_SORT_DATE'], 'to' => $this->user->lang['LOGS_SORT_TONAME'], 'from' => $this->user->lang['LOGS_SORT_FROMNAME'], 'comment' => $this->user->lang['LOGS_SORT_COMMENT']];
+		$sort_by_text = ['date' => $this->language->lang('LOGS_SORT_DATE'), 'to' => $this->language->lang('LOGS_SORT_TONAME'), 'from' => $this->language->lang('LOGS_SORT_FROMNAME'), 'comment' => $this->language->lang('LOGS_SORT_COMMENT')];
 		$sort_by_sql = ['date' => 'point_date', 'to' => 'point_recv', 'from' => 'point_send', 'comment' => 'point_comment'];
 
 		$s_limit_days = $s_sort_key = $s_sort_dir = $u_sort_param = '';
@@ -160,10 +166,10 @@ class points_logs
 		// The different log types
 		$types = [
 			0 => '--',
-			1 => $this->user->lang['LOGS_RECV'],
-			2 => $this->user->lang['LOGS_SENT'],
-			3 => $this->user->lang['LOGS_ROBBERY_WON'],
-			4 => $this->user->lang['LOGS_ROBBERY_LOST'],
+			1 => $this->language->lang('LOGS_RECV'),
+			2 => $this->language->lang('LOGS_SENT'),
+			3 => $this->language->lang('LOGS_ROBBERY_WON'),
+			4 => $this->language->lang('LOGS_ROBBERY_LOST'),
 		];
 
 		// Grab the total amount of logs for this user
@@ -279,7 +285,7 @@ class points_logs
 
 		// Generate the page template
 		$this->template->assign_vars([
-			'PAGINATION' => $this->user->lang('POINTS_LOG_COUNT', $max),
+			'PAGINATION' => $this->language->lang('POINTS_LOG_COUNT', $max),
 			'LOTTERY_NAME' => $points_values['lottery_name'],
 			'BANK_NAME' => $points_values['bank_name'],
 			'S_LOGS_ACTION' => $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'logs']),
@@ -291,15 +297,19 @@ class points_logs
 			'U_BANK' => $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'bank']),
 			'U_ROBBERY' => $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'robbery']),
 			'U_INFO' => $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'info']),
+			'U_BOUNTY' => $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'bounty']),
+			'U_DUEL' => $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'duel']),
 			'U_USE_TRANSFER' => $this->auth->acl_get('u_use_transfer'),
 			'U_USE_LOGS' => $this->auth->acl_get('u_use_logs'),
 			'U_USE_LOTTERY' => $this->auth->acl_get('u_use_lottery'),
 			'U_USE_BANK' => $this->auth->acl_get('u_use_bank'),
 			'U_USE_ROBBERY' => $this->auth->acl_get('u_use_robbery'),
+			'U_USE_BOUNTY' => $this->auth->acl_get('u_use_bounty'),
+			'U_USE_DUEL' => $this->auth->acl_get('u_use_duel'),
 		]);
 
 		// Generate the page header
-		page_header(sprintf($this->user->lang['LOGS_TITLE'], $checked_user['username']));
+		page_header(sprintf($this->language->lang('LOGS_TITLE'), $checked_user['username']));
 
 		// Generate the page template
 		$this->template->set_filenames([

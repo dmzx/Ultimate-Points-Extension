@@ -1,0 +1,92 @@
+{% INCLUDE 'overall_header.html' %}
+
+{% INCLUDECSS '@dmzx_ultimatepoints/css/acp_ultimatepoints.css' %}
+
+<a name="maincontent"></a>
+
+{% if S_BOUNTY %}
+
+{% if S_ERROR %}
+<div class="errorbox">
+	<h3>{{ lang('WARNING') }}</h3>
+	<p>{{ ERROR_MSG }}</p>
+</div>
+{% endif %}
+
+<h1><i class="icon {{ POINTS_ICON_MAINICON }} fa-fw" aria-hidden="true"></i> {{ lang('ACP_POINTS') }} - {{
+	lang('ACP_POINTS_BOUNTY_TITLE') }}</h1>
+<p>{{ lang('ACP_POINTS_BOUNTY_EXPLAIN') }}</p>
+
+<div class="successbox">{{ lang('ACP_POINTS_VALUES_HINT') }}</div>
+
+<form id="acp_bounty" method="post" action="{{ U_ACTION }}">
+	<fieldset>
+		<legend><i class="icon fa-cog fa-lg" aria-hidden="true"></i> {{ lang('BOUNTY_OPTIONS') }}</legend>
+		<dl>
+			<dt><label>{{ lang('BOUNTY_ENABLE') }}{{ lang('COLON') }}</label><br/><span>{{ lang('BOUNTY_ENABLE_EXPLAIN') }}</span>
+			</dt>
+			<dd><label><input type="radio" class="radio" name="bounty_enable" value="1" {% if S_BOUNTY_ENABLE %}
+							id="bounty_enable" checked="checked" {% endif %}/> {{ lang('YES') }}</label>
+				<label><input type="radio" class="radio" name="bounty_enable" value="0" {% if not S_BOUNTY_ENABLE %}
+							id="bounty_enable" checked="checked" {% endif %}/> {{ lang('NO') }}</label></dd>
+		</dl>
+		<dl>
+			<dt><label for="bounty_min_reward">{{ lang('BOUNTY_MIN_REWARD') }}{{ lang('COLON') }}</label><br/><span>{{ lang('BOUNTY_MIN_REWARD_EXPLAIN') }}</span>
+			</dt>
+			<dd><input type="text" id="bounty_min_reward" name="bounty_min_reward" value="{{ BOUNTY_MIN_REWARD }}"
+						maxlength="10" size="10"/>
+			</dd>
+		</dl>
+		<dl>
+			<dt><label for="bounty_max_reward">{{ lang('BOUNTY_MAX_REWARD') }}{{ lang('COLON') }}</label><br/><span>{{ lang('BOUNTY_MAX_REWARD_EXPLAIN') }}</span>
+			</dt>
+			<dd><input type="text" id="bounty_max_reward" name="bounty_max_reward" value="{{ BOUNTY_MAX_REWARD }}"
+						maxlength="10" size="10"/>
+			</dd>
+		</dl>
+		<dl>
+			<dt><label for="bounty_claim_time_limit">{{ lang('BOUNTY_CLAIM_TIME_LIMIT') }}{{ lang('COLON') }}</label><br/><span>{{ lang('BOUNTY_CLAIM_TIME_LIMIT_EXPLAIN') }}</span>
+			</dt>
+			<dd><input type="text" id="bounty_claim_time_limit" name="bounty_claim_time_limit" value="{{ BOUNTY_CLAIM_TIME_LIMIT }}"
+						maxlength="5" size="10"/> {{ lang('TIME_HOURS') }}
+			</dd>
+		</dl>
+		<dl>
+			<dt><label>{{ lang('BOUNTY_REQUIRE_APPROVAL') }}{{ lang('COLON') }}</label><br/><span>{{ lang('BOUNTY_REQUIRE_APPROVAL_EXPLAIN') }}</span>
+			</dt>
+			<dd><label><input type="radio" class="radio" name="bounty_require_approval" value="1" {% if S_BOUNTY_REQUIRE_APPROVAL %}
+							id="bounty_require_approval" checked="checked" {% endif %}/> {{ lang('YES') }}</label>
+				<label><input type="radio" class="radio" name="bounty_require_approval" value="0" {% if not S_BOUNTY_REQUIRE_APPROVAL %}
+							id="bounty_require_approval" checked="checked" {% endif %}/> {{ lang('NO') }}</label></dd>
+		</dl>
+	</fieldset>
+
+	{% if BOUNTY_MCHAT_VIEW %}
+	<fieldset>
+		<legend><i class="icon fa fa-weixin fa-lg" aria-hidden="true"></i> {{ lang('BOUNTY_MCHAT_OPTIONS') }}</legend>
+		<dl>
+			<dt><label>{{ lang('BOUNTY_MCHAT_ENABLE') }}{{ lang('COLON') }}</label><br/><span>{{ lang('BOUNTY_MCHAT_ENABLE_EXPLAIN') }}</span>
+			</dt>
+			<dd>
+				<label><input name="bounty_mchat_enable" type="radio" {% if BOUNTY_MCHAT_ENABLE %} checked="checked"
+							{% endif %} class="radio" value="1"/> {{ lang('YES') }}</label>
+				<label><input name="bounty_mchat_enable" type="radio" {% if not BOUNTY_MCHAT_ENABLE %}
+							checked="checked" {% endif %} class="radio" value="0"/> {{ lang('NO') }}</label>
+			</dd>
+		</dl>
+	</fieldset>
+	{% endif %}
+
+	<fieldset class="submit-buttons">
+		<legend>{{ lang('SUBMIT') }}</legend>
+		<input class="ultimatepoints-button ultimatepoints-submit" type="submit" id="submit" name="submit"
+				value="{{ lang('SUBMIT') }}"/>&nbsp;
+		<input class="ultimatepoints-button ultimatepoints-reset" type="reset" id="reset" name="reset"
+				value="{{ lang('RESET') }}"/>
+		{{ S_FORM_TOKEN }}
+	</fieldset>
+</form>
+
+{% endif %}
+
+{% INCLUDE 'overall_footer.html' %}

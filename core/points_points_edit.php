@@ -15,6 +15,7 @@ use phpbb\controller\helper;
 use phpbb\db\driver\driver_interface;
 use phpbb\log\log;
 use phpbb\request\request;
+use phpbb\language\language;
 use phpbb\template\template;
 use phpbb\user;
 
@@ -31,6 +32,9 @@ class points_points_edit
 
 	/** @var user */
 	protected $user;
+
+	/** @var language */
+	protected $language;
 
 	/** @var driver_interface */
 	protected $db;
@@ -74,6 +78,7 @@ class points_points_edit
 		auth $auth,
 		template $template,
 		user $user,
+		language $language,
 		driver_interface $db,
 		config $config,
 		helper $helper,
@@ -87,6 +92,7 @@ class points_points_edit
 		$this->auth = $auth;
 		$this->template = $template;
 		$this->user = $user;
+		$this->language = $language;
 		$this->db = $db;
 		$this->config = $config;
 		$this->helper = $helper;
@@ -107,7 +113,7 @@ class points_points_edit
 			{
 				redirect(append_sid("{$this->root_path}index.{$this->php_ext}"));
 			}
-			login_box('', $this->user->lang['LOGIN_INFO']);
+			login_box('', $this->language->lang('LOGIN_INFO'));
 		}
 
 		$adm_points = $this->request->variable('adm_points', false);
@@ -119,7 +125,7 @@ class points_points_edit
 
 		if (empty($u_id))
 		{
-			$message = $this->user->lang['EDIT_NO_ID_SPECIFIED'] . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'points_edit']) . '">&laquo; ' . $this->user->lang['BACK_TO_PREV'] . '</a>';
+			$message = $this->language->lang('EDIT_NO_ID_SPECIFIED') . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'points_edit']) . '">&laquo; ' . $this->language->lang('BACK_TO_PREV') . '</a>';
 			trigger_error($message);
 		}
 
@@ -163,8 +169,8 @@ class points_points_edit
 
 				// Add logs
 				$this->log->add('admin', $this->user->data['user_id'], $this->user->ip, 'LOG_MOD_POINTS', false, [$points_user['username']]);
-				$message = ($post_id) ? sprintf($this->user->lang['EDIT_P_RETURN_POST'], '<a href="' . append_sid("{$this->root_path}viewtopic.{$this->php_ext}", "p=" . $post_id) . '">', '</a>') : sprintf($this->user->lang['EDIT_P_RETURN_INDEX'], '<a href="' . append_sid("{$this->root_path}index.{$this->php_ext}") . '">', '</a>');
-				trigger_error((sprintf($this->user->lang['EDIT_POINTS_SET'], $this->config['points_name'])) . $message);
+				$message = ($post_id) ? sprintf($this->language->lang('EDIT_P_RETURN_POST'), '<a href="' . append_sid("{$this->root_path}viewtopic.{$this->php_ext}", "p=" . $post_id) . '">', '</a>') : sprintf($this->language->lang('EDIT_P_RETURN_INDEX'), '<a href="' . append_sid("{$this->root_path}index.{$this->php_ext}") . '">', '</a>');
+				trigger_error((sprintf($this->language->lang('EDIT_POINTS_SET'), $this->config['points_name'])) . $message);
 			} else
 			{
 				$sql_array = [
@@ -180,7 +186,7 @@ class points_points_edit
 
 				if (empty($u_id))
 				{
-					$message = $this->user->lang['EDIT_USER_NOT_EXIST'] . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'points_edit']) . '">&laquo; ' . $this->user->lang['BACK_TO_PREV'] . '</a>';
+					$message = $this->language->lang('EDIT_USER_NOT_EXIST') . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'points_edit']) . '">&laquo; ' . $this->language->lang('BACK_TO_PREV') . '</a>';
 					trigger_error($message);
 				}
 
@@ -194,9 +200,9 @@ class points_points_edit
 					'POINTS_OF_USER' => sprintf($this->functions_points->number_format_points($row['user_points'])),
 					'POINTS_NAME' => $this->config['points_name'],
 					'CURRENT_VALUE' => $row['user_points'],
-					'L_POINTS_MODIFY' => sprintf($this->user->lang['EDIT_POINTS_MODIFY'], $this->config['points_name']),
-					'L_P_POINTS_TITLE' => sprintf($this->user->lang['EDIT_P_POINTS_TITLE'], $this->config['points_name']),
-					'L_USERNAME' => $this->user->lang['USERNAME'],
+					'L_POINTS_MODIFY' => sprintf($this->language->lang('EDIT_POINTS_MODIFY'), $this->config['points_name']),
+					'L_P_POINTS_TITLE' => sprintf($this->language->lang('EDIT_P_POINTS_TITLE'), $this->config['points_name']),
+					'L_USERNAME' => $this->language->lang('USERNAME'),
 					'S_ACTION' => $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'points_edit', 'adm_points' => '1']),
 					'S_HIDDEN_FIELDS' => $hidden_fields,
 					'U_USER_LINK' => append_sid("{$this->root_path}memberlist.{$this->php_ext}", "mode=viewprofile&amp;u=" . $u_id),
@@ -205,7 +211,7 @@ class points_points_edit
 		}
 
 		// Generate the page
-		page_header($this->user->lang['EDIT_POINTS_ADMIN']);
+		page_header($this->language->lang('EDIT_POINTS_ADMIN'));
 
 		// Generate the page template
 		$this->template->set_filenames([

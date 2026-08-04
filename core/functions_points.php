@@ -14,9 +14,11 @@ use phpbb\cache\service;
 use phpbb\config\config;
 use phpbb\controller\helper;
 use phpbb\db\driver\driver_interface;
+use phpbb\event\dispatcher_interface;
 use phpbb\extension\manager;
 use phpbb\log\log;
 use phpbb\request\request;
+use phpbb\language\language;
 use phpbb\template\template;
 use phpbb\user;
 use Symfony\Component\DependencyInjection\Container;
@@ -28,6 +30,9 @@ class functions_points
 
 	/** @var user */
 	protected $user;
+
+	/** @var language */
+	protected $language;
 
 	/** @var driver_interface */
 	protected $db;
@@ -55,6 +60,9 @@ class functions_points
 
 	/** @var Container */
 	protected $phpbb_container;
+
+	/** @var dispatcher_interface */
+	protected $dispatcher;
 
 	/** @var string */
 	protected $php_ext;
@@ -91,6 +99,7 @@ class functions_points
 	 * @param config $config
 	 * @param manager $extension_manager
 	 * @param Container $phpbb_container
+	 * @param dispatcher_interface $dispatcher
 	 * @param string $php_ext
 	 * @param string $root_path
 	 * @param string $points_bank_table
@@ -103,6 +112,7 @@ class functions_points
 	public function __construct(
 		template $template,
 		user $user,
+		language $language,
 		driver_interface $db,
 		helper $helper,
 		\phpbb\notification\manager $notification_manager,
@@ -112,6 +122,7 @@ class functions_points
 		config $config,
 		manager $extension_manager,
 		Container $phpbb_container,
+		dispatcher_interface $dispatcher,
 		$php_ext,
 		$root_path,
 		$points_bank_table,
@@ -123,6 +134,7 @@ class functions_points
 	{
 		$this->template = $template;
 		$this->user = $user;
+		$this->language = $language;
 		$this->db = $db;
 		$this->helper = $helper;
 		$this->notification_manager = $notification_manager;
@@ -132,6 +144,7 @@ class functions_points
 		$this->config = $config;
 		$this->extension_manager = $extension_manager;
 		$this->phpbb_container = $phpbb_container;
+		$this->dispatcher = $dispatcher;
 		$this->php_ext = $php_ext;
 		$this->root_path = $root_path;
 		$this->points_bank_table = $points_bank_table;
@@ -259,6 +272,20 @@ class functions_points
 			WHERE user_id = ' . (int) $user_id;
 		$this->db->sql_query($sql);
 
+		/**
+		 * Event that is triggered after points were added to a user
+		 *
+		 * @event dmzx.ultimatepoints.add_points_after
+		 * @var int		user_id		The user the points were added to
+		 * @var float	amount		The amount of points that was added
+		 * @since 1.2.9
+		 */
+		$vars = [
+			'user_id',
+			'amount',
+		];
+		extract($this->dispatcher->trigger_event('dmzx.ultimatepoints.add_points_after', compact($vars)));
+
 		return;
 	}
 
@@ -290,6 +317,20 @@ class functions_points
 			WHERE user_id = ' . (int) $user_id;
 		$this->db->sql_query($sql);
 
+		/**
+		 * Event that is triggered after points were substracted from a user
+		 *
+		 * @event dmzx.ultimatepoints.substract_points_after
+		 * @var int		user_id		The user the points were substracted from
+		 * @var float	amount		The amount of points that was substracted
+		 * @since 1.2.9
+		 */
+		$vars = [
+			'user_id',
+			'amount',
+		];
+		extract($this->dispatcher->trigger_event('dmzx.ultimatepoints.substract_points_after', compact($vars)));
+
 		return;
 	}
 
@@ -307,6 +348,20 @@ class functions_points
 			SET ' . $this->db->sql_build_array('UPDATE', $data) . '
 			WHERE user_id = ' . (int) $user_id;
 		$this->db->sql_query($sql);
+
+		/**
+		 * Event that is triggered after a user's points were set to a fixed amount
+		 *
+		 * @event dmzx.ultimatepoints.set_points_after
+		 * @var int		user_id		The user whose points were set
+		 * @var float	amount		The new amount of points
+		 * @since 1.2.9
+		 */
+		$vars = [
+			'user_id',
+			'amount',
+		];
+		extract($this->dispatcher->trigger_event('dmzx.ultimatepoints.set_points_after', compact($vars)));
 
 		return;
 	}
@@ -326,6 +381,20 @@ class functions_points
 			WHERE user_id = ' . (int) $user_id;
 		$this->db->sql_query($sql);
 
+		/**
+		 * Event that is triggered after a user's bank holding was set to a fixed amount
+		 *
+		 * @event dmzx.ultimatepoints.set_bank_after
+		 * @var int		user_id		The user whose bank holding was set
+		 * @var float	amount		The new bank holding
+		 * @since 1.2.9
+		 */
+		$vars = [
+			'user_id',
+			'amount',
+		];
+		extract($this->dispatcher->trigger_event('dmzx.ultimatepoints.set_bank_after', compact($vars)));
+
 		return;
 	}
 
@@ -336,7 +405,7 @@ class functions_points
 	{
 		$decimals = 2;
 
-		return number_format($num, $decimals, $this->user->lang['POINTS_SEPARATOR_DECIMAL'], $this->user->lang['POINTS_SEPARATOR_THOUSANDS']);
+		return number_format($num, $decimals, $this->language->lang('POINTS_SEPARATOR_DECIMAL'), $this->language->lang('POINTS_SEPARATOR_THOUSANDS'));
 	}
 
 	/**
@@ -452,10 +521,10 @@ class functions_points
 				$lottery_enabled = $this->db->sql_fetchfield('lottery_enable');
 				$this->db->sql_freeresult($result);
 
-				if ($lottery_enabled = 1)
+				if ($lottery_enabled == 1)
 				{
 					$winner_notification = $this->number_format_points($points_values['lottery_jackpot']) . ' ' . ($this->config['points_name']) . ' ';
-					$winner_deposit = $this->user->lang['LOTTERY_PM_CASH_ENABLED'];
+					$winner_deposit = $this->language->lang('LOTTERY_PM_CASH_ENABLED');
 					$amount_won = $points_values['lottery_jackpot'];
 				}
 				else
@@ -466,7 +535,7 @@ class functions_points
 				}
 
 				// Update previous winner information
-				$this->set_points_values('lottery_prev_winner', ("'" . $winner['username'] . "'"));
+				$this->set_points_values('lottery_prev_winner', $winner['username']);
 				$this->set_points_values('lottery_prev_winner_id', $winner['user_id']);
 
 				// Check, if user wants to be informed by PM
@@ -485,8 +554,8 @@ class functions_points
 					$this->db->sql_freeresult($result);
 
 					// Notify the lucky winner by PM
-					$pm_subject = $this->user->lang['LOTTERY_PM_SUBJECT'];
-					$pm_text = sprintf($this->user->lang['LOTTERY_PM_BODY'], $winner_notification, $winner_deposit);
+					$pm_subject = $this->language->lang('LOTTERY_PM_SUBJECT');
+					$pm_text = sprintf($this->language->lang('LOTTERY_PM_BODY'), $winner_notification, $winner_deposit);
 
 					include_once($this->root_path . 'includes/message_parser.' . $this->php_ext);
 
@@ -497,7 +566,7 @@ class functions_points
 					$pm_data = [
 						'address_list' => ['u' => [$winner['user_id'] => 'to']],
 						'from_user_id' => ($points_values['lottery_pm_from'] == 0) ? $winner['user_id'] : $pm_sender['user_id'],
-						'from_username' => ($points_values['lottery_pm_from'] == 0) ? $this->user->lang['LOTTERY_PM_COMMISION'] : $pm_sender['username'],
+						'from_username' => ($points_values['lottery_pm_from'] == 0) ? $this->language->lang('LOTTERY_PM_COMMISION') : $pm_sender['username'],
 						'icon_id' => 0,
 						'from_user_ip' => '',
 
@@ -526,7 +595,7 @@ class functions_points
 				// Update mChat with lottery winner
 				if ($this->phpbb_container->has('dmzx.mchat.settings') && $this->config['lottery_mchat_enable'])
 				{
-					$message = $this->user->lang['LOTTERY_MCHAT_WINNER'];
+					$message = $this->language->lang('LOTTERY_MCHAT_WINNER');
 					$name = $points_values['lottery_name'];
 
 					$this->mchat_message($winner['user_id'], $points_values['lottery_jackpot'], $message, $name);
@@ -540,7 +609,7 @@ class functions_points
 				// Store the notification data we will use in an array
 				$data = [
 					'points_notify_id' => (int) $this->config['points_notification_id'],
-					'points_notify_msg' => sprintf($this->user->lang['NOTIFICATION_LOTTERY_WINNER'], $points_values['lottery_jackpot'], $this->config['points_name']),
+					'points_notify_msg' => sprintf($this->language->lang('NOTIFICATION_LOTTERY_WINNER'), $points_values['lottery_jackpot'], $this->config['points_name']),
 					'sender' => (int) $winner['user_id'],
 					'receiver' => (int) $winner['user_id'],
 					'mode' => 'lottery', // The mode where the notification sends the user to
@@ -551,7 +620,22 @@ class functions_points
 				$this->set_points_values('lottery_winners_total', $points_values['lottery_winners_total'] + 1);
 
 				// Add jackpot to winner
-				$this->add_points((int) $winner['user_id'], $points_values['lottery_jackpot']);
+				$amount_won = $points_values['lottery_jackpot'];
+				$this->add_points((int) $winner['user_id'], $amount_won);
+
+				/**
+				 * Event that is triggered after a lottery winner has been selected and paid
+				 *
+				 * @event dmzx.ultimatepoints.lottery_winner_selected
+				 * @var array	winner		The winning user's row (user_id, username, etc.)
+				 * @var float	amount_won	The jackpot amount that was paid out to the winner
+				 * @since 1.2.9
+				 */
+				$vars = [
+					'winner',
+					'amount_won',
+				];
+				extract($this->dispatcher->trigger_event('dmzx.ultimatepoints.lottery_winner_selected', compact($vars)));
 
 				// Reset jackpot
 				$this->set_points_values('lottery_jackpot', $points_values['lottery_base_amount']);
@@ -571,7 +655,7 @@ class functions_points
 				$this->db->sql_query($sql);
 
 				// Update previous winner information
-				$this->set_points_values('lottery_prev_winner', "'" . $no_winner . "'");
+				$this->set_points_values('lottery_prev_winner', $no_winner);
 				$this->set_points_values('lottery_prev_winner_id', 0);
 			}
 		}
@@ -633,11 +717,16 @@ class functions_points
 
 	/**
 	 * Set points values
+	 *
+	 * Builds the UPDATE via sql_build_array() so callers can pass raw
+	 * values (int, float or string) without pre-quoting/escaping them
+	 * themselves. Previously this concatenated $value directly into the
+	 * SQL string with no escaping at all.
 	 */
 	function set_points_values($field, $value)
 	{
-		$sql = "UPDATE " . $this->points_values_table . "
-			SET $field = $value";
+		$sql = 'UPDATE ' . $this->points_values_table . '
+			SET ' . $this->db->sql_build_array('UPDATE', [$field => $value]);
 		$this->db->sql_query($sql);
 
 		return;
@@ -744,7 +833,7 @@ class functions_points
 			// Store the notification data we will use in an array
 			$data = [
 				'points_notify_id' => (int) $this->config['points_notification_id'],
-				'points_notify_msg' => sprintf($this->user->lang['NOTIFICATION_RANDOM_BONUS'], $bonus_value, $this->config['points_name']),
+				'points_notify_msg' => sprintf($this->language->lang('NOTIFICATION_RANDOM_BONUS'), $bonus_value, $this->config['points_name']),
 				'sender' => (int) $this->user->data['user_id'],
 				'receiver' => (int) $user_id,
 				'mode' => 'logs', // The mode where the notification sends the user to
@@ -816,6 +905,31 @@ class functions_points
 
 			$this->db->sql_query('INSERT INTO ' . $table_prefix . 'mchat' . ' ' . $this->db->sql_build_array('INSERT', $sql_arys));
 		}
+	}
+
+	/**
+	 * Get a user's avatar HTML.
+	 *
+	 * phpBB 3.3.x exposes the global phpbb_get_user_avatar() function.
+	 * phpBB 4.0 removed it in favour of the avatar.helper service, whose
+	 * get_user_avatar() returns a data array rather than an HTML string
+	 * (the 'html' key holds the equivalent markup, kept for BC until 4.1).
+	 */
+	function get_user_avatar($row)
+	{
+		if (function_exists('phpbb_get_user_avatar'))
+		{
+			return phpbb_get_user_avatar($row);
+		}
+
+		if ($this->phpbb_container->has('avatar.helper'))
+		{
+			$avatar = $this->phpbb_container->get('avatar.helper')->get_user_avatar($row);
+
+			return $avatar['html'];
+		}
+
+		return '';
 	}
 
 	function get_name()

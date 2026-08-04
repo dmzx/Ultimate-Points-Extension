@@ -19,6 +19,12 @@
 		{% if ROBBERY_ENABLE and U_USE_ROBBERY %}
 		<li class="tab"><a href="{{ U_ROBBERY }}">{{ lang('POINTS_ROBBERY') }}</a></li>
 		{% endif %}
+		{% if BOUNTY_ENABLE and U_USE_BOUNTY %}
+		<li class="tab"><a href="{{ U_BOUNTY }}">{{ lang('POINTS_BOUNTY') }}</a></li>
+		{% endif %}
+		{% if DUEL_ENABLE and U_USE_DUEL %}
+		<li class="tab"><a href="{{ U_DUEL }}">{{ lang('POINTS_DUEL') }}</a></li>
+		{% endif %}
 	</ul>
 </div>
 

@@ -15,6 +15,7 @@ use phpbb\controller\helper;
 use phpbb\db\driver\driver_interface;
 use phpbb\pagination;
 use phpbb\request\request;
+use phpbb\language\language;
 use phpbb\template\template;
 use phpbb\user;
 
@@ -28,6 +29,9 @@ class userlist
 
 	/** @var user */
 	protected $user;
+
+	/** @var language */
+	protected $language;
 
 	/** @var driver_interface */
 	protected $db;
@@ -72,6 +76,7 @@ class userlist
 		functions_points $functions_points,
 		template $template,
 		user $user,
+		language $language,
 		driver_interface $db,
 		request $request,
 		config $config,
@@ -84,6 +89,7 @@ class userlist
 		$this->functions_points = $functions_points;
 		$this->template = $template;
 		$this->user = $user;
+		$this->language = $language;
 		$this->db = $db;
 		$this->request = $request;
 		$this->config = $config;
@@ -101,7 +107,7 @@ class userlist
 		// UPlist disabled
 		if (!$points_config['uplist_enable'])
 		{
-			$message = $this->user->lang['POINTS_LIST_DISABLE'] . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller') . '">&laquo; ' . $this->user->lang['BACK_TO_PREV'] . '</a>';
+			$message = $this->language->lang('POINTS_LIST_DISABLE') . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller') . '">&laquo; ' . $this->language->lang('BACK_TO_PREV') . '</a>';
 			trigger_error($message);
 		}
 
@@ -124,7 +130,7 @@ class userlist
 		{
 			$this->template->assign_block_vars('ultimatelist', [
 				'USERNAME' => get_username_string('full', $row['user_id'], $row['username'], $row['user_colour']),
-				'AVATAR' => phpbb_get_user_avatar($row),
+				'AVATAR' => $this->functions_points->get_user_avatar($row),
 				'POINT' => sprintf($this->functions_points->number_format_points($row['user_points'])),
 			]);
 		}
@@ -143,7 +149,7 @@ class userlist
 		$this->pagination->generate_template_pagination($pagination_url, 'pagination', 'start', $ultimatepoints_total, $limit, $start);
 
 		$this->template->assign_vars([
-			'TOTAL_ULTIMATEPOINTS_LIST' => ($ultimatepoints_total == 1) ? $this->user->lang['POINTS_LIST_USER'] : sprintf($this->user->lang['POINTS_LIST_USERS'], $ultimatepoints_total),
+			'TOTAL_ULTIMATEPOINTS_LIST' => ($ultimatepoints_total == 1) ? $this->language->lang('POINTS_LIST_USER') : sprintf($this->language->lang('POINTS_LIST_USERS'), $ultimatepoints_total),
 			'POINTS_LIST_TOTAL' => $this->config['points_name_uplist'],
 			'POINTS_LINK' => $this->config['points_name'],
 			'ULTIMATEPOINTS_FOOTER_VIEW' => true,

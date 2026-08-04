@@ -1,0 +1,173 @@
+{% INCLUDE 'overall_header.html' %}
+
+{% INCLUDECSS '@dmzx_ultimatepoints/ultimatepoints.css' %}
+
+<div id="tabs" class="tabs">
+	<ul>
+		<li class="tab"><a href="{{ U_POINTS }}">{{ lang('POINTS_OVERVIEW') }}</a></li>
+		<li class="tab"><a href="{{ U_INFO }}">{{ lang('POINTS_INFO') }}</a></li>
+		{% if TRANSFER_ENABLE and U_USE_TRANSFER %}
+		<li class="tab"><a href="{{ U_TRANSFER_USER }}">{{ lang('POINTS_TRANSFER') }}</a></li>
+		{% endif %}
+		{% if LOGS_ENABLE and U_USE_LOGS %}
+		<li class="tab"><a href="{{ U_LOGS }}">{{ lang('POINTS_LOGS') }}</a></li>
+		{% endif %}
+		{% if LOTTERY_ENABLE and U_USE_LOTTERY %}
+		<li class="tab"><a href="{{ U_LOTTERY }}">{{ LOTTERY_NAME }}</a></li>
+		{% endif %}
+		{% if BANK_ENABLE and U_USE_BANK %}
+		<li class="tab"><a href="{{ U_BANK }}">{{ BANK_NAME }}</a></li>
+		{% endif %}
+		{% if ROBBERY_ENABLE and U_USE_ROBBERY %}
+		<li class="tab"><a href="{{ U_ROBBERY }}">{{ lang('POINTS_ROBBERY') }}</a></li>
+		{% endif %}
+		{% if BOUNTY_ENABLE and U_USE_BOUNTY %}
+		<li class="tab activetab"><a href="{{ U_BOUNTY }}">{{ lang('POINTS_BOUNTY') }}</a></li>
+		{% endif %}
+		{% if DUEL_ENABLE and U_USE_DUEL %}
+		<li class="tab"><a href="{{ U_DUEL }}">{{ lang('POINTS_DUEL') }}</a></li>
+		{% endif %}
+	</ul>
+</div>
+
+<div class="panel bg3">
+	<div class="inner">
+
+		<div id="cp-menu">
+
+			<div class="cp-mini" style="min-height: 210px;">
+				<div class="inner">
+					<dl class="mini">
+						<dd><h3>{{ lang('POINTS_DESCRIPTION') }}</h3></dd>
+						<dd>{{ lang('BOUNTY_DESCRIPTION', POINTS_NAME) }}</dd>
+						<dd>{{ lang('BOUNTY_REWARD_RANGE_HINT', BOUNTY_MIN_REWARD, BOUNTY_MAX_REWARD, POINTS_NAME) }}</dd>
+					</dl>
+				</div>
+			</div>
+		</div>
+
+		<div id="cp-main" class="ucp-main">
+			<h2><i class="icon fa-list-check" aria-hidden="true"></i> {{ lang('POINTS_BOUNTY') }}</h2>
+
+			{% if S_USER_LOGGED_IN %}
+			<p>{{ lang('POINTS_CASH_ON_HAND') }}{{ lang('COLON') }}&nbsp;{{ USER_POINTS }} {{ POINTS_NAME }}</p>
+
+			<form id="bounty_post" class="bounty-post-form" action="{{ U_BOUNTY }}" method="post">
+				<div class="panel">
+					<div class="inner">
+						<h3>{{ lang('BOUNTY_POST_NEW') }}</h3>
+						<fieldset>
+							<div class="bounty-field">
+								<label for="bounty_title"><strong>{{ lang('BOUNTY_FIELD_TITLE') }}{{ lang('COLON') }}</strong></label><br/>
+								<input type="text" id="bounty_title" class="inputbox" name="title" maxlength="100" value=""/>
+							</div>
+							<div class="bounty-field">
+								<label for="bounty_description"><strong>{{ lang('BOUNTY_FIELD_DESCRIPTION') }}{{ lang('COLON') }}</strong></label><br/>
+								<textarea id="bounty_description" name="description"></textarea>
+							</div>
+							<div class="bounty-field">
+								<label for="bounty_reward"><strong>{{ lang('BOUNTY_FIELD_REWARD') }}{{ lang('COLON') }}</strong></label><br/>
+								<input type="text" id="bounty_reward" class="inputbox autowidth" name="reward" maxlength="10" value=""/> {{ POINTS_NAME }}
+							</div>
+						</fieldset>
+						<fieldset class="submit-buttons">
+							<input type="hidden" name="action" value="post"/>
+							<input type="submit" name="submit" value="{{ lang('BOUNTY_POST_BUTTON') }}" class="button1"/>
+							{{ S_FORM_TOKEN }}
+						</fieldset>
+					</div>
+				</div>
+			</form>
+
+			<div class="bounty-list">
+				{% if bounty %}
+				{% for bounty in bounty %}
+				<div class="bounty-row{% if bounty.S_BOUNTY_COMPLETED %} bounty-completed{% endif %}">
+					<div class="bounty-row-main">
+						<div class="bounty-row-title">{{ bounty.BOUNTY_TITLE }}</div>
+						<div>{{ bounty.BOUNTY_DESCRIPTION }}</div>
+						<div class="bounty-row-meta">
+							{{ lang('BOUNTY_POSTED_BY', bounty.BOUNTY_POSTER) }}
+							{% if bounty.BOUNTY_CLAIMER %} &middot; {{ lang('BOUNTY_CLAIMED_BY', bounty.BOUNTY_CLAIMER) }}{% endif %}
+							&middot; {{ bounty.BOUNTY_CREATED }}
+						</div>
+					</div>
+					<div class="bounty-row-side">
+						<div class="bounty-reward">{{ bounty.BOUNTY_REWARD }} {{ POINTS_NAME }}</div>
+						{% if bounty.S_BOUNTY_OPEN %}
+						<span class="bounty-status bounty-status-open">{{ lang('BOUNTY_STATUS_OPEN') }}</span>
+						{% elseif bounty.S_BOUNTY_CLAIMED %}
+						<span class="bounty-status bounty-status-claimed">{{ lang('BOUNTY_STATUS_CLAIMED') }}</span>
+						{% elseif bounty.S_BOUNTY_PENDING %}
+						<span class="bounty-status bounty-status-pending">{{ lang('BOUNTY_STATUS_PENDING') }}</span>
+						{% endif %}
+					</div>
+					{% if bounty.S_BOUNTY_CAN_CLAIM or bounty.S_BOUNTY_CAN_CANCEL or bounty.S_BOUNTY_CAN_SUBMIT or bounty.S_BOUNTY_CAN_REVIEW %}
+					<div class="bounty-row-actions">
+						{% if bounty.S_BOUNTY_CAN_CLAIM %}
+						<form action="{{ U_BOUNTY }}" method="post" style="display:inline;">
+							<input type="hidden" name="bounty_id" value="{{ bounty.BOUNTY_ID }}"/>
+							<input type="submit" name="bounty_claim" value="{{ lang('BOUNTY_CLAIM_BUTTON') }}" class="button2"/>
+							{{ S_FORM_TOKEN }}
+						</form>
+						{% endif %}
+						{% if bounty.S_BOUNTY_CAN_CANCEL %}
+						<form action="{{ U_BOUNTY }}" method="post" style="display:inline;">
+							<input type="hidden" name="bounty_id" value="{{ bounty.BOUNTY_ID }}"/>
+							<input type="submit" name="bounty_cancel" value="{{ lang('BOUNTY_CANCEL_BUTTON') }}" class="button2"/>
+							{{ S_FORM_TOKEN }}
+						</form>
+						{% endif %}
+						{% if bounty.S_BOUNTY_CAN_SUBMIT %}
+						<form action="{{ U_BOUNTY }}" method="post" style="display:inline;">
+							<input type="hidden" name="bounty_id" value="{{ bounty.BOUNTY_ID }}"/>
+							<input type="submit" name="bounty_submit_work" value="{{ lang('BOUNTY_SUBMIT_BUTTON') }}" class="button1"/>
+							{{ S_FORM_TOKEN }}
+						</form>
+						{% endif %}
+						{% if bounty.S_BOUNTY_CAN_REVIEW %}
+						<form action="{{ U_BOUNTY }}" method="post" style="display:inline;">
+							<input type="hidden" name="bounty_id" value="{{ bounty.BOUNTY_ID }}"/>
+							<input type="submit" name="bounty_reject" value="{{ lang('BOUNTY_REJECT_BUTTON') }}" class="button2"/>
+							<input type="submit" name="bounty_approve" value="{{ lang('BOUNTY_APPROVE_BUTTON') }}" class="button1"/>
+							{{ S_FORM_TOKEN }}
+						</form>
+						{% endif %}
+					</div>
+					{% endif %}
+				</div>
+				{% endfor %}
+				{% else %}
+				<p>{{ lang('BOUNTY_NO_OPEN') }}</p>
+				{% endif %}
+			</div>
+
+			{% if bounty_completed %}
+			<h3>{{ lang('BOUNTY_HISTORY_TITLE') }}</h3>
+			<div class="bounty-list">
+				{% for bounty_completed in bounty_completed %}
+				<div class="bounty-row bounty-completed">
+					<div class="bounty-row-main">
+						<div class="bounty-row-title">{{ bounty_completed.BOUNTY_TITLE }}</div>
+						<div class="bounty-row-meta">
+							{{ lang('BOUNTY_POSTED_BY', bounty_completed.BOUNTY_POSTER) }}
+							&middot; {{ lang('BOUNTY_CLAIMED_BY', bounty_completed.BOUNTY_CLAIMER) }}
+						</div>
+					</div>
+					<div class="bounty-row-side">
+						<div class="bounty-reward">{{ bounty_completed.BOUNTY_REWARD }} {{ POINTS_NAME }}</div>
+						<span class="bounty-status bounty-status-completed">{{ lang('BOUNTY_STATUS_COMPLETED') }}</span>
+					</div>
+				</div>
+				{% endfor %}
+			</div>
+			{% endif %}
+
+			{% else %}
+			<p>{{ lang('POINTS_BOT_GUEST') }}</p>
+			{% endif %}
+		</div>
+	</div>
+</div>
+
+{% INCLUDE 'overall_footer.html' %}

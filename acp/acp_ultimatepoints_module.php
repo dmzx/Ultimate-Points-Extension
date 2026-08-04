@@ -13,9 +13,18 @@ class acp_ultimatepoints_module
 {
 	public $u_action;
 
+	/** @var string Set by phpBB core (functions_module.php) */
+	public $module_path;
+
+	/** @var string */
+	public $tpl_name;
+
+	/** @var string */
+	public $page_title;
+
 	function main($id, $mode)
 	{
-		global $phpbb_container, $user;
+		global $phpbb_container, $user, $language;
 
 		// Get an instance of the admin controller
 		$admin_controller = $phpbb_container->get('dmzx.ultimatepoints.admin.controller');
@@ -32,7 +41,7 @@ class acp_ultimatepoints_module
 				// Load a template from adm/style for our ACP page
 				$this->tpl_name = 'acp_points_main';
 				// Set the page title for our ACP page
-				$this->page_title = $user->lang['ACP_POINTS_INDEX_TITLE'];
+				$this->page_title = $language->lang('ACP_POINTS_INDEX_TITLE');
 				// Load the display points in the admin controller
 				$admin_controller->display_points();
 				break;
@@ -41,7 +50,7 @@ class acp_ultimatepoints_module
 				// Load a template from adm/style for our ACP page
 				$this->tpl_name = 'acp_points_lottery';
 				// Set the page title for our ACP page
-				$this->page_title = $user->lang['ACP_POINTS_LOTTERY_TITLE'];
+				$this->page_title = $language->lang('ACP_POINTS_LOTTERY_TITLE');
 				// Load the display lottery in the admin controller
 				$admin_controller->display_lottery();
 				break;
@@ -50,7 +59,7 @@ class acp_ultimatepoints_module
 				// Load a template from adm/style for our ACP page
 				$this->tpl_name = 'acp_points_bank';
 				// Set the page title for our ACP page
-				$this->page_title = $user->lang['ACP_POINTS_BANK_TITLE'];
+				$this->page_title = $language->lang('ACP_POINTS_BANK_TITLE');
 				// Load the display bank in the admin controller
 				$admin_controller->display_bank();
 				break;
@@ -59,16 +68,34 @@ class acp_ultimatepoints_module
 				// Load a template from adm/style for our ACP page
 				$this->tpl_name = 'acp_points_robbery';
 				// Set the page title for our ACP page
-				$this->page_title = $user->lang['ACP_POINTS_ROBBERY_TITLE'];
+				$this->page_title = $language->lang('ACP_POINTS_ROBBERY_TITLE');
 				// Load the display robbery in the admin controller
 				$admin_controller->display_robbery();
+				break;
+
+			case 'bounty':
+				// Load a template from adm/style for our ACP page
+				$this->tpl_name = 'acp_points_bounty';
+				// Set the page title for our ACP page
+				$this->page_title = $language->lang('ACP_POINTS_BOUNTY_TITLE');
+				// Load the display bounty in the admin controller
+				$admin_controller->display_bounty();
+				break;
+
+			case 'duels':
+				// Load a template from adm/style for our ACP page
+				$this->tpl_name = 'acp_points_duels';
+				// Set the page title for our ACP page
+				$this->page_title = $language->lang('ACP_POINTS_DUELS_TITLE');
+				// Load the display duels in the admin controller
+				$admin_controller->display_duels();
 				break;
 
 			case 'userguide':
 				// Load a template from adm/style for our ACP page
 				$this->tpl_name = 'acp_points_userguide';
 				// Set the page title for our ACP page
-				$this->page_title = $user->lang['ACP_POINTS_USERGUIDE_TITLE'];
+				$this->page_title = $language->lang('ACP_POINTS_USERGUIDE_TITLE');
 				// Load the display userguide in the admin controller
 				$admin_controller->display_userguide();
 				break;
@@ -77,7 +104,7 @@ class acp_ultimatepoints_module
 				// Load a template from adm/style for our ACP page
 				$this->tpl_name = 'acp_points_forum';
 				// Set the page title for our ACP page
-				$this->page_title = $user->lang['ACP_POINTS_FORUM_TITLE'];
+				$this->page_title = $language->lang('ACP_POINTS_FORUM_TITLE');
 				// Load the display forumpoints in the admin controller
 				$admin_controller->display_forumpoints();
 				break;

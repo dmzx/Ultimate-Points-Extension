@@ -2,6 +2,21 @@
 
 --------------------------- */
 
+/* phpBB 4.0 (FA6) compatibility shim.
+   phpBB 4.0 removed the .icon font-family/weight rule (replaced by the
+   Icon() Twig helper + .o-icon system) and the FA4 v4-shims stylesheet.
+   This restores the same rendering this extension relied on in 3.3.x
+   for every <i class="icon fa-xxx"> occurrence across all templates. */
+.icon {
+    font-family: "Font Awesome 6 Free", "Font Awesome 6 Brands", FontAwesome;
+    font-weight: 900;
+    font-style: normal;
+    display: inline-block;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
 .icon-points {
     background-image: url("./images/icon_points.gif");
 }
@@ -71,4 +86,207 @@ table.table1 thead.logs_head th {
     top: 0px;
     max-height: 20px;
     max-width: 20px;
+}
+
+/* Bounty board */
+.bounty-post-form .bounty-field {
+    margin-bottom: 10px;
+}
+
+.bounty-post-form textarea {
+    width: 100%;
+    min-height: 80px;
+    box-sizing: border-box;
+}
+
+.bounty-list {
+    margin-top: 1em;
+}
+
+.bounty-row {
+    border: 1px solid;
+    border-radius: 4px;
+    padding: 10px 14px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.bounty-row.bounty-completed {
+    opacity: 0.75;
+}
+
+.bounty-row-main {
+    flex: 1 1 260px;
+    min-width: 0;
+}
+
+.bounty-row-title {
+    font-weight: bold;
+}
+
+.bounty-row-meta {
+    font-size: 0.85em;
+}
+
+.bounty-row-side {
+    flex: 0 0 auto;
+    text-align: right;
+}
+
+.bounty-reward {
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+.bounty-status {
+    display: inline-block;
+    margin-top: 4px;
+    padding: 2px 8px;
+    border-radius: 8px;
+    font-size: 0.75em;
+}
+
+.bounty-status-open {
+    background: #dcecc9;
+    color: #3d6b1f;
+}
+
+.bounty-status-claimed {
+    background: #fbe6c2;
+    color: #8a5a0a;
+}
+
+.bounty-status-pending {
+    background: #f7d6d6;
+    color: #a0342a;
+}
+
+.bounty-status-completed {
+    background: #dfe3e6;
+    color: #5a6472;
+}
+
+.bounty-row-actions {
+    flex: 1 1 100%;
+    text-align: right;
+    margin-top: 6px;
+}
+
+/* Duel / Wager */
+.duel-challenge-form .duel-field {
+    margin-bottom: 10px;
+}
+
+.duel-list {
+    margin-top: 1em;
+}
+
+.duel-row {
+    border: 1px solid;
+    border-radius: 4px;
+    padding: 10px 14px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.duel-row.duel-completed {
+    opacity: 0.75;
+}
+
+.duel-row-main {
+    flex: 1 1 260px;
+    min-width: 0;
+}
+
+.duel-row-title {
+    font-weight: bold;
+}
+
+.duel-row-meta {
+    font-size: 0.85em;
+}
+
+.duel-row-side {
+    flex: 0 0 auto;
+    text-align: right;
+}
+
+.duel-wager {
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+.duel-status {
+    display: inline-block;
+    margin-top: 4px;
+    padding: 2px 8px;
+    border-radius: 8px;
+    font-size: 0.75em;
+}
+
+.duel-status-pending {
+    background: #f7d6d6;
+    color: #a0342a;
+}
+
+.duel-status-active {
+    background: #fbe6c2;
+    color: #8a5a0a;
+}
+
+.duel-row-actions {
+    flex: 1 1 100%;
+    text-align: right;
+    margin-top: 6px;
+}
+
+.duel-awaiting-mod {
+    font-size: 0.85em;
+    font-style: italic;
+    color: #5a6472;
+}
+
+/* Stack the bank/lottery/robbery/bounty/duel sidebar layout on narrow
+   viewports instead of the fixed 19%/81% float split, and let bounty
+   and duel rows collapse to a single column. */
+@media (max-width: 700px) {
+    #cp-menu {
+        float: none;
+        width: 100%;
+    }
+
+    #cp-main {
+        float: none;
+        width: 100%;
+    }
+
+    .bounty-row,
+    .duel-row {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .bounty-row-side,
+    .duel-row-side {
+        text-align: left;
+    }
+
+    .bounty-row-actions,
+    .duel-row-actions {
+        text-align: left;
+    }
+
+    .bounty-row-actions input[type="submit"],
+    .duel-row-actions input[type="submit"] {
+        width: 100%;
+        margin-bottom: 6px;
+    }
 }

@@ -13,6 +13,7 @@ use phpbb\auth\auth;
 use phpbb\config\config;
 use phpbb\controller\helper;
 use phpbb\db\driver\driver_interface;
+use phpbb\language\language;
 use phpbb\template\template;
 use phpbb\user;
 
@@ -29,6 +30,9 @@ class points_main
 
 	/** @var user */
 	protected $user;
+
+	/** @var language */
+	protected $language;
 
 	/** @var driver_interface */
 	protected $db;
@@ -80,6 +84,7 @@ class points_main
 		auth $auth,
 		template $template,
 		user $user,
+		language $language,
 		driver_interface $db,
 		config $config,
 		helper $helper,
@@ -95,6 +100,7 @@ class points_main
 		$this->auth = $auth;
 		$this->template = $template;
 		$this->user = $user;
+		$this->language = $language;
 		$this->db = $db;
 		$this->config = $config;
 		$this->helper = $helper;
@@ -128,6 +134,11 @@ class points_main
 		$row = $this->db->sql_fetchrow($result);
 		$this->db->sql_freeresult($result);
 
+		// sql_fetchrow() returns false if the user has no bank account yet.
+		// Normalize to an array so downstream ['key'] access doesn't trigger
+		// "Trying to access array offset on value of type bool" (PHP 7.4+/8.x).
+		$row = is_array($row) ? $row : [];
+
 		// Select user's lottery tickets
 		$viewer_total_tickets = '';
 
@@ -147,30 +158,37 @@ class points_main
 		}
 
 		// Generate the page header
-		page_header(sprintf($this->user->lang['POINTS_TITLE_MAIN'], $this->config['points_name']));
+		page_header(sprintf($this->language->lang('POINTS_TITLE_MAIN'), $this->config['points_name']));
 
 		$user_name = get_username_string('full', $checked_user['user_id'], $checked_user['username'], $checked_user['user_colour']);
 
+		// Extract the actual field values here - a bare `is_array($row) && $row['x']`
+		// always evaluates to a boolean (PHP's && operator never returns its operand),
+		// which previously made $bank_holding always true/false instead of the real
+		// value, so MAIN_BANK_HAVE always displayed "1.00" regardless of balance.
+		$bank_user_id = isset($row['user_id']) ? (int) $row['user_id'] : 0;
+		$bank_holding = isset($row['holding']) ? (float) $row['holding'] : 0.0;
+
 		// Generate some language stuff, dependig on the fact, if user has a bank account or not
-		if ((is_array($row) && $row['user_id'] != $this->user->data['user_id']) || (is_array($row) && $row['holding'] < 1))
+		if ($bank_user_id != $this->user->data['user_id'] || $bank_holding < 1)
 		{
 			$this->template->assign_vars([
-				'L_MAIN_ON_HAND' => sprintf($this->user->lang['MAIN_ON_HAND'], $this->functions_points->number_format_points($checked_user['user_points']), $this->config['points_name']),
-				'L_MAIN_HELLO_USERNAME' => sprintf($this->user->lang['MAIN_HELLO_USERNAME'], $user_name),
-				'L_MAIN_LOTTERY_TICKETS' => sprintf($this->user->lang['MAIN_LOTTERY_TICKETS'], $viewer_total_tickets),
+				'L_MAIN_ON_HAND' => sprintf($this->language->lang('MAIN_ON_HAND'), $this->functions_points->number_format_points($checked_user['user_points']), $this->config['points_name']),
+				'L_MAIN_HELLO_USERNAME' => sprintf($this->language->lang('MAIN_HELLO_USERNAME'), $user_name),
+				'L_MAIN_LOTTERY_TICKETS' => sprintf($this->language->lang('MAIN_LOTTERY_TICKETS'), $viewer_total_tickets),
 			]);
 		} else
 		{
 			$this->template->assign_vars([
-				'L_MAIN_ON_HAND' => $this->auth->acl_get('u_use_points') ? sprintf($this->user->lang['MAIN_ON_HAND'], $this->functions_points->number_format_points($checked_user['user_points']), $this->config['points_name']) : '',
-				'L_MAIN_HELLO_USERNAME' => sprintf($this->user->lang['MAIN_HELLO_USERNAME'], $user_name),
-				'L_MAIN_LOTTERY_TICKETS' => $this->auth->acl_get('u_use_lottery') ? sprintf($this->user->lang['MAIN_LOTTERY_TICKETS'], $viewer_total_tickets) : '',
+				'L_MAIN_ON_HAND' => $this->auth->acl_get('u_use_points') ? sprintf($this->language->lang('MAIN_ON_HAND'), $this->functions_points->number_format_points($checked_user['user_points']), $this->config['points_name']) : '',
+				'L_MAIN_HELLO_USERNAME' => sprintf($this->language->lang('MAIN_HELLO_USERNAME'), $user_name),
+				'L_MAIN_LOTTERY_TICKETS' => $this->auth->acl_get('u_use_lottery') ? sprintf($this->language->lang('MAIN_LOTTERY_TICKETS'), $viewer_total_tickets) : '',
 			]);
 
 			if ($this->auth->acl_get('u_use_bank'))
 			{
 				$this->template->assign_block_vars('has_bank_account', [
-					'L_MAIN_BANK_HAVE' => sprintf($this->user->lang['MAIN_BANK_HAVE'], $this->functions_points->number_format_points(is_array($row) && $row['holding']), $this->config['points_name']),
+					'L_MAIN_BANK_HAVE' => sprintf($this->language->lang('MAIN_BANK_HAVE'), $this->functions_points->number_format_points($bank_holding), $this->config['points_name']),
 				]);
 			}
 		}
@@ -326,14 +344,18 @@ class points_main
 			'U_BANK' => $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'bank']),
 			'U_ROBBERY' => $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'robbery']),
 			'U_INFO' => $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'info']),
+			'U_BOUNTY' => $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'bounty']),
+			'U_DUEL' => $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'duel']),
 			'U_USE_TRANSFER' => $this->auth->acl_get('u_use_transfer'),
 			'U_USE_LOGS' => $this->auth->acl_get('u_use_logs'),
 			'U_USE_LOTTERY' => $this->auth->acl_get('u_use_lottery'),
 			'U_USE_BANK' => $this->auth->acl_get('u_use_bank'),
 			'U_USE_ROBBERY' => $this->auth->acl_get('u_use_robbery'),
+			'U_USE_BOUNTY' => $this->auth->acl_get('u_use_bounty'),
+			'U_USE_DUEL' => $this->auth->acl_get('u_use_duel'),
 			'S_BANK_ENABLE' => ($points_config['bank_enable']) ? true : false,
 			'S_LOTTERY_INFO' => ($points_config['lottery_enable']) ? true : false,
-			'POINTS_MOST_RICH_USERS' => sprintf($this->user->lang['POINTS_MOST_RICH_USERS'], $points_values['number_show_top_points']),
+			'POINTS_MOST_RICH_USERS' => sprintf($this->language->lang('POINTS_MOST_RICH_USERS'), $points_values['number_show_top_points']),
 		]);
 
 		// Generate the page template

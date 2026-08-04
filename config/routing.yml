@@ -1,6 +1,8 @@
 dmzx_ultimatepoints_controller:
   path: /ultimatepoints
+  methods: ['GET', 'POST']
   defaults: { _controller: 'dmzx.ultimatepoints.controller:handle_ultimatepoints' }
 dmzx_ultimatepoints_list_controller:
   path: /ultimatepointslist
+  methods: ['GET']
   defaults: { _controller: 'dmzx.ultimatepoints.list.controller:handle_ultimatepoints_list' }

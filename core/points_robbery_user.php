@@ -13,8 +13,10 @@ use phpbb\auth\auth;
 use phpbb\config\config;
 use phpbb\controller\helper;
 use phpbb\db\driver\driver_interface;
+use phpbb\event\dispatcher_interface;
 use phpbb\notification\manager;
 use phpbb\request\request;
+use phpbb\language\language;
 use phpbb\template\template;
 use phpbb\user;
 use Symfony\Component\DependencyInjection\Container;
@@ -33,6 +35,9 @@ class points_robbery_user
 	/** @var user */
 	protected $user;
 
+	/** @var language */
+	protected $language;
+
 	/** @var driver_interface */
 	protected $db;
 
@@ -50,6 +55,9 @@ class points_robbery_user
 
 	/** @var Container */
 	protected $phpbb_container;
+
+	/** @var dispatcher_interface */
+	protected $dispatcher;
 
 	/** @var string */
 	protected $php_ext;
@@ -80,6 +88,7 @@ class points_robbery_user
 	 * @param helper $helper
 	 * @param manager $notification_manager
 	 * @param Container $phpbb_container
+	 * @param dispatcher_interface $dispatcher
 	 * @param string $php_ext
 	 * @param string $root_path
 	 * @param string $points_config_table
@@ -92,12 +101,14 @@ class points_robbery_user
 		auth $auth,
 		template $template,
 		user $user,
+		language $language,
 		driver_interface $db,
 		request $request,
 		config $config,
 		helper $helper,
 		manager $notification_manager,
 		Container $phpbb_container,
+		dispatcher_interface $dispatcher,
 		$php_ext,
 		$root_path,
 		$points_config_table,
@@ -109,12 +120,14 @@ class points_robbery_user
 		$this->auth = $auth;
 		$this->template = $template;
 		$this->user = $user;
+		$this->language = $language;
 		$this->db = $db;
 		$this->request = $request;
 		$this->config = $config;
 		$this->helper = $helper;
 		$this->notification_manager = $notification_manager;
 		$this->phpbb_container = $phpbb_container;
+		$this->dispatcher = $dispatcher;
 		$this->php_ext = $php_ext;
 		$this->root_path = $root_path;
 		$this->points_config_table = $points_config_table;
@@ -135,21 +148,21 @@ class points_robbery_user
 		// Check, if user is allowed to use the robbery
 		if (!$this->auth->acl_get('u_use_robbery'))
 		{
-			$message = $this->user->lang['NOT_AUTHORISED'] . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller') . '">&laquo; ' . $this->user->lang['BACK_TO_PREV'] . '</a>';
+			$message = $this->language->lang('NOT_AUTHORISED') . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller') . '">&laquo; ' . $this->language->lang('BACK_TO_PREV') . '</a>';
 			trigger_error($message);
 		}
 
 		// Check, if robbery is enabled
 		if (!$points_config['robbery_enable'])
 		{
-			$message = $this->user->lang['ROBBERY_DISABLED'] . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller') . '">&laquo; ' . $this->user->lang['BACK_TO_PREV'] . '</a>';
+			$message = $this->language->lang('ROBBERY_DISABLED') . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller') . '">&laquo; ' . $this->language->lang('BACK_TO_PREV') . '</a>';
 			trigger_error($message);
 		}
 
 		// Add part to bar
 		$this->template->assign_block_vars('navlinks', [
 			'U_VIEW_FORUM' => $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'robbery_user']),
-			'FORUM_NAME' => sprintf($this->user->lang['POINTS_ROBBERY'], $this->config['points_name']),
+			'FORUM_NAME' => sprintf($this->language->lang('POINTS_ROBBERY'), $this->config['points_name']),
 		]);
 
 		// Read out cash of current user
@@ -185,21 +198,21 @@ class points_robbery_user
 
 			if ($attacked_amount <= 0)
 			{
-				$message = $this->user->lang['ROBBERY_TOO_SMALL_AMOUNT'] . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'robbery_user', 'user_id' => $user_id]) . '">&laquo; ' . $this->user->lang['BACK_TO_PREV'] . '</a>';
+				$message = $this->language->lang('ROBBERY_TOO_SMALL_AMOUNT') . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'robbery_user', 'user_id' => $user_id]) . '">&laquo; ' . $this->language->lang('BACK_TO_PREV') . '</a>';
 				trigger_error($message);
 			}
 
 			// Check, if user tries to rob himself
 			if ($this->user->data['user_id'] == (int) $u_id)
 			{
-				$message = $this->user->lang['ROBBERY_SELF'] . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'robbery_user', 'user_id' => $user_id]) . '">&laquo; ' . $this->user->lang['BACK_TO_PREV'] . '</a>';
+				$message = $this->language->lang('ROBBERY_SELF') . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'robbery_user', 'user_id' => $user_id]) . '">&laquo; ' . $this->language->lang('BACK_TO_PREV') . '</a>';
 				trigger_error($message);
 			}
 
 			// Check, if user tries to rob a guest?
 			if ($u_id == null)
 			{
-				$message = $this->user->lang['ROBBERY_GUEST'] . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller') . '">&laquo; ' . $this->user->lang['BACK_TO_PREV'] . '</a>';
+				$message = $this->language->lang('ROBBERY_GUEST') . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller') . '">&laquo; ' . $this->language->lang('BACK_TO_PREV') . '</a>';
 				trigger_error($message);
 			}
 
@@ -208,7 +221,7 @@ class points_robbery_user
 			{
 				if ($this->user->data['user_points'] < ($attacked_amount / 100 * $points_values['robbery_loose']))
 				{
-					$message = $this->user->lang['ROBBERY_TO_MUCH'] . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'robbery_user', 'user_id' => $user_id]) . '">&laquo; ' . $this->user->lang['BACK_TO_PREV'] . '</a>';
+					$message = $this->language->lang('ROBBERY_TO_MUCH') . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'robbery_user', 'user_id' => $user_id]) . '">&laquo; ' . $this->language->lang('BACK_TO_PREV') . '</a>';
 					trigger_error($message);
 				}
 			}
@@ -216,7 +229,7 @@ class points_robbery_user
 			// If no matching user id is found
 			if (!$user_id)
 			{
-				$message = $this->user->lang['POINTS_NO_USER'] . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'robbery_user', 'user_id' => $user_id]) . '">&laquo; ' . $this->user->lang['BACK_TO_PREV'] . '</a>';
+				$message = $this->language->lang('POINTS_NO_USER') . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'robbery_user', 'user_id' => $user_id]) . '">&laquo; ' . $this->language->lang('BACK_TO_PREV') . '</a>';
 				trigger_error($message);
 			}
 
@@ -235,7 +248,7 @@ class points_robbery_user
 
 			if ($attacked_amount > $pointsa)
 			{
-				$message = $this->user->lang['ROBBERY_TO_MUCH_FROM_USER'] . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'robbery_user', 'user_id' => $user_id]) . '">&laquo; ' . $this->user->lang['BACK_TO_PREV'] . '</a>';
+				$message = $this->language->lang('ROBBERY_TO_MUCH_FROM_USER') . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'robbery_user', 'user_id' => $user_id]) . '">&laquo; ' . $this->language->lang('BACK_TO_PREV') . '</a>';
 				trigger_error($message);
 			}
 
@@ -244,7 +257,7 @@ class points_robbery_user
 			{
 				if ($attacked_amount > ($pointsa / 100 * $points_values['robbery_max_rob']))
 				{
-					$message = sprintf($this->user->lang['ROBBERY_MAX_ROB'], $points_values['robbery_max_rob']) . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'robbery_user', 'user_id' => $user_id]) . '">&laquo; ' . $this->user->lang['BACK_TO_PREV'] . '</a>';
+					$message = sprintf($this->language->lang('ROBBERY_MAX_ROB'), $points_values['robbery_max_rob']) . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'robbery_user', 'user_id' => $user_id]) . '">&laquo; ' . $this->language->lang('BACK_TO_PREV') . '</a>';
 					trigger_error($message);
 				}
 			}
@@ -280,7 +293,7 @@ class points_robbery_user
 					// Store the notification data we will use in an array
 					$data = [
 						'points_notify_id' => (int) $this->config['points_notification_id'],
-						'points_notify_msg' => sprintf($this->user->lang['NOTIFICATION_ROBBERY_SUCCES'], $attacked_amount, $this->config['points_name']),
+						'points_notify_msg' => sprintf($this->language->lang('NOTIFICATION_ROBBERY_SUCCES'), $attacked_amount, $this->config['points_name']),
 						'sender' => (int) $this->user->data['user_id'],
 						'receiver' => $user_id,
 						'mode' => 'robbery',
@@ -289,7 +302,7 @@ class points_robbery_user
 					// Update mChat with good robbery
 					if ($this->phpbb_container->has('dmzx.mchat.settings') && $this->config['robbery_mchat_enable'])
 					{
-						$message = $this->user->lang['ROBBERY_MCHAT_GOOD'];
+						$message = $this->language->lang('ROBBERY_MCHAT_GOOD');
 						$name = $this->config['points_name'];
 
 						$this->functions_points->mchat_message($user_id, $attacked_amount, $message, $name);
@@ -299,7 +312,31 @@ class points_robbery_user
 					$this->notification_manager->add_notifications('dmzx.ultimatepoints.notification.type.points', $data);
 				}
 
-				$message = $this->user->lang['ROBBERY_SUCCESFUL'] . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'robbery_user', 'user_id' => $user_id]) . '">&laquo; ' . $this->user->lang['BACK_TO_PREV'] . '</a>';
+				// Store variables for the robbery_after event
+				$attacker_id = (int) $this->user->data['user_id'];
+				$victim_id = (int) $user_id;
+				$amount = $attacked_amount;
+				$success = true;
+
+				/**
+				 * Event that is triggered after a robbery attempt has been resolved
+				 *
+				 * @event dmzx.ultimatepoints.robbery_after
+				 * @var int		attacker_id	The user who attempted the robbery
+				 * @var int		victim_id	The user who was robbed
+				 * @var float	amount		The amount that changed hands (won on success, lost on failure)
+				 * @var bool	success		Whether the robbery succeeded
+				 * @since 1.2.9
+				 */
+				$vars = [
+					'attacker_id',
+					'victim_id',
+					'amount',
+					'success',
+				];
+				extract($this->dispatcher->trigger_event('dmzx.ultimatepoints.robbery_after', compact($vars)));
+
+				$message = $this->language->lang('ROBBERY_SUCCESFUL') . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'robbery_user', 'user_id' => $user_id]) . '">&laquo; ' . $this->language->lang('BACK_TO_PREV') . '</a>';
 				trigger_error($message);
 			} // If robbery failed and notify user
 			else
@@ -317,7 +354,7 @@ class points_robbery_user
 						// Store the notification data we will use in an array
 						$data = [
 							'points_notify_id' => (int) $this->config['points_notification_id'],
-							'points_notify_msg' => $this->user->lang['NOTIFICATION_ROBBERY_FAILED'],
+							'points_notify_msg' => $this->language->lang('NOTIFICATION_ROBBERY_FAILED'),
 							'sender' => (int) $this->user->data['user_id'],
 							'receiver' => $user_id,
 							'mode' => 'robbery',
@@ -326,7 +363,7 @@ class points_robbery_user
 						// Update mChat with robbery fail
 						if ($this->phpbb_container->has('dmzx.mchat.settings') && $this->config['robbery_mchat_enable'])
 						{
-							$message = $this->user->lang['ROBBERY_MCHAT_FAIL'];
+							$message = $this->language->lang('ROBBERY_MCHAT_FAIL');
 							$name = $this->config['points_name'];
 
 							$this->functions_points->mchat_message($user_id, $attacked_amount, $message, $name);
@@ -336,7 +373,31 @@ class points_robbery_user
 						$this->notification_manager->add_notifications('dmzx.ultimatepoints.notification.type.points', $data);
 					}
 
-					$message = $this->user->lang['ROBBERY_BAD'] . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'robbery_user', 'user_id' => $user_id]) . '">&laquo; ' . $this->user->lang['BACK_TO_PREV'] . '</a>';
+					// Store variables for the robbery_after event
+					$attacker_id = (int) $this->user->data['user_id'];
+					$victim_id = (int) $user_id;
+					$amount = $lose;
+					$success = false;
+
+					/**
+					 * Event that is triggered after a robbery attempt has been resolved
+					 *
+					 * @event dmzx.ultimatepoints.robbery_after
+					 * @var int		attacker_id	The user who attempted the robbery
+					 * @var int		victim_id	The user who was robbed
+					 * @var float	amount		The amount that changed hands (won on success, lost on failure)
+					 * @var bool	success		Whether the robbery succeeded
+					 * @since 1.2.9
+					 */
+					$vars = [
+						'attacker_id',
+						'victim_id',
+						'amount',
+						'success',
+					];
+					extract($this->dispatcher->trigger_event('dmzx.ultimatepoints.robbery_after', compact($vars)));
+
+					$message = $this->language->lang('ROBBERY_BAD') . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'robbery_user', 'user_id' => $user_id]) . '">&laquo; ' . $this->language->lang('BACK_TO_PREV') . '</a>';
 					trigger_error($message);
 				}
 			}
@@ -365,7 +426,7 @@ class points_robbery_user
 		// Check, if user tries to rob a guest or a unkown user_id?
 		if ($u_id == null || isset($opponent['user_id']) == null)
 		{
-			$message = $this->user->lang['ROBBERY_GUEST'] . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller') . '">&laquo; ' . $this->user->lang['BACK_TO_PREV'] . '</a>';
+			$message = $this->language->lang('ROBBERY_GUEST') . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller') . '">&laquo; ' . $this->language->lang('BACK_TO_PREV') . '</a>';
 			trigger_error($message);
 		}
 		$username_full = get_username_string('full', $opponent['user_id'], $opponent['username'], $opponent['user_colour']);
@@ -375,14 +436,14 @@ class points_robbery_user
 			'POINTS_NAME' => $this->config['points_name'],
 			'LOTTERY_NAME' => $points_values['lottery_name'],
 			'BANK_NAME' => $points_values['bank_name'],
-			'L_ROBBERY_CHANCE' => sprintf($this->user->lang['ROBBERY_CHANCE'], ($this->functions_points->number_format_points($points_values['robbery_max_rob'])), ($this->functions_points->number_format_points($points_values['robbery_chance']))),
-			'L_ROBBERY_AMOUNTLOSE' => sprintf($this->user->lang['ROBBERY_AMOUNTLOSE'], ($this->functions_points->number_format_points($points_values['robbery_loose']))),
+			'L_ROBBERY_CHANCE' => sprintf($this->language->lang('ROBBERY_CHANCE'), ($this->functions_points->number_format_points($points_values['robbery_max_rob'])), ($this->functions_points->number_format_points($points_values['robbery_chance']))),
+			'L_ROBBERY_AMOUNTLOSE' => sprintf($this->language->lang('ROBBERY_AMOUNTLOSE'), ($this->functions_points->number_format_points($points_values['robbery_loose']))),
 			'U_USE_ROBBERY' => $this->auth->acl_get('u_use_robbery'),
-			'U_ROBBERY_NAME' => ($this->auth->acl_get('u_use_robbery')) ? sprintf($this->user->lang['ROBBERY_TO_NAME'], $username_full, $this->config['points_name']) : '',
+			'U_ROBBERY_NAME' => ($this->auth->acl_get('u_use_robbery')) ? sprintf($this->language->lang('ROBBERY_TO_NAME'), $username_full, $this->config['points_name']) : '',
 		]);
 
 		// Generate the page
-		page_header($this->user->lang['POINTS_ROBBERY']);
+		page_header($this->language->lang('POINTS_ROBBERY'));
 
 		// Generate the page template
 		$this->template->set_filenames([

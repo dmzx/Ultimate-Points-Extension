@@ -14,8 +14,10 @@ use parse_message;
 use phpbb\auth\auth;
 use phpbb\config\config;
 use phpbb\db\driver\driver_interface;
+use phpbb\event\dispatcher_interface;
 use phpbb\log\log;
 use phpbb\request\request;
+use phpbb\language\language;
 use phpbb\template\template;
 use phpbb\user;
 use Symfony\Component\DependencyInjection\Container;
@@ -30,6 +32,9 @@ class admin_controller
 
 	/** @var user */
 	protected $user;
+
+	/** @var language */
+	protected $language;
 
 	/** @var auth */
 	protected $auth;
@@ -49,11 +54,17 @@ class admin_controller
 	/** @var Container */
 	protected $phpbb_container;
 
+	/** @var dispatcher_interface */
+	protected $dispatcher;
+
 	/** @var string phpBB root path */
 	protected $root_path;
 
 	/** @var string php_ext */
 	protected $php_ext;
+
+	/** @var string Set via set_page_url(), used as the form action / adm_back_link target */
+	protected $u_action;
 
 	/**
 	 * The database tables
@@ -80,6 +91,7 @@ class admin_controller
 	 * @param config $config
 	 * @param log $log
 	 * @param Container $phpbb_container
+	 * @param dispatcher_interface $dispatcher
 	 * @param string $root_path
 	 * @param string $php_ext
 	 * @param string $points_config_table
@@ -93,12 +105,14 @@ class admin_controller
 		functions_points $functions_points,
 		template $template,
 		user $user,
+		language $language,
 		auth $auth,
 		driver_interface $db,
 		request $request,
 		config $config,
 		log $log,
 		Container $phpbb_container,
+		dispatcher_interface $dispatcher,
 		$root_path,
 		$php_ext,
 		$points_config_table,
@@ -110,12 +124,14 @@ class admin_controller
 		$this->functions_points = $functions_points;
 		$this->template = $template;
 		$this->user = $user;
+		$this->language = $language;
 		$this->auth = $auth;
 		$this->db = $db;
 		$this->request = $request;
 		$this->config = $config;
 		$this->log = $log;
 		$this->phpbb_container = $phpbb_container;
+		$this->dispatcher = $dispatcher;
 		$this->root_path = $root_path;
 		$this->php_ext = $php_ext;
 		$this->points_config_table = $points_config_table;
@@ -145,7 +161,7 @@ class admin_controller
 		{
 			if (!check_form_key('acp_points'))
 			{
-				trigger_error($this->user->lang['FORM_INVALID'] . adm_back_link($this->u_action), E_USER_WARNING);
+				trigger_error($this->language->lang('FORM_INVALID') . adm_back_link($this->u_action), E_USER_WARNING);
 			}
 
 			// Set the options the user configured
@@ -176,13 +192,13 @@ class admin_controller
 
 			if ($per_page_check < 5)
 			{
-				trigger_error($this->user->lang['POINTS_SHOW_PER_PAGE_ERROR'] . adm_back_link($this->u_action), E_USER_WARNING);
+				trigger_error($this->language->lang('POINTS_SHOW_PER_PAGE_ERROR') . adm_back_link($this->u_action), E_USER_WARNING);
 			}
 
 			// Check if Transfer Fee percent is not more than 100%
 			if ($sql_ary['transfer_fee'] > 100)
 			{
-				trigger_error($this->user->lang['POINTS_TRANSFER_FEE_ERROR'] . adm_back_link($this->u_action), E_USER_WARNING);
+				trigger_error($this->language->lang('POINTS_TRANSFER_FEE_ERROR') . adm_back_link($this->u_action), E_USER_WARNING);
 			}
 
 			// Update values in phpbb_points_values
@@ -191,7 +207,7 @@ class admin_controller
 
 			// Add logs
 			$this->log->add('admin', $this->user->data['user_id'], $this->user->data['user_ip'], 'LOG_MOD_POINTS_SETTINGS');
-			trigger_error($this->user->lang['POINTS_CONFIG_SUCCESS'] . adm_back_link($this->u_action));
+			trigger_error($this->language->lang('POINTS_CONFIG_SUCCESS') . adm_back_link($this->u_action));
 		}
 		else
 		{
@@ -222,7 +238,7 @@ class admin_controller
 		}
 
 		// Delete all userlogs
-		$reset_pointslogs = (isset($_POST['action_points_logs'])) ? true : false;
+		$reset_pointslogs = $this->request->is_set_post('action_points_logs');
 
 		if ($reset_pointslogs)
 		{
@@ -230,7 +246,7 @@ class admin_controller
 			{
 				if (!$this->auth->acl_get('a_points'))
 				{
-					trigger_error($this->user->lang['NO_AUTH_OPERATION'] . adm_back_link($this->u_action), E_USER_WARNING);
+					trigger_error($this->language->lang('NO_AUTH_OPERATION') . adm_back_link($this->u_action), E_USER_WARNING);
 				}
 
 				$sql_layer = $this->db->get_sql_layer();
@@ -246,8 +262,23 @@ class admin_controller
 						break;
 				}
 
+				// Store variable for the resync_after event
+				$resync_type = 'points_logs';
+
+				/**
+				 * Event that is triggered after an admin resync action has been performed
+				 *
+				 * @event dmzx.ultimatepoints.resync_after
+				 * @var string	resync_type	Which resync was performed: points|points_logs|lottery_history
+				 * @since 1.2.9
+				 */
+				$vars = [
+					'resync_type',
+				];
+				extract($this->dispatcher->trigger_event('dmzx.ultimatepoints.resync_after', compact($vars)));
+
 				$this->log->add('admin', $this->user->data['user_id'], $this->user->data['user_ip'], 'LOG_RESYNC_POINTSLOGSCOUNTS');
-				trigger_error($this->user->lang['LOG_RESYNC_POINTSLOGSCOUNTS'] . adm_back_link($this->u_action));
+				trigger_error($this->language->lang('LOG_RESYNC_POINTSLOGSCOUNTS') . adm_back_link($this->u_action));
 			} // Create a confirmbox with yes and no.
 			else
 			{
@@ -256,12 +287,12 @@ class admin_controller
 				]);
 
 				// Display mode
-				confirm_box(false, $this->user->lang['RESYNC_POINTSLOGS_CONFIRM'], $s_hidden_fields);
+				confirm_box(false, $this->language->lang('RESYNC_POINTSLOGS_CONFIRM'), $s_hidden_fields);
 			}
 		}
 
 		// Delete all userpoints
-		$reset_points_user = (isset($_POST['action_points'])) ? true : false;
+		$reset_points_user = $this->request->is_set_post('action_points');
 
 		if ($reset_points_user)
 		{
@@ -270,13 +301,28 @@ class admin_controller
 
 				if (!$this->auth->acl_get('a_points'))
 				{
-					trigger_error($this->user->lang['NO_AUTH_OPERATION'] . adm_back_link($this->u_action), E_USER_WARNING);
+					trigger_error($this->language->lang('NO_AUTH_OPERATION') . adm_back_link($this->u_action), E_USER_WARNING);
 				}
 
 				$this->db->sql_query('UPDATE ' . USERS_TABLE . ' SET user_points = 0');
 
+				// Store variable for the resync_after event
+				$resync_type = 'points';
+
+				/**
+				 * Event that is triggered after an admin resync action has been performed
+				 *
+				 * @event dmzx.ultimatepoints.resync_after
+				 * @var string	resync_type	Which resync was performed: points|points_logs|lottery_history
+				 * @since 1.2.9
+				 */
+				$vars = [
+					'resync_type',
+				];
+				extract($this->dispatcher->trigger_event('dmzx.ultimatepoints.resync_after', compact($vars)));
+
 				$this->log->add('admin', $this->user->data['user_id'], $this->user->data['user_ip'], 'LOG_RESYNC_POINTSCOUNTS');
-				trigger_error($this->user->lang['LOG_RESYNC_POINTSCOUNTS'] . adm_back_link($this->u_action));
+				trigger_error($this->language->lang('LOG_RESYNC_POINTSCOUNTS') . adm_back_link($this->u_action));
 			} // Create a confirmbox with yes and no.
 			else
 			{
@@ -285,12 +331,12 @@ class admin_controller
 				]);
 
 				// Display mode
-				confirm_box(false, $this->user->lang['RESYNC_POINTS_CONFIRM'], $s_hidden_fields);
+				confirm_box(false, $this->language->lang('RESYNC_POINTS_CONFIRM'), $s_hidden_fields);
 			}
 		}
 
 		// Transfer or set points for groups
-		$group_transfer = (isset($_POST['group_transfer'])) ? true : false;
+		$group_transfer = $this->request->is_set_post('group_transfer');
 		$group_transfer_points = $this->request->variable('group_transfer_points', 0.00);
 		$func = $this->request->variable('func', '');
 		$group_id = $this->request->variable('group_id', 0);
@@ -320,7 +366,7 @@ class admin_controller
 		{
 			if (!check_form_key('acp_points'))
 			{
-				trigger_error($this->user->lang['FORM_INVALID'] . adm_back_link($this->u_action), E_USER_WARNING);
+				trigger_error($this->language->lang('FORM_INVALID') . adm_back_link($this->u_action), E_USER_WARNING);
 			}
 
 			$sql_array = [
@@ -335,12 +381,12 @@ class admin_controller
 			$row = $this->db->sql_fetchrow($result);
 			$this->db->sql_freeresult($result);
 
-			$group_name = ($row['group_type'] == GROUP_SPECIAL) ? $this->user->lang['G_' . $row['group_name']] : $row['group_name'];
+			$group_name = ($row['group_type'] == GROUP_SPECIAL) ? $this->language->lang('G_' . $row['group_name']) : $row['group_name'];
 
 			// Check if we try transfering to BOTS or GUESTS
 			if ($row['group_name'] == 'BOTS' || $row['group_name'] == 'GUESTS')
 			{
-				trigger_error($this->user->lang['POINTS_GROUP_TRANSFER_SEL_ERROR'] . adm_back_link($this->u_action), E_USER_WARNING);
+				trigger_error($this->language->lang('POINTS_GROUP_TRANSFER_SEL_ERROR') . adm_back_link($this->u_action), E_USER_WARNING);
 			}
 
 			$sql_array = [
@@ -393,12 +439,33 @@ class admin_controller
 
 				$result = $this->db->sql_query($sql);
 
+				// Store variables for the group_transfer_after event
+				$amount = $group_transfer_points;
+
+				/**
+				 * Event that is triggered after an ACP group points transfer has been performed
+				 *
+				 * @event dmzx.ultimatepoints.group_transfer_after
+				 * @var int		group_id	The group the transfer was applied to
+				 * @var string	func		The operation performed: add|substract|set
+				 * @var float	amount		The amount used in the operation
+				 * @var array	user_ids	The user IDs affected by the operation
+				 * @since 1.2.9
+				 */
+				$vars = [
+					'group_id',
+					'func',
+					'amount',
+					'user_ids',
+				];
+				extract($this->dispatcher->trigger_event('dmzx.ultimatepoints.group_transfer_after', compact($vars)));
+
 				// Send PM, if pm subject and pm comment is entered
 				if ($pm_subject != '' || $pm_text != '')
 				{
 					if ($pm_subject == '' || $pm_text == '')
 					{
-						trigger_error($this->user->lang['POINTS_GROUP_TRANSFER_PM_ERROR'] . adm_back_link($this->u_action), E_USER_WARNING);
+						trigger_error($this->language->lang('POINTS_GROUP_TRANSFER_PM_ERROR') . adm_back_link($this->u_action), E_USER_WARNING);
 					} else
 					{
 						$sql_array = [
@@ -446,12 +513,12 @@ class admin_controller
 
 						$this->db->sql_freeresult($result);
 					}
-					$message = $this->user->lang['POINTS_GROUP_TRANSFER_PM_SUCCESS'] . adm_back_link($this->u_action);
+					$message = $this->language->lang('POINTS_GROUP_TRANSFER_PM_SUCCESS') . adm_back_link($this->u_action);
 					trigger_error($message);
 				}
 				else
 				{
-					$message = $this->user->lang['POINTS_GROUP_TRANSFER_SUCCESS'] . adm_back_link($this->u_action);
+					$message = $this->language->lang('POINTS_GROUP_TRANSFER_SUCCESS') . adm_back_link($this->u_action);
 					trigger_error($message);
 				}
 			}
@@ -513,7 +580,7 @@ class admin_controller
 		{
 			if (!check_form_key('acp_points'))
 			{
-				trigger_error($this->user->lang['FORM_INVALID'] . adm_back_link($this->u_action), E_USER_WARNING);
+				trigger_error($this->language->lang('FORM_INVALID') . adm_back_link($this->u_action), E_USER_WARNING);
 			}
 
 			// Get current lottery_base_amount
@@ -537,13 +604,14 @@ class admin_controller
 			// Check entered lottery chance - has to be max 100
 			if ($lottery_chance > 100)
 			{
-				trigger_error($this->user->lang['LOTTERY_CHANCE_ERROR'] . adm_back_link($this->u_action), E_USER_WARNING);
+				trigger_error($this->language->lang('LOTTERY_CHANCE_ERROR') . adm_back_link($this->u_action), E_USER_WARNING);
 			}
 
 			// If base amount increases, increase jackpot
 			if ($lottery_base_amount > $current_lottery_base_amount)
 			{
-				$this->functions_points->set_points_values('lottery_jackpot', ($current_lottery_jackpot . '+' . $lottery_base_amount . '-' . $current_lottery_base_amount));
+				$new_jackpot = $current_lottery_jackpot + $lottery_base_amount - $current_lottery_base_amount;
+				$this->functions_points->set_points_values('lottery_jackpot', $new_jackpot);
 				//set_points_values('lottery_base_amount', $lottery_base_amount);
 			}
 
@@ -571,7 +639,7 @@ class admin_controller
 			// Check if 0 is entered. Must be > 0
 			if ($lottery_draw_period < 0)
 			{
-				trigger_error($this->user->lang['LOTTERY_DRAW_PERIOD_SHORT'] . adm_back_link($this->u_action), E_USER_WARNING);
+				trigger_error($this->language->lang('LOTTERY_DRAW_PERIOD_SHORT') . adm_back_link($this->u_action), E_USER_WARNING);
 			}
 			else
 			{
@@ -579,7 +647,7 @@ class admin_controller
 			}
 
 			$this->functions_points->set_points_values('lottery_ticket_cost', $lottery_ticket_cost);
-			$this->functions_points->set_points_values('lottery_name', ("'" . $this->db->sql_escape($lottery_name) . "'"));
+			$this->functions_points->set_points_values('lottery_name', $lottery_name);
 			$this->functions_points->set_points_values('lottery_chance', $lottery_chance);
 			$this->functions_points->set_points_values('lottery_max_tickets', $lottery_max_tickets);
 
@@ -602,7 +670,7 @@ class admin_controller
 			}
 			else if (empty($id_exist))
 			{
-				trigger_error($this->user->lang['NO_USER'] . adm_back_link($this->u_action), E_USER_WARNING);
+				trigger_error($this->language->lang('NO_USER') . adm_back_link($this->u_action), E_USER_WARNING);
 			}
 			else
 			{
@@ -623,11 +691,11 @@ class admin_controller
 
 			// Add logs
 			$this->log->add('admin', $this->user->data['user_id'], $this->user->data['user_ip'], 'LOG_MOD_POINTS_LOTTERY');
-			trigger_error($this->user->lang['CONFIG_UPDATED'] . adm_back_link($this->u_action));
+			trigger_error($this->language->lang('CONFIG_UPDATED') . adm_back_link($this->u_action));
 		}
 
 		// Delete lottery history
-		$reset_lottery_history = (isset($_POST['action_lottery_history'])) ? true : false;
+		$reset_lottery_history = $this->request->is_set_post('action_lottery_history');
 
 		if ($reset_lottery_history)
 		{
@@ -635,7 +703,7 @@ class admin_controller
 			{
 				if (!$this->auth->acl_get('a_points'))
 				{
-					trigger_error($this->user->lang['NO_AUTH_OPERATION'] . adm_back_link($this->u_action), E_USER_WARNING);
+					trigger_error($this->language->lang('NO_AUTH_OPERATION') . adm_back_link($this->u_action), E_USER_WARNING);
 				}
 				$sql_layer = $this->db->get_sql_layer();
 
@@ -651,8 +719,23 @@ class admin_controller
 						break;
 				}
 
+				// Store variable for the resync_after event
+				$resync_type = 'lottery_history';
+
+				/**
+				 * Event that is triggered after an admin resync action has been performed
+				 *
+				 * @event dmzx.ultimatepoints.resync_after
+				 * @var string	resync_type	Which resync was performed: points|points_logs|lottery_history
+				 * @since 1.2.9
+				 */
+				$vars = [
+					'resync_type',
+				];
+				extract($this->dispatcher->trigger_event('dmzx.ultimatepoints.resync_after', compact($vars)));
+
 				$this->log->add('admin', $this->user->data['user_id'], $this->user->data['user_ip'], 'LOG_RESYNC_LOTTERY_HISTORY');
-				trigger_error($this->user->lang['LOG_RESYNC_LOTTERY_HISTORY'] . adm_back_link($this->u_action));
+				trigger_error($this->language->lang('LOG_RESYNC_LOTTERY_HISTORY') . adm_back_link($this->u_action));
 			} // Create a confirmbox with yes and no.
 			else
 			{
@@ -661,7 +744,7 @@ class admin_controller
 				]);
 
 				// Display mode
-				confirm_box(false, $this->user->lang['RESYNC_LOTTERY_HISTORY_CONFIRM'], $s_hidden_fields);
+				confirm_box(false, $this->language->lang('RESYNC_LOTTERY_HISTORY_CONFIRM'), $s_hidden_fields);
 			}
 		}
 
@@ -712,7 +795,7 @@ class admin_controller
 		{
 			if (!check_form_key('acp_points'))
 			{
-				trigger_error($this->user->lang['FORM_INVALID'] . adm_back_link($this->u_action), E_USER_WARNING);
+				trigger_error($this->language->lang('FORM_INVALID') . adm_back_link($this->u_action), E_USER_WARNING);
 			}
 
 			// Values for phpbb_points_config
@@ -731,13 +814,13 @@ class admin_controller
 			// Check entered bank interesst - has to be max 100
 			if ($bank_interest > 100)
 			{
-				trigger_error($this->user->lang['BANK_INTEREST_ERROR'] . adm_back_link($this->u_action), E_USER_WARNING);
+				trigger_error($this->language->lang('BANK_INTEREST_ERROR') . adm_back_link($this->u_action), E_USER_WARNING);
 			}
 
 			// Check entered bank fees - has to be max 100
 			if ($bank_fees > 100)
 			{
-				trigger_error($this->user->lang['BANK_FEES_ERROR'] . adm_back_link($this->u_action), E_USER_WARNING);
+				trigger_error($this->language->lang('BANK_FEES_ERROR') . adm_back_link($this->u_action), E_USER_WARNING);
 			}
 
 			// Update values in phpbb_points_config
@@ -756,12 +839,12 @@ class admin_controller
 			$this->functions_points->set_points_values('bank_min_deposit', $bank_min_deposit);
 			$this->functions_points->set_points_values('bank_interestcut', $bank_interestcut);
 			$this->functions_points->set_points_values('bank_cost', $bank_cost);
-			$this->functions_points->set_points_values('bank_name', ("'" . $this->db->sql_escape($bank_name) . "'"));
+			$this->functions_points->set_points_values('bank_name', $bank_name);
 
 			// Add logs
 			$this->log->add('admin', $this->user->data['user_id'], $this->user->data['user_ip'], 'LOG_MOD_POINTS_BANK');
 
-			trigger_error($this->user->lang['CONFIG_UPDATED'] . adm_back_link($this->u_action));
+			trigger_error($this->language->lang('CONFIG_UPDATED') . adm_back_link($this->u_action));
 		}
 
 		$this->template->assign_vars([
@@ -804,7 +887,7 @@ class admin_controller
 		{
 			if (!check_form_key('acp_points'))
 			{
-				trigger_error($this->user->lang['FORM_INVALID'] . adm_back_link($this->u_action), E_USER_WARNING);
+				trigger_error($this->language->lang('FORM_INVALID') . adm_back_link($this->u_action), E_USER_WARNING);
 			}
 
 			// Values for phpbb_points_config
@@ -819,37 +902,37 @@ class admin_controller
 			// Check, if entered robbery chance is 0 or below
 			if ($robbery_chance <= 0)
 			{
-				trigger_error($this->user->lang['ROBBERY_CHANCE_MINIMUM'] . adm_back_link($this->u_action), E_USER_WARNING);
+				trigger_error($this->language->lang('ROBBERY_CHANCE_MINIMUM') . adm_back_link($this->u_action), E_USER_WARNING);
 			}
 
 			// Check entered robbery chance - has to be max 100
 			if ($robbery_chance > 100)
 			{
-				trigger_error($this->user->lang['ROBBERY_CHANCE_ERROR'] . adm_back_link($this->u_action), E_USER_WARNING);
+				trigger_error($this->language->lang('ROBBERY_CHANCE_ERROR') . adm_back_link($this->u_action), E_USER_WARNING);
 			}
 
 			// Check, if entered robbery loose is 0 or below
 			if ($robbery_loose <= 0)
 			{
-				trigger_error($this->user->lang['ROBBERY_LOOSE_MINIMUM'] . adm_back_link($this->u_action), E_USER_WARNING);
+				trigger_error($this->language->lang('ROBBERY_LOOSE_MINIMUM') . adm_back_link($this->u_action), E_USER_WARNING);
 			}
 
 			// Check entered robbery loose - has to be max 100
 			if ($robbery_loose > 100)
 			{
-				trigger_error($this->user->lang['ROBBERY_LOOSE_ERROR'] . adm_back_link($this->u_action), E_USER_WARNING);
+				trigger_error($this->language->lang('ROBBERY_LOOSE_ERROR') . adm_back_link($this->u_action), E_USER_WARNING);
 			}
 
 			// Check, if entered robbery is 0 or below
 			if ($robbery_max_rob <= 0)
 			{
-				trigger_error($this->user->lang['ROBBERY_MAX_ROB_MINIMUM'] . adm_back_link($this->u_action), E_USER_WARNING);
+				trigger_error($this->language->lang('ROBBERY_MAX_ROB_MINIMUM') . adm_back_link($this->u_action), E_USER_WARNING);
 			}
 
 			// Check entered robbery max rob value - has to be max 100
 			if ($robbery_max_rob > 100)
 			{
-				trigger_error($this->user->lang['ROBBERY_MAX_ROB_ERROR'] . adm_back_link($this->u_action), E_USER_WARNING);
+				trigger_error($this->language->lang('ROBBERY_MAX_ROB_ERROR') . adm_back_link($this->u_action), E_USER_WARNING);
 			}
 
 			// Update values in phpbb_points_config
@@ -871,7 +954,7 @@ class admin_controller
 
 			// Add logs
 			$this->log->add('admin', $this->user->data['user_id'], $this->user->data['user_ip'], 'LOG_MOD_POINTS_ROBBERY');
-			trigger_error($this->user->lang['CONFIG_UPDATED'] . adm_back_link($this->u_action));
+			trigger_error($this->language->lang('CONFIG_UPDATED') . adm_back_link($this->u_action));
 		}
 
 		if ($this->phpbb_container->has('dmzx.mchat.settings'))
@@ -887,6 +970,170 @@ class admin_controller
 			'S_ROBBERY_NOTIFY' => ($points_config['robbery_notify']) ? true : false,
 			'ROBBERY_MCHAT_ENABLE' => $this->config['robbery_mchat_enable'],
 			'S_ROBBERY' => true,
+			'POINTS_ICON_MAINICON' => $this->config['points_icon_mainicon'],
+			'U_ACTION' => $this->u_action
+		]);
+	}
+
+	public function display_bounty()
+	{
+		// Get all configs
+		$points_config = $this->functions_points->points_all_configs();
+
+		$this->template->assign_vars(array_change_key_case($points_config, CASE_UPPER));
+
+		// Get all values
+		$points_values = $this->functions_points->points_all_values();
+
+		// Form key
+		add_form_key('acp_points');
+
+		$this->template->assign_vars([
+			'BASE' => $this->u_action,
+		]);
+
+		if ($this->request->is_set_post('submit'))
+		{
+			if (!check_form_key('acp_points'))
+			{
+				trigger_error($this->language->lang('FORM_INVALID') . adm_back_link($this->u_action), E_USER_WARNING);
+			}
+
+			// Values for phpbb_points_config
+			$bounty_enable = $this->request->variable('bounty_enable', 0);
+			$bounty_require_approval = $this->request->variable('bounty_require_approval', 0);
+
+			// Values for phpbb_points_values
+			$bounty_min_reward = round($this->request->variable('bounty_min_reward', 0.00), 2);
+			$bounty_max_reward = round($this->request->variable('bounty_max_reward', 0.00), 2);
+			$bounty_claim_time_limit = $this->request->variable('bounty_claim_time_limit', 0);
+
+			// Check, if the minimum reward is below the maximum reward
+			if ($bounty_min_reward > $bounty_max_reward)
+			{
+				trigger_error($this->language->lang('BOUNTY_MIN_MAX_ERROR') . adm_back_link($this->u_action), E_USER_WARNING);
+			}
+
+			// Update values in phpbb_points_config
+			if ($bounty_enable != $points_config['bounty_enable'])
+			{
+				$this->functions_points->set_points_config('bounty_enable', $bounty_enable);
+			}
+			if ($bounty_require_approval != $points_config['bounty_require_approval'])
+			{
+				$this->functions_points->set_points_config('bounty_require_approval', $bounty_require_approval);
+			}
+
+			$this->config->set('bounty_mchat_enable', $this->request->variable('bounty_mchat_enable', 0));
+
+			// Update values in phpbb_points_values
+			$this->functions_points->set_points_values('bounty_min_reward', $bounty_min_reward);
+			$this->functions_points->set_points_values('bounty_max_reward', $bounty_max_reward);
+			$this->functions_points->set_points_values('bounty_claim_time_limit', $bounty_claim_time_limit);
+
+			// Add logs
+			$this->log->add('admin', $this->user->data['user_id'], $this->user->data['user_ip'], 'LOG_MOD_POINTS_BOUNTY');
+			trigger_error($this->language->lang('CONFIG_UPDATED') . adm_back_link($this->u_action));
+		}
+
+		if ($this->phpbb_container->has('dmzx.mchat.settings'))
+		{
+			$this->template->assign_var('BOUNTY_MCHAT_VIEW', true);
+		}
+
+		$this->template->assign_vars([
+			'BOUNTY_MIN_REWARD' => $points_values['bounty_min_reward'],
+			'BOUNTY_MAX_REWARD' => $points_values['bounty_max_reward'],
+			'BOUNTY_CLAIM_TIME_LIMIT' => $points_values['bounty_claim_time_limit'],
+			'S_BOUNTY_ENABLE' => ($points_config['bounty_enable']) ? true : false,
+			'S_BOUNTY_REQUIRE_APPROVAL' => ($points_config['bounty_require_approval']) ? true : false,
+			'BOUNTY_MCHAT_ENABLE' => $this->config['bounty_mchat_enable'],
+			'S_BOUNTY' => true,
+			'POINTS_ICON_MAINICON' => $this->config['points_icon_mainicon'],
+			'U_ACTION' => $this->u_action
+		]);
+	}
+
+	public function display_duels()
+	{
+		// Get all configs
+		$points_config = $this->functions_points->points_all_configs();
+
+		$this->template->assign_vars(array_change_key_case($points_config, CASE_UPPER));
+
+		// Get all values
+		$points_values = $this->functions_points->points_all_values();
+
+		// Form key
+		add_form_key('acp_points');
+
+		$this->template->assign_vars([
+			'BASE' => $this->u_action,
+		]);
+
+		if ($this->request->is_set_post('submit'))
+		{
+			if (!check_form_key('acp_points'))
+			{
+				trigger_error($this->language->lang('FORM_INVALID') . adm_back_link($this->u_action), E_USER_WARNING);
+			}
+
+			// Values for phpbb_points_config
+			$duel_enable = $this->request->variable('duel_enable', 0);
+			$duel_default_admin_resolve = $this->request->variable('duel_default_admin_resolve', 0);
+			$duel_max_open_per_user = $this->request->variable('duel_max_open_per_user', 0);
+
+			// Values for phpbb_points_values
+			$duel_min_wager = round($this->request->variable('duel_min_wager', 0.00), 2);
+			$duel_max_wager = round($this->request->variable('duel_max_wager', 0.00), 2);
+			$duel_accept_time_limit = $this->request->variable('duel_accept_time_limit', 0);
+
+			// Check, if the minimum wager is below the maximum wager
+			if ($duel_min_wager > $duel_max_wager)
+			{
+				trigger_error($this->language->lang('DUEL_MIN_MAX_ERROR') . adm_back_link($this->u_action), E_USER_WARNING);
+			}
+
+			// Update values in phpbb_points_config
+			if ($duel_enable != $points_config['duel_enable'])
+			{
+				$this->functions_points->set_points_config('duel_enable', $duel_enable);
+			}
+			if ($duel_default_admin_resolve != $points_config['duel_default_admin_resolve'])
+			{
+				$this->functions_points->set_points_config('duel_default_admin_resolve', $duel_default_admin_resolve);
+			}
+			if ($duel_max_open_per_user != $points_config['duel_max_open_per_user'])
+			{
+				$this->functions_points->set_points_config('duel_max_open_per_user', $duel_max_open_per_user);
+			}
+
+			$this->config->set('duel_mchat_enable', $this->request->variable('duel_mchat_enable', 0));
+
+			// Update values in phpbb_points_values
+			$this->functions_points->set_points_values('duel_min_wager', $duel_min_wager);
+			$this->functions_points->set_points_values('duel_max_wager', $duel_max_wager);
+			$this->functions_points->set_points_values('duel_accept_time_limit', $duel_accept_time_limit);
+
+			// Add logs
+			$this->log->add('admin', $this->user->data['user_id'], $this->user->data['user_ip'], 'LOG_MOD_POINTS_DUELS');
+			trigger_error($this->language->lang('CONFIG_UPDATED') . adm_back_link($this->u_action));
+		}
+
+		if ($this->phpbb_container->has('dmzx.mchat.settings'))
+		{
+			$this->template->assign_var('DUEL_MCHAT_VIEW', true);
+		}
+
+		$this->template->assign_vars([
+			'DUEL_MIN_WAGER' => $points_values['duel_min_wager'],
+			'DUEL_MAX_WAGER' => $points_values['duel_max_wager'],
+			'DUEL_ACCEPT_TIME_LIMIT' => $points_values['duel_accept_time_limit'],
+			'DUEL_MAX_OPEN_PER_USER' => $points_config['duel_max_open_per_user'],
+			'S_DUEL_ENABLE' => ($points_config['duel_enable']) ? true : false,
+			'S_DUEL_DEFAULT_ADMIN_RESOLVE' => ($points_config['duel_default_admin_resolve']) ? true : false,
+			'DUEL_MCHAT_ENABLE' => $this->config['duel_mchat_enable'],
+			'S_DUEL' => true,
 			'POINTS_ICON_MAINICON' => $this->config['points_icon_mainicon'],
 			'U_ACTION' => $this->u_action
 		]);
@@ -951,7 +1198,7 @@ class admin_controller
 				// Add logs
 				$this->log->add('admin', $this->user->data['user_id'], $this->user->data['user_ip'], 'LOG_MOD_POINTS_FORUM');
 
-				trigger_error($this->user->lang['FORUM_POINT_SETTINGS_UPDATED'] . adm_back_link($this->u_action));
+				trigger_error($this->language->lang('FORUM_POINT_SETTINGS_UPDATED') . adm_back_link($this->u_action));
 			}
 			else
 			{

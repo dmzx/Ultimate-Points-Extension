@@ -26,7 +26,7 @@ if (empty($lang) || !is_array($lang))
 // translators to re-order the output of data while ensuring it remains correct
 //
 // You do not need this where single placeholders are used, e.g. 'Message %d' is fine
-// equally where a string contains only two placeholders which are used to wrap text
+// equally where a single placeholders which are used to wrap text
 // in a url you again do not need to specify an order e.g., 'Click %sHERE%s' is fine
 //
 // Some characters for use
@@ -40,6 +40,9 @@ $lang = array_merge($lang, [
 	'ACL_U_USE_LOGS' => 'Can use Log Module',
 	'ACL_U_USE_LOTTERY' => 'Can use Lottery Module',
 	'ACL_U_USE_TRANSFER' => 'Can use Transfer Module',
+	'ACL_U_USE_BOUNTY' => 'Can use Bounty Board',
+	'ACL_U_USE_DUEL' => 'Can use Duel/Wager Module',
+	'ACL_M_RESOLVE_DUEL' => 'Can resolve moderator-decided duels',
 	'ACL_F_PAY_ATTACHMENT' => 'Has to pay for downloading attachments',
 	'ACL_F_PAY_TOPIC' => 'Has to pay for making a new topic',
 	'ACL_F_PAY_POST' => 'Has to pay for making a new post',

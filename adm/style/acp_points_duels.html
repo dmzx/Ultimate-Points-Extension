@@ -1,0 +1,99 @@
+{% INCLUDE 'overall_header.html' %}
+
+{% INCLUDECSS '@dmzx_ultimatepoints/css/acp_ultimatepoints.css' %}
+
+<a name="maincontent"></a>
+
+{% if S_DUEL %}
+
+{% if S_ERROR %}
+<div class="errorbox">
+	<h3>{{ lang('WARNING') }}</h3>
+	<p>{{ ERROR_MSG }}</p>
+</div>
+{% endif %}
+
+<h1><i class="icon {{ POINTS_ICON_MAINICON }} fa-fw" aria-hidden="true"></i> {{ lang('ACP_POINTS') }} - {{
+	lang('ACP_POINTS_DUELS_TITLE') }}</h1>
+<p>{{ lang('ACP_POINTS_DUELS_EXPLAIN') }}</p>
+
+<div class="successbox">{{ lang('ACP_POINTS_VALUES_HINT') }}</div>
+
+<form id="acp_duels" method="post" action="{{ U_ACTION }}">
+	<fieldset>
+		<legend><i class="icon fa-cog fa-lg" aria-hidden="true"></i> {{ lang('DUEL_OPTIONS') }}</legend>
+		<dl>
+			<dt><label>{{ lang('DUEL_ENABLE') }}{{ lang('COLON') }}</label><br/><span>{{ lang('DUEL_ENABLE_EXPLAIN') }}</span>
+			</dt>
+			<dd><label><input type="radio" class="radio" name="duel_enable" value="1" {% if S_DUEL_ENABLE %}
+						id="duel_enable" checked="checked" {% endif %}/> {{ lang('YES') }}</label>
+				<label><input type="radio" class="radio" name="duel_enable" value="0" {% if not S_DUEL_ENABLE %}
+						id="duel_enable" checked="checked" {% endif %}/> {{ lang('NO') }}</label></dd>
+		</dl>
+		<dl>
+			<dt><label for="duel_min_wager">{{ lang('DUEL_MIN_WAGER') }}{{ lang('COLON') }}</label><br/><span>{{ lang('DUEL_MIN_WAGER_EXPLAIN') }}</span>
+			</dt>
+			<dd><input type="text" id="duel_min_wager" name="duel_min_wager" value="{{ DUEL_MIN_WAGER }}"
+					maxlength="10" size="10"/>
+			</dd>
+		</dl>
+		<dl>
+			<dt><label for="duel_max_wager">{{ lang('DUEL_MAX_WAGER') }}{{ lang('COLON') }}</label><br/><span>{{ lang('DUEL_MAX_WAGER_EXPLAIN') }}</span>
+			</dt>
+			<dd><input type="text" id="duel_max_wager" name="duel_max_wager" value="{{ DUEL_MAX_WAGER }}"
+					maxlength="10" size="10"/>
+			</dd>
+		</dl>
+		<dl>
+			<dt><label for="duel_accept_time_limit">{{ lang('DUEL_ACCEPT_TIME_LIMIT') }}{{ lang('COLON') }}</label><br/><span>{{ lang('DUEL_ACCEPT_TIME_LIMIT_EXPLAIN') }}</span>
+			</dt>
+			<dd><input type="text" id="duel_accept_time_limit" name="duel_accept_time_limit" value="{{ DUEL_ACCEPT_TIME_LIMIT }}"
+					maxlength="5" size="10"/> {{ lang('TIME_HOURS') }}
+			</dd>
+		</dl>
+		<dl>
+			<dt><label for="duel_max_open_per_user">{{ lang('DUEL_MAX_OPEN_PER_USER') }}{{ lang('COLON') }}</label><br/><span>{{ lang('DUEL_MAX_OPEN_PER_USER_EXPLAIN') }}</span>
+			</dt>
+			<dd><input type="text" id="duel_max_open_per_user" name="duel_max_open_per_user" value="{{ DUEL_MAX_OPEN_PER_USER }}"
+					maxlength="5" size="10"/>
+			</dd>
+		</dl>
+		<dl>
+			<dt><label>{{ lang('DUEL_DEFAULT_ADMIN_RESOLVE') }}{{ lang('COLON') }}</label><br/><span>{{ lang('DUEL_DEFAULT_ADMIN_RESOLVE_EXPLAIN') }}</span>
+			</dt>
+			<dd><label><input type="radio" class="radio" name="duel_default_admin_resolve" value="1" {% if S_DUEL_DEFAULT_ADMIN_RESOLVE %}
+						id="duel_default_admin_resolve" checked="checked" {% endif %}/> {{ lang('YES') }}</label>
+				<label><input type="radio" class="radio" name="duel_default_admin_resolve" value="0" {% if not S_DUEL_DEFAULT_ADMIN_RESOLVE %}
+						id="duel_default_admin_resolve" checked="checked" {% endif %}/> {{ lang('NO') }}</label></dd>
+		</dl>
+	</fieldset>
+
+	{% if DUEL_MCHAT_VIEW %}
+	<fieldset>
+		<legend><i class="icon fa fa-weixin fa-lg" aria-hidden="true"></i> {{ lang('DUEL_MCHAT_OPTIONS') }}</legend>
+		<dl>
+			<dt><label>{{ lang('DUEL_MCHAT_ENABLE') }}{{ lang('COLON') }}</label><br/><span>{{ lang('DUEL_MCHAT_ENABLE_EXPLAIN') }}</span>
+			</dt>
+			<dd>
+				<label><input name="duel_mchat_enable" type="radio" {% if DUEL_MCHAT_ENABLE %} checked="checked"
+						{% endif %} class="radio" value="1"/> {{ lang('YES') }}</label>
+				<label><input name="duel_mchat_enable" type="radio" {% if not DUEL_MCHAT_ENABLE %}
+						checked="checked" {% endif %} class="radio" value="0"/> {{ lang('NO') }}</label>
+			</dd>
+		</dl>
+	</fieldset>
+	{% endif %}
+
+	<fieldset class="submit-buttons">
+		<legend>{{ lang('SUBMIT') }}</legend>
+		<input class="ultimatepoints-button ultimatepoints-submit" type="submit" id="submit" name="submit"
+				value="{{ lang('SUBMIT') }}"/>&nbsp;
+		<input class="ultimatepoints-button ultimatepoints-reset" type="reset" id="reset" name="reset"
+				value="{{ lang('RESET') }}"/>
+		{{ S_FORM_TOKEN }}
+	</fieldset>
+</form>
+
+{% endif %}
+
+{% INCLUDE 'overall_footer.html' %}

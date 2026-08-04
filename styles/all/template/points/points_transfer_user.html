@@ -19,6 +19,12 @@
 		{% if ROBBERY_ENABLE and U_USE_ROBBERY %}
 		<li class="tab"><a href="{{ U_ROBBERY }}">{{ lang('POINTS_ROBBERY') }}</a></li>
 		{% endif %}
+		{% if BOUNTY_ENABLE and U_USE_BOUNTY %}
+		<li class="tab"><a href="{{ U_BOUNTY }}">{{ lang('POINTS_BOUNTY') }}</a></li>
+		{% endif %}
+		{% if DUEL_ENABLE and U_USE_DUEL %}
+		<li class="tab"><a href="{{ U_DUEL }}">{{ lang('POINTS_DUEL') }}</a></li>
+		{% endif %}
 	</ul>
 </div>
 
@@ -47,28 +53,28 @@
 							<dl>
 								<dt><label for="username">{{ lang('TRANSFER_SET_USERNAME') }}</label></dt>
 								<dd><input type="text" tabindex="1" id="username" class="inputbox" name="username"
-											value=""/></dd>
+										value=""/></dd>
 								<dd><strong><a href="{{ U_FIND_USERNAME }}"
-												onclick="find_username(this.href); return false;">{{
-									lang('FIND_USERNAME') }}</a></strong></dd>
+										onclick="find_username(this.href); return false;">{{
+										lang('FIND_USERNAME') }}</a></strong></dd>
 							</dl>
 							<dl>
 								<dt><label>{{ lang('TRANSFER_AMOUNT') }}{{ lang('COLON') }}</label></dt>
 								<dd><input type="text" maxlength="10" tabindex="2" class="inputbox autowidth"
-											title="{{ lang('POINTS_NUMBER_FORMAT_EXPLAIN') }}" name="amount" value=""/>
+										title="{{ lang('POINTS_NUMBER_FORMAT_EXPLAIN') }}" name="amount" value=""/>
 									{{ POINTS_NAME }}
 								</dd>
 							</dl>
 							<dl>
 								<dt><label>{{ lang('TRANSFER_FEE') }}{{ lang('COLON') }}</label><br/><em>{{
-									lang('TRANSFER_FEE_EXPLAIN') }}</em></dt>
+										lang('TRANSFER_FEE_EXPLAIN') }}</em></dt>
 								<dd>{{ TRANSFER_FEE }} %</dd>
 							</dl>
 							{% if POINTS_COMMENTS and S_ALLOW_SEND_PM %}
 							<dl>
 								<dt><label for="comment">{{ lang('TRANSFER_COMMENT') }}{{ lang('COLON') }}</label></dt>
 								<dd><textarea id="comment" tabindex="3" class="inputbox" name="comment" cols="50"
-												rows="3">{{ COMMENT }}</textarea></dd>
+										rows="3">{{ COMMENT }}</textarea></dd>
 							</dl>
 							{% endif %}
 						</fieldset>

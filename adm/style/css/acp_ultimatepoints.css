@@ -1,3 +1,21 @@
+/* phpBB 4.0 (FA6) compatibility shim.
+   phpBB 4.0 removed the .icon font-family/weight rule (replaced by the
+   Icon() Twig helper + .o-icon system) and the FA4 v4-shims stylesheet.
+   ACP pages don't load the front-end style CSS, so this extension's
+   own front-end shim (styles/all/theme/ultimatepoints.css) never
+   applies here — every <i class="icon fa-xxx"> icon preview in the ACP
+   (main/bank/lottery/robbery legends, and the icon-picker preview next
+   to points_icon_* fields) needs its own copy of the same rule. */
+.icon {
+    font-family: "Font Awesome 6 Free", "Font Awesome 6 Brands", FontAwesome;
+    font-weight: 900;
+    font-style: normal;
+    display: inline-block;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
 .ultimatepoints-button {
     border-radius: 0.25em;
     border: 1px solid transparent;

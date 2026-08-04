@@ -40,6 +40,8 @@ if (empty($lang) || !is_array($lang))
 $lang = array_merge($lang, [
 	'ACP_POINTS' => 'Ultimate Points',
 	'ACP_POINTS_BANK_TITLE' => 'Bank Settings',
+	'ACP_POINTS_BOUNTY_TITLE' => 'Bounty Board Settings',
+	'ACP_POINTS_DUELS_TITLE' => 'Duel/Wager Settings',
 	'ACP_POINTS_FORUM_TITLE' => 'Forum Points Settings',
 	'ACP_POINTS_INDEX_TITLE' => 'Point Settings',
 	'ACP_POINTS_LOTTERY_TITLE' => 'Lottery Settings',
@@ -52,6 +54,8 @@ $lang = array_merge($lang, [
 	'LOG_MOD_POINTS' => '<strong>Edited points</strong><br />» %1$s',
 	'LOG_MOD_POINTS_BANK' => '<strong>Edited bank settings</strong>',
 	'LOG_MOD_POINTS_BANK_PAYS' => '<strong>Bank interest payments</strong><br />» %1$s',
+	'LOG_MOD_POINTS_BOUNTY' => '<strong>Edited Bounty board settings</strong>',
+	'LOG_MOD_POINTS_DUELS' => '<strong>Edited Duel/Wager settings</strong>',
 	'LOG_MOD_POINTS_FORUM' => '<strong>Edited Global Forum Points settings</strong>',
 	'LOG_MOD_POINTS_FORUM_SWITCH' => '<strong>Edited Forum Point Switches</strong>',
 	'LOG_MOD_POINTS_FORUM_VALUES' => '<strong>Edited Forum Point Values</strong>',

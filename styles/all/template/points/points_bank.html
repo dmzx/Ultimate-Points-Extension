@@ -19,6 +19,12 @@
 		{% if ROBBERY_ENABLE and U_USE_ROBBERY %}
 		<li class="tab"><a href="{{ U_ROBBERY }}">{{ lang('POINTS_ROBBERY') }}</a></li>
 		{% endif %}
+		{% if BOUNTY_ENABLE and U_USE_BOUNTY %}
+		<li class="tab"><a href="{{ U_BOUNTY }}">{{ lang('POINTS_BOUNTY') }}</a></li>
+		{% endif %}
+		{% if DUEL_ENABLE and U_USE_DUEL %}
+		<li class="tab"><a href="{{ U_DUEL }}">{{ lang('POINTS_DUEL') }}</a></li>
+		{% endif %}
 	</ul>
 </div>
 
@@ -68,22 +74,22 @@
 						<form id="bank_deposit" method="post" action="{{ U_DEPOSIT }}">
 							<dl>
 								<dt><label><input type="submit" tabindex="2" name="deposit"
-													value="{{ lang('BANK_BUTTON_DEPOSIT') }}" class="button1"/></label>
+											value="{{ lang('BANK_BUTTON_DEPOSIT') }}" class="button1"/></label>
 								</dt>
 								<dd><input type="text" tabindex="1" maxlength="10" class="inputbox autowidth"
-											title="{{ lang('POINTS_NUMBER_FORMAT_EXPLAIN') }}" name="deposit" size="20"
-											value="{{ USER_GOLD }}"/> {{ POINTS_NAME }}{{ S_FORM_TOKEN }}
+										title="{{ lang('POINTS_NUMBER_FORMAT_EXPLAIN') }}" name="deposit" size="20"
+										value="{{ USER_GOLD }}"/> {{ POINTS_NAME }}{{ S_FORM_TOKEN }}
 								</dd>
 							</dl>
 						</form>
 						<form id="bank_withdraw" method="post" action="{{ U_WITHDRAW }}">
 							<dl>
 								<dt><label><input type="submit" tabindex="4" name="withdraw"
-													value="{{ lang('BANK_BUTTON_WITHDRAW') }}" class="button1"/></label>
+											value="{{ lang('BANK_BUTTON_WITHDRAW') }}" class="button1"/></label>
 								</dt>
 								<dd><input type="text" tabindex="3" maxlength="10" class="inputbox autowidth"
-											title="{{ lang('POINTS_NUMBER_FORMAT_EXPLAIN') }}" name="withdraw" size="20"
-											value="{{ USER_WITHDRAW }}"/> {{ POINTS_NAME }}{{ S_FORM_TOKEN }}
+										title="{{ lang('POINTS_NUMBER_FORMAT_EXPLAIN') }}" name="withdraw" size="20"
+										value="{{ USER_WITHDRAW }}"/> {{ POINTS_NAME }}{{ S_FORM_TOKEN }}
 								</dd>
 							</dl>
 						</form>

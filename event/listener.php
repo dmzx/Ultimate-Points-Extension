@@ -16,13 +16,11 @@ use phpbb\config\config;
 use phpbb\controller\helper;
 use phpbb\db\driver\driver_interface;
 use phpbb\request\request;
+use phpbb\language\language;
 use phpbb\template\template;
 use phpbb\user;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-/**
- * Event listener
- */
 class listener implements EventSubscriberInterface
 {
 	/** @var functions_points */
@@ -30,6 +28,9 @@ class listener implements EventSubscriberInterface
 
 	/** @var user */
 	protected $user;
+
+	/** @var language */
+	protected $language;
 
 	/** @var template */
 	protected $template;
@@ -91,6 +92,7 @@ class listener implements EventSubscriberInterface
 	public function __construct(
 		functions_points $functions_points,
 		user $user,
+		language $language,
 		template $template,
 		driver_interface $db,
 		config $config,
@@ -107,6 +109,7 @@ class listener implements EventSubscriberInterface
 	{
 		$this->functions_points = $functions_points;
 		$this->user = $user;
+		$this->language = $language;
 		$this->template = $template;
 		$this->db = $db;
 		$this->config = $config;
@@ -256,7 +259,7 @@ class listener implements EventSubscriberInterface
 			{
 				$this->template->assign_block_vars('rich_user', [
 					'USERNAME' => get_username_string('full', $var['user_id'], $var['username'], $var['user_colour']),
-					'AVATAR' => phpbb_get_user_avatar($var),
+					'AVATAR' => $this->functions_points->get_user_avatar($var),
 					'SUM_POINTS' => $this->functions_points->number_format_points($var['total_points']),
 					'SUM_POINTS_NAME' => $this->config['points_name'],
 				]);
@@ -307,7 +310,7 @@ class listener implements EventSubscriberInterface
 
 			if ($row == null)
 			{
-				$username_colored = $this->user->lang['LOTTERY_NO_WINNER'];
+				$username_colored = $this->language->lang('LOTTERY_NO_WINNER');
 			}
 			else
 			{
@@ -316,16 +319,16 @@ class listener implements EventSubscriberInterface
 			$this->db->sql_freeresult($result);
 
 			$this->template->assign_vars([
-				'TOTAL_BANK_USER' => sprintf($this->user->lang['POINTS_BUPOINTS_TOTAL'], $points_values['bank_name'], $bankusers),
-				'TOTAL_BANK_POINTS' => sprintf($this->user->lang['POINTS_BPOINTS_TOTAL'], $points_values['bank_name'], $this->functions_points->number_format_points($bankholdings), $this->config['points_name'], $points_values['bank_name']),
-				'TOTAL_POINTS_USER' => sprintf($this->user->lang['POINTS_TOTAL'], $this->functions_points->number_format_points($totalpoints), $this->config['points_name']),
-				'LOTTERY_TIME' => sprintf($this->user->lang['POINTS_LOTTERY_TIME'], $points_values['lottery_name'], $lottery_time),
+				'TOTAL_BANK_USER' => sprintf($this->language->lang('POINTS_BUPOINTS_TOTAL'), $points_values['bank_name'], $bankusers),
+				'TOTAL_BANK_POINTS' => sprintf($this->language->lang('POINTS_BPOINTS_TOTAL'), $points_values['bank_name'], $this->functions_points->number_format_points($bankholdings), $this->config['points_name'], $points_values['bank_name']),
+				'TOTAL_POINTS_USER' => sprintf($this->language->lang('POINTS_TOTAL'), $this->functions_points->number_format_points($totalpoints), $this->config['points_name']),
+				'LOTTERY_TIME' => sprintf($this->language->lang('POINTS_LOTTERY_TIME'), $points_values['lottery_name'], $lottery_time),
 				'S_DISPLAY_LOTTERY' => ($points_config['display_lottery_stats']) ? true : false,
 				'S_DISPLAY_POINTS_STATS' => ($points_config['stats_enable']) ? true : false,
 				'S_DISPLAY_INDEX' => ($points_values['number_show_top_points'] > 0) ? true : false,
 				'U_USE_POINTS' => $this->auth->acl_get('u_use_points'),
-				'L_PREVIOUS_WINNER' => sprintf($this->user->lang['LOTTERY_WINNER_INDEX'], $points_values['lottery_name'], $username_colored),
-				'POINTS_MOST_RICH_USERS' => sprintf($this->user->lang['POINTS_MOST_RICH_USERS'], $points_values['number_show_top_points']),
+				'L_PREVIOUS_WINNER' => sprintf($this->language->lang('LOTTERY_WINNER_INDEX'), $points_values['lottery_name'], $username_colored),
+				'POINTS_MOST_RICH_USERS' => sprintf($this->language->lang('POINTS_MOST_RICH_USERS'), $points_values['number_show_top_points']),
 			]);
 		}
 	}
@@ -355,12 +358,12 @@ class listener implements EventSubscriberInterface
 			'USER_BANK_LOCK' => !$this->auth->acl_get('u_use_bank'),
 			'USER_BANK_ACC' => ($holding) ? true : false,
 			'USER_BANK_POINTS' => $this->functions_points->number_format_points($holding),
-			'L_USER_NO_BANK_ACC' => sprintf($this->user->lang['BANK_NO_ACCOUNT'], $points_values['bank_name']),
-			'L_MOD_USER_POINTS' => ($this->auth->acl_get('a_') || $this->auth->acl_get('m_chg_points')) ? sprintf($this->user->lang['POINTS_MODIFY']) : '',
+			'L_USER_NO_BANK_ACC' => sprintf($this->language->lang('BANK_NO_ACCOUNT'), $points_values['bank_name']),
+			'L_MOD_USER_POINTS' => ($this->auth->acl_get('a_') || $this->auth->acl_get('m_chg_points')) ? sprintf($this->language->lang('POINTS_MODIFY')) : '',
 			'U_POINTS_MODIFY' => ($this->auth->acl_get('a_') || $this->auth->acl_get('m_chg_points')) ? $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'points_edit', 'user_id' => $user_id, 'adm_points' => '1']) : '',
-			'L_MOD_USER_BANK' => ($this->auth->acl_get('a_') || $this->auth->acl_get('m_chg_bank')) ? sprintf($this->user->lang['POINTS_MODIFY']) : '',
+			'L_MOD_USER_BANK' => ($this->auth->acl_get('a_') || $this->auth->acl_get('m_chg_bank')) ? sprintf($this->language->lang('POINTS_MODIFY')) : '',
 			'U_BANK_MODIFY' => ($this->auth->acl_get('a_') || $this->auth->acl_get('m_chg_points')) ? $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'bank_edit', 'user_id' => $user_id, 'adm_points' => '1']) : '',
-			'L_DONATE' => ($this->auth->acl_get('u_use_points')) ? sprintf($this->user->lang['POINTS_DONATE']) : '',
+			'L_DONATE' => ($this->auth->acl_get('u_use_points')) ? sprintf($this->language->lang('POINTS_DONATE')) : '',
 			'U_POINTS_DONATE' => ($this->auth->acl_get('u_use_points')) ? $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'transfer', 'i' => $user_id, 'adm_points' => '1']) : '',
 			'P_NAME' => $this->config['points_name'],
 			'USE_POINTS' => $this->config['points_enable'],
@@ -371,8 +374,8 @@ class listener implements EventSubscriberInterface
 			'U_USE_ROBBERY' => $this->auth->acl_get('u_use_robbery') && $points_config['robbery_enable'],
 			'U_USE_TRANSFER' => $this->auth->acl_get('u_use_transfer') && $points_config['transfer_enable'],
 			'U_USE_POINTS' => $this->auth->acl_get('u_use_points'),
-			'L_ROBBERY' => $this->user->lang['ROBBERY_USER'],
-			'BANK_BALANCE' => sprintf($this->user->lang['BANK_BALANCE'], $points_values['bank_name']),
+			'L_ROBBERY' => $this->language->lang('ROBBERY_USER'),
+			'BANK_BALANCE' => sprintf($this->language->lang('BANK_BALANCE'), $points_values['bank_name']),
 		]);
 	}
 
@@ -386,7 +389,7 @@ class listener implements EventSubscriberInterface
 			'USE_POINTS' => $this->config['points_enable'],
 			'USE_IMAGES_POINTS' => $points_config['images_topic_enable'],
 			'USE_BANK' => $points_config['bank_enable'],
-			'BANK_BALANCE' => sprintf($this->user->lang['BANK_BALANCE'], $points_values['bank_name']),
+			'BANK_BALANCE' => sprintf($this->language->lang('BANK_BALANCE'), $points_values['bank_name']),
 			'U_USE_POINTS' => $this->auth->acl_get('u_use_points'),
 		]);
 	}
@@ -406,7 +409,7 @@ class listener implements EventSubscriberInterface
 		if ($forum_cost > 0 && $this->auth->acl_get('f_pay_attachment', (int) $forum_id) && (int) $display_cat != 1)
 		{
 			$this->template->assign_vars([
-				'L_DOWNLOAD_COST' => $this->user->lang['POINTS_DOWNLOAD_COST'],
+				'L_DOWNLOAD_COST' => $this->language->lang('POINTS_DOWNLOAD_COST'),
 				'DOWNLOAD_COST' => $forum_cost,
 			]);
 		}
@@ -435,9 +438,9 @@ class listener implements EventSubscriberInterface
 		$holding = (empty($holding)) ? [] : $holding;
 		if (empty($holding[$poster_id]))
 		{
-			$sql = "SELECT holding
-				FROM " . $this->points_bank_table . "
-				WHERE user_id = ' (int) $poster_id'";
+			$sql = 'SELECT holding
+				FROM ' . $this->points_bank_table . '
+				WHERE user_id = ' . (int) $poster_id;
 			$result = $this->db->sql_query($sql);
 			$bank_row = $this->db->sql_fetchrow($result);
 			$holding[$poster_id] = (!empty($bank_row['holding'])) ? !empty($bank_row['holding']) : '0';
@@ -495,17 +498,17 @@ class listener implements EventSubscriberInterface
 			'USER_ID' => $poster_id,
 			'BANK_GOLD' => $this->functions_points->number_format_points($row['bank_points']),
 			'BANK_ACCOUNT' => $row['bank_account'],
-			'L_MOD_USER_POINTS' => ($this->auth->acl_get('a_') || $this->auth->acl_get('m_chg_points')) ? sprintf($this->user->lang['POINTS_MODIFY']) : '',
+			'L_MOD_USER_POINTS' => ($this->auth->acl_get('a_') || $this->auth->acl_get('m_chg_points')) ? sprintf($this->language->lang('POINTS_MODIFY')) : '',
 			'U_POINTS_MODIFY' => ($this->auth->acl_get('a_') || $this->auth->acl_get('m_chg_points')) ? $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'points_edit', 'user_id' => $poster_id, 'adm_points' => '1', 'post_id' => $row['post_id']]) : '',
-			'L_BANK_USER_POINTS' => ($this->auth->acl_get('a_') || $this->auth->acl_get('m_chg_bank')) ? sprintf($this->user->lang['POINTS_MODIFY']) : '',
+			'L_BANK_USER_POINTS' => ($this->auth->acl_get('a_') || $this->auth->acl_get('m_chg_bank')) ? sprintf($this->language->lang('POINTS_MODIFY')) : '',
 			'U_BANK_MODIFY' => ($this->auth->acl_get('a_') || $this->auth->acl_get('m_chg_bank')) ? $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'bank_edit', 'user_id' => $poster_id, 'adm_points' => '1', 'post_id' => $row['post_id']]) : '',
-			'L_DONATE' => ($this->auth->acl_get('u_use_points') && $points_config['transfer_enable']) ? sprintf($this->user->lang['POINTS_DONATE']) : '',
+			'L_DONATE' => ($this->auth->acl_get('u_use_points') && $points_config['transfer_enable']) ? sprintf($this->language->lang('POINTS_DONATE')) : '',
 			'U_POINTS_DONATE' => ($this->auth->acl_get('u_use_points')) ? $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'transfer', 'i' => $poster_id, 'adm_points' => '1', 'post_id' => $row['post_id']]) : '',
 			'S_IS_OWN_POST' => ($poster_id == $this->user->data['user_id']) ? true : false,
 			'U_ROBBERY' => $this->helper->route('dmzx_ultimatepoints_controller', ['mode' => 'robbery_user', 'user_id' => $poster_id]),
 			'U_USE_ROBBERY' => $this->auth->acl_get('u_use_robbery') && $points_config['robbery_enable'],
 			'U_USE_TRANSFER' => $this->auth->acl_get('u_use_transfer') && $points_config['transfer_enable'],
-			'L_ROBBERY' => $this->user->lang['ROBBERY_USER'],
+			'L_ROBBERY' => $this->language->lang('ROBBERY_USER'),
 		]);
 		$event['post_row'] = $post_row;
 	}
@@ -541,16 +544,18 @@ class listener implements EventSubscriberInterface
 	// Lets show people where all users are.. addicted to the points, so probably in lottery
 	public function add_page_viewonline($event)
 	{
-		if (strrpos($event['row']['session_page'], 'app.' . $this->php_ext . '/ultimatepoints') === 0)
-		{
-			$event['location'] = $this->user->lang('ACP_POINTS');
-			$event['location_url'] = $this->helper->route('dmzx_ultimatepoints_controller');
-		}
+		$page_path = ltrim($event['row']['session_page'], '/');
+		$page_path = preg_replace('#^[a-z0-9_-]+\.' . preg_quote($this->php_ext, '#') . '/#i', '', $page_path);
 
-		if (strrpos($event['row']['session_page'], 'app.' . $this->php_ext . '/ultimatepointslist') === 0)
+		if (preg_match('#^ultimatepointslist(?:/|\?|$)#', $page_path))
 		{
-			$event['location'] = $this->user->lang('POINTS_LIST_TOTAL');
+			$event['location'] = $this->language->lang('POINTS_LIST_TOTAL');
 			$event['location_url'] = $this->helper->route('dmzx_ultimatepoints_list_controller');
+		}
+		else if (preg_match('#^ultimatepoints(?:/|\?|$)#', $page_path))
+		{
+			$event['location'] = $this->language->lang('ACP_POINTS');
+			$event['location_url'] = $this->helper->route('dmzx_ultimatepoints_controller');
 		}
 	}
 
@@ -586,7 +591,7 @@ class listener implements EventSubscriberInterface
 		{
 			if ($this->config['allow_attachments'] && $this->config['points_enable'] && ($this->user->data['user_points'] < $forum_cost))
 			{
-				$message = sprintf($this->user->lang['POINTS_ATTACHMENT_MINI_POSTS'], $this->config['points_name']) . '<br /><br /><a href="' . append_sid("{$this->root_path}index.{$this->php_ext}") . '">&laquo; ' . $this->user->lang['POINTS_RETURN_INDEX'] . '</a>';
+				$message = sprintf($this->language->lang('POINTS_ATTACHMENT_MINI_POSTS'), $this->config['points_name']) . '<br /><br /><a href="' . append_sid("{$this->root_path}index.{$this->php_ext}") . '">&laquo; ' . $this->language->lang('POINTS_RETURN_INDEX') . '</a>';
 				trigger_error($message);
 			}
 			if ($this->config['points_enable'])
@@ -689,7 +694,7 @@ class listener implements EventSubscriberInterface
 		if ($this->config['points_enable'] && $points_values['points_per_warn'] != 0)
 		{
 			// Update notification message to include the deducted points
-			$warning .= '<br />' . sprintf($this->user->lang['WARN_USER_POINTS'], $points_values['points_per_warn'], $this->config['points_name']);
+			$warning .= '<br />' . sprintf($this->language->lang('WARN_USER_POINTS'), $points_values['points_per_warn'], $this->config['points_name']);
 			$event['warning'] = $warning;
 		}
 	}
@@ -707,7 +712,7 @@ class listener implements EventSubscriberInterface
 
 			// Notify the moderator about the additional point deduction
 			$message = $event['message'];
-			$message .= '<br />' . sprintf($this->user->lang['WARN_MOD_POINTS'], $points_values['points_per_warn'], $this->config['points_name'], $event['user_row']['username']);
+			$message .= '<br />' . sprintf($this->language->lang('WARN_MOD_POINTS'), $points_values['points_per_warn'], $this->config['points_name'], $event['user_row']['username']);
 			$event['message'] = $message;
 		}
 	}
@@ -927,14 +932,14 @@ class listener implements EventSubscriberInterface
 
 			if ($mode == 'post' && $forum['forum_cost_topic'] > 0 && $user_points < $forum['forum_cost_topic'] && $this->auth->acl_get('f_pay_topic', (int) $event['forum_id']))
 			{
-				$message = sprintf($this->user->lang['POINTS_INSUFFICIENT_TOPIC'], $forum['forum_cost_topic'], $this->config['points_name']);
-				$message .= '<br /><br />' . $this->user->lang('RETURN_FORUM', '<a href="' . append_sid("{$this->root_path}viewforum.{$this->php_ext}", 'f=' . (int) $event['forum_id']) . '">', '</a>');
+				$message = sprintf($this->language->lang('POINTS_INSUFFICIENT_TOPIC'), $forum['forum_cost_topic'], $this->config['points_name']);
+				$message .= '<br /><br />' . $this->language->lang('RETURN_FORUM', '<a href="' . append_sid("{$this->root_path}viewforum.{$this->php_ext}", 'f=' . (int) $event['forum_id']) . '">', '</a>');
 				trigger_error($message);
 			}
 			else if (($mode == 'reply' || $mode == 'quote') && $forum['forum_cost_post'] > 0 && $user_points < $forum['forum_cost_post'] && $this->auth->acl_get('f_pay_post', (int) $event['forum_id']))
 			{
-				$message = sprintf($this->user->lang['POINTS_INSUFFICIENT_POST'], $forum['forum_cost_post'], $this->config['points_name']);
-				$message .= '<br /><br />' . $this->user->lang('RETURN_FORUM', '<a href="' . append_sid("{$this->root_path}viewforum.{$this->php_ext}", 'f=' . (int) $event['forum_id']) . '">', '</a>');
+				$message = sprintf($this->language->lang('POINTS_INSUFFICIENT_POST'), $forum['forum_cost_post'], $this->config['points_name']);
+				$message .= '<br /><br />' . $this->language->lang('RETURN_FORUM', '<a href="' . append_sid("{$this->root_path}viewforum.{$this->php_ext}", 'f=' . (int) $event['forum_id']) . '">', '</a>');
 				trigger_error($message);
 			}
 		}
@@ -967,6 +972,18 @@ class listener implements EventSubscriberInterface
 			],
 			'u_use_transfer' => [
 				'lang' => 'ACL_U_USE_TRANSFER',
+				'cat' => 'ultimatepoints'
+			],
+			'u_use_bounty' => [
+				'lang' => 'ACL_U_USE_BOUNTY',
+				'cat' => 'ultimatepoints'
+			],
+			'u_use_duel' => [
+				'lang' => 'ACL_U_USE_DUEL',
+				'cat' => 'ultimatepoints'
+			],
+			'm_resolve_duel' => [
+				'lang' => 'ACL_M_RESOLVE_DUEL',
 				'cat' => 'ultimatepoints'
 			],
 			'f_pay_attachment' => [

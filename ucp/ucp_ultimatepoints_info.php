@@ -37,6 +37,16 @@ class ucp_ultimatepoints_info
 					'auth' => 'ext_dmzx/ultimatepoints',
 					'cat' => ['UCP_MAIN'],
 				],
+				'bounty' => [
+					'title' => 'POINTS_BOUNTY',
+					'auth' => 'ext_dmzx/ultimatepoints',
+					'cat' => ['UCP_MAIN'],
+				],
+				'duel' => [
+					'title' => 'POINTS_DUEL',
+					'auth' => 'ext_dmzx/ultimatepoints',
+					'cat' => ['UCP_MAIN'],
+				],
 			],
 		];
 	}
