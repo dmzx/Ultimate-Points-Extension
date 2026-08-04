@@ -1,6 +1,4 @@
-# Ultimate Points Extension 3.2.x / 3.3.x
-
-[![Build Status](https://github.com/dmzx/Ultimate-Points-Extension-3.2.x-3.3.x/workflows/Tests/badge.svg)](https://github.com/phpbb-extensions/dmzx/Ultimate-Points-Extension-3.2.x-3.3.x)
+# Ultimate Points Extension 3.2.x / 3.3.x / 4.0.x
 
 ## Install
 
