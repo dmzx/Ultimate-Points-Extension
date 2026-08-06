@@ -1,0 +1,14 @@
+主题：终极积分 - {{SITENAME}}
+
+你好，{{USERNAME}}，
+
+{{ USERNAME_WHO }} {{ POINTS_NOTIFY_MSG }}
+
+{{ SITENAME }}
+
+----------------------------
+
+如果您不想再接收终极积分相关邮件，请点击以下链接：
+{{ U_NOTIFICATION_SETTINGS }}
+
+{{ EMAIL_SIG }}
