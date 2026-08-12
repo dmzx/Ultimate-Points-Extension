@@ -116,6 +116,36 @@ class api
 	}
 
 	/**
+	 * Get the top N users by points balance, richest first. Same query
+	 * shape as the "richest users" widget on the Points index page.
+	 *
+	 * @param int $limit
+	 * @return array Rows: user_id, username, user_colour, user_points
+	 */
+	public function get_top_balances($limit = 10)
+	{
+		$sql_array = [
+			'SELECT' => 'user_id, username, user_colour, user_points',
+			'FROM' => [
+				USERS_TABLE => 'u',
+			],
+			'WHERE' => 'user_points > 0',
+			'ORDER_BY' => 'user_points DESC, username_clean ASC',
+		];
+		$sql = $this->db->sql_build_query('SELECT', $sql_array);
+		$result = $this->db->sql_query_limit($sql, $limit);
+
+		$rows = [];
+		while ($row = $this->db->sql_fetchrow($result))
+		{
+			$rows[] = $row;
+		}
+		$this->db->sql_freeresult($result);
+
+		return $rows;
+	}
+
+	/**
 	 * Format a points amount for display (e.g. "1,234.56 Points").
 	 *
 	 * @param float $amount
